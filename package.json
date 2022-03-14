@@ -1,0 +1,91 @@
+{
+  "name": "tsundoku",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "lint": "eslint src . --ext .js,.ts,.tsx --fix --cache",
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+    "prepare": "husky install",
+    "test": "jest",
+    "precommit": "jest",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "precommit"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "yarn lint",
+      "yarn format"
+    ]
+  },
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.0.9",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
+    "@sentry/react-native": "^3.2.13",
+    "@testing-library/react-native": "^9.0.0",
+    "@types/enzyme": "^3.10.11",
+    "@types/jest": "^27.4.0",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "babel-plugin-dotenv-import": "^2.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "eslint": "^8.6.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "expo": "~44.0.0",
+    "expo-application": "~4.0.1",
+    "expo-barcode-scanner": "~11.2.0",
+    "expo-constants": "~13.0.1",
+    "expo-device": "~4.1.0",
+    "expo-status-bar": "~1.2.0",
+    "expo-updates": "~0.11.5",
+    "husky": "^7.0.4",
+    "jest": "^26.6.3",
+    "jest-expo": "^44.0.1",
+    "lint-staged": "^12.1.7",
+    "native-base": "^3.3.0",
+    "prettier": "^2.5.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-hook-form": "^7.24.0",
+    "react-hooks": "^1.0.1",
+    "react-native": "0.64.3",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.10.1",
+    "react-native-svg": "^12.1.1",
+    "react-native-web": "0.17.1",
+    "react-test-renderer": "^17.0.2",
+    "sentry-expo": "^4.0.3",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "~0.64.12",
+    "babel-loader": "^8.2.3",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-storybook": "^0.5.7",
+    "typescript": "~4.3.5"
+  },
+  "private": true
+}
