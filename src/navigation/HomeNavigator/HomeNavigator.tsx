@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeParamList, HomeKeys } from './route';
 import { HomeContainer } from '@src/screens/Home/Home/HomeContainer';
 import { QRcodeContainer } from '@src/screens/Home/QRcode/QRcodeContainer';
+import { SearchBookContainer } from '@src/screens/Home/SearchBook/SearcBookContainer';
 
 const HomeStack = createNativeStackNavigator<HomeParamList>();
 
@@ -16,6 +17,10 @@ export const HomeStackNavigator: FC = () => {
           title: 'ホーム',
           headerShadowVisible: true,
         }}
+      />
+      <HomeStack.Screen
+        name={HomeKeys.SearchBook}
+        component={SearchBookContainer}
       />
       <HomeStack.Screen
         name={HomeKeys.QRcode}

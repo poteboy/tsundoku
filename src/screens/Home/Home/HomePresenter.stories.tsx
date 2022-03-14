@@ -15,5 +15,5 @@ const Template: ComponentStory<typeof HomePresenter> = args => (
 
 export const Default = Template.bind({});
 Default.args = {
-  onNavigateQR: () => {},
+  onNavigateSearchBook: () => {},
 };

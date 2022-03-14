@@ -8,9 +8,9 @@ import { HomePresenter } from './HomePresenter';
 export const HomeContainer: FC = () => {
   const navigation = useHomeNavigation();
 
-  const navigateQR = useCallback(() => {
-    navigation.navigate(HomeKeys.QRcode);
-  }, [navigation]);
+  const navigateSearchBook = useCallback(() => {
+    navigation.navigate(HomeKeys.SearchBook);
+  }, []);
 
-  return <HomePresenter onNavigateQR={navigateQR} />;
+  return <HomePresenter onNavigateSearchBook={navigateSearchBook} />;
 };

@@ -4,15 +4,15 @@ import { colors } from '@src/styles';
 import { Header } from '@src/components';
 
 export type Props = {
-  onNavigateQR: () => void;
+  onNavigateSearchBook: () => void;
 };
 
-export const HomePresenter: FC<Props> = memo(({ onNavigateQR }) => {
+export const HomePresenter: FC<Props> = memo(({ onNavigateSearchBook }) => {
   return (
     <>
       <Header title="ホーム" />
       <VStack flex={1} bg={colors.White} justifyContent="center">
-        <Button onPress={onNavigateQR}>追加</Button>
+        <Button onPress={onNavigateSearchBook}>追加</Button>
       </VStack>
     </>
   );

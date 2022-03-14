@@ -3,5 +3,6 @@ export const colors = {
 
   White: '#ffff',
 
+  Info400: '#38bdf8',
   Info500: '#0ea5e9',
 };

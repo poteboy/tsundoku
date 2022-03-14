@@ -4,7 +4,7 @@ import React from 'react';
 
 describe(`HomePresenter`, () => {
   const defaultProps: Props = {
-    onNavigateQR: () => {},
+    onNavigateSearchBook: () => {},
   };
 
   it(`renders correctly`, () => {
