@@ -7,10 +7,22 @@ describe(`QRcodePresenter`, () => {
     permitted: true,
     onHandleQR: ({ type, data }) => {},
     scanned: false,
+    onClose: () => {},
   };
 
   it(`renders correctly`, () => {
     const component = render(<QRcodePresenter {...defaultProps} />);
     expect(component).toBeDefined();
+  });
+
+  it(`renders scanner when scanned is true`, () => {
+    const props: Props = { ...defaultProps, scanned: true };
+    const { queryByTestId } = render(<QRcodePresenter {...props} />);
+    expect(queryByTestId('scanner')).toBeTruthy();
+  });
+
+  it(`does not render scanner when scanned is false`, () => {
+    const { queryByTestId } = render(<QRcodePresenter {...defaultProps} />);
+    expect(queryByTestId('scanner')).toBeTruthy();
   });
 });
