@@ -1,10 +1,14 @@
 import { render } from '@src/util';
-import { HomePresenter } from './HomePresenter';
+import { HomePresenter, Props } from './HomePresenter';
 import React from 'react';
 
 describe(`HomePresenter`, () => {
+  const defaultProps: Props = {
+    onNavigateQR: () => {},
+  };
+
   it(`renders correctly`, () => {
-    const { toJSON } = render(<HomePresenter />);
+    const { toJSON } = render(<HomePresenter {...defaultProps} />);
     expect(toJSON).toBeDefined();
   });
 });
