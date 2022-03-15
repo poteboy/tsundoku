@@ -4,6 +4,7 @@ import { HomeParamList, HomeKeys } from './route';
 import { HomeContainer } from '@src/screens/Home/Home/HomeContainer';
 import { QRcodeContainer } from '@src/screens/Home/QRcode/QRcodeContainer';
 import { SearchBookContainer } from '@src/screens/Home/SearchBook/SearcBookContainer';
+import { BookInfoContainer } from '@src/screens/Home/BookInfo/BookInfoContainer';
 
 const HomeStack = createNativeStackNavigator<HomeParamList>();
 
@@ -21,6 +22,10 @@ export const HomeStackNavigator: FC = () => {
       <HomeStack.Screen
         name={HomeKeys.SearchBook}
         component={SearchBookContainer}
+      />
+      <HomeStack.Screen
+        name={HomeKeys.BookInfo}
+        component={BookInfoContainer}
       />
       <HomeStack.Screen
         name={HomeKeys.QRcode}
