@@ -33,7 +33,6 @@ export const QRcodeContainer: FC = () => {
   const handleQR = useCallback(async ({ type, data }: BarCodeEvent) => {
     if (data.slice(0, 3) === '192') return;
     if (data.slice(0, 3) === '978' || data.slice(0, 2) === '979') {
-      console.log(data);
       setScanned(true);
       const res = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=isbn:${data}`,

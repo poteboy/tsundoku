@@ -16,7 +16,7 @@ export const QRcodePresenter: FC<Props> = memo(
 
     return (
       <>
-        <Header title="QRコード" onClose={onClose} />
+        <Header title="バーコードリーダー" onClose={onClose} />
         <View flex={1}>
           <BarCodeScanner
             // onBarCodeScanned={onHandleQR}

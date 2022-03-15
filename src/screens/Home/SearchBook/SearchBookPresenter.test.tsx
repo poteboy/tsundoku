@@ -5,7 +5,10 @@ import { SearchBookPresenter, Props } from './SearchBookPresenter';
 describe(`SearchBookPresenter`, () => {
   const defaultProps: Props = {
     onBack: () => {},
-    onNavigateQR: () => {},
+    onDismiss: () => {},
+    onFocus: () => {},
+    focused: false,
+    cameraIcon: () => <></>,
   };
 
   it(`renders correctly`, () => {
