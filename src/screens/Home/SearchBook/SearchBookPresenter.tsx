@@ -21,7 +21,7 @@ import {
   TouchableWithoutFeedback,
   ImageSourcePropType,
 } from 'react-native';
-import { Book } from '@src/entities';
+import { BookInfo } from '@src/entities';
 
 export type Props = {
   onBack: () => void;
@@ -29,8 +29,8 @@ export type Props = {
   onFocus: () => void;
   onDismiss: (key?: string) => void;
   cameraIcon: () => JSX.Element;
-  books: Book[] | undefined;
-  onNavigateBookInfo: (book: Book) => void;
+  bookInfos: BookInfo[] | undefined;
+  onNavigateBookInfo: (bookInfo: BookInfo) => void;
   loading: boolean;
 };
 
@@ -41,7 +41,7 @@ export const SearchBookPresenter: FC<Props> = memo(
     onDismiss,
     focused,
     cameraIcon,
-    books,
+    bookInfos,
     onNavigateBookInfo,
     loading,
   }) => {
@@ -97,12 +97,12 @@ export const SearchBookPresenter: FC<Props> = memo(
                     <Spinner mt={40} />
                   </Box>
                 )}
-                {books &&
-                  books.map((book, index) => {
+                {bookInfos &&
+                  bookInfos.map((bookInfo, index) => {
                     return (
-                      <View key={book.uid}>
+                      <View key={bookInfo.uid}>
                         <BookCard
-                          {...{ book, onNavigateBookInfo }}
+                          {...{ bookInfo, onNavigateBookInfo }}
                           key={index}
                         />
                         <Divider />
@@ -118,8 +118,8 @@ export const SearchBookPresenter: FC<Props> = memo(
   },
 );
 
-const BookCard: FC<{ book: Book } & Pick<Props, 'onNavigateBookInfo'>> = memo(
-  ({ book, onNavigateBookInfo }) => {
+const BookCard: FC<{ bookInfo: BookInfo } & Pick<Props, 'onNavigateBookInfo'>> =
+  memo(({ bookInfo, onNavigateBookInfo }) => {
     const [bg, setBg] = useState(colors.White);
     const onPressIn = useCallback(() => {
       setBg('gray.300');
@@ -128,11 +128,11 @@ const BookCard: FC<{ book: Book } & Pick<Props, 'onNavigateBookInfo'>> = memo(
       setBg(colors.White);
     }, []);
     const navigate = useCallback(() => {
-      onNavigateBookInfo(book);
+      onNavigateBookInfo(bookInfo);
     }, []);
 
-    const img: ImageSourcePropType = book.thumbnail
-      ? { uri: book.thumbnail }
+    const img: ImageSourcePropType = bookInfo.thumbnail
+      ? { uri: bookInfo.thumbnail }
       : require('@assets/no-image.png');
 
     return (
@@ -150,11 +150,10 @@ const BookCard: FC<{ book: Book } & Pick<Props, 'onNavigateBookInfo'>> = memo(
             mx={4}
           />
           <VStack>
-            <Text>{book.title}</Text>
-            <Text>{book.subtitle}</Text>
+            <Text>{bookInfo.title}</Text>
+            <Text>{bookInfo.subtitle}</Text>
           </VStack>
         </HStack>
       </Pressable>
     );
-  },
-);
+  });

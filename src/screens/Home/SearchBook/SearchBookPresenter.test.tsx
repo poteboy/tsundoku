@@ -9,7 +9,7 @@ describe(`SearchBookPresenter`, () => {
     onFocus: () => {},
     focused: false,
     cameraIcon: () => <></>,
-    books: undefined,
+    bookInfos: undefined,
     onNavigateBookInfo: () => {},
     loading: false,
   };

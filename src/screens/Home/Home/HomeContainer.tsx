@@ -4,7 +4,7 @@ import {
 } from '@src/navigation/HomeNavigator/route';
 import React, { FC, useCallback } from 'react';
 import { HomePresenter } from './HomePresenter';
-import { mockBook } from '@src/entities';
+import { mockBookInfo } from '@src/entities';
 
 export const HomeContainer: FC = () => {
   const navigation = useHomeNavigation();

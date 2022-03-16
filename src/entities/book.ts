@@ -1,5 +1,6 @@
 // google api からのレスポンス
 export type BookResponse = {
+  id: string;
   volumeInfo: {
     authors: string[];
     description?: string;
@@ -18,8 +19,10 @@ export type BookResponse = {
   };
 };
 
-export type Book = {
+// ISBNは重複があるので、UIDをID+ISBNで表す
+export type BookInfo = {
   uid: string;
+  isbn: string;
   title: string;
   subtitle?: string;
   publishedDate: string;
@@ -35,24 +38,28 @@ export const isBookResponse = (arg: unknown): arg is BookResponse => {
 
   try {
     return (
+      !!res.id &&
       !!res.volumeInfo.authors &&
       !!res.volumeInfo.title &&
       !!res.volumeInfo.publishedDate &&
       !!res.volumeInfo.pageCount &&
       !!res.volumeInfo.industryIdentifiers &&
-      res.volumeInfo.industryIdentifiers.some(v => v.type === 'ISBN_13')
+      res.volumeInfo.industryIdentifiers.some(
+        v => v.type === 'ISBN_13' && !!v.identifier,
+      )
     );
   } catch {
     return false;
   }
 };
 
-export const convertRespToBook = (res: BookResponse): Book => {
-  const uid = res.volumeInfo.industryIdentifiers.find(
+export const convertRespToBook = (res: BookResponse): BookInfo => {
+  const isbn = res.volumeInfo.industryIdentifiers.find(
     v => v.type === 'ISBN_13',
-  )?.identifier;
+  )?.identifier as string;
   return {
-    uid: uid!,
+    uid: `${res.id}-${isbn}`,
+    isbn: isbn,
     title: res.volumeInfo.title,
     subtitle: res.volumeInfo.subtitle,
     publishedDate: res.volumeInfo.publishedDate,
@@ -63,15 +70,16 @@ export const convertRespToBook = (res: BookResponse): Book => {
   };
 };
 
-export const mockBook: Book = {
-  uid: '9784844365174',
-  title: 'なるほどデザイン',
-  subtitle: '目で見て楽しむデザインの本。',
-  publishedDate: '2015-08-01',
+export const mockBookInfo: BookInfo = {
+  uid: 'cdZzzgEACAAJ-9784873119496',
+  isbn: '9784873119496',
+  title: 'UXデザインの法則',
+  subtitle: '最高のプロダクトとサービスを支える心理学',
+  publishedDate: '2021-05',
   thumbnail:
-    'http://books.google.com/books/content?id=cdZzzgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api',
+    'http://books.google.com/books/content?id=cdZzzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
   description:
-    '「デザイン=楽しい」を実感できる!デザイナーのあたまの中を豊富なビジュアルでひも解く。',
-  authors: ['筒井美希'],
-  pageCount: 256,
+    'UXデザインにおける心理的法則と事例を、10通りに絞り解説。ノンデザイナーにもセンスが求められる時代のハンドブック。',
+  authors: ['ジョンヤブロンスキ'],
+  pageCount: 160,
 };

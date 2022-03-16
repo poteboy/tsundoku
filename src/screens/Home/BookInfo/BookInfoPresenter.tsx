@@ -1,16 +1,19 @@
 import { Header, Spacer } from '@src/components';
 import React, { FC, memo } from 'react';
-import { Book } from '@src/entities';
+import { BookInfo } from '@src/entities';
 import { VStack, Image, Text, Divider, View, Button } from 'native-base';
 import { colors } from '@src/styles';
-import { ScrollView } from 'react-native';
+import { ScrollView, ImageSourcePropType } from 'react-native';
 
 type Props = {
-  book: Book;
+  bookInfo: BookInfo;
   onBack: () => void;
 };
 
-export const BookInfoPresenter: FC<Props> = memo(({ onBack, book }) => {
+export const BookInfoPresenter: FC<Props> = memo(({ onBack, bookInfo }) => {
+  const img: ImageSourcePropType = bookInfo.thumbnail
+    ? { uri: bookInfo.thumbnail }
+    : require('@assets/no-image.png');
   return (
     <View flex={1} bg={colors.White}>
       <Header title="本の情報" onBack={onBack} />
@@ -18,7 +21,7 @@ export const BookInfoPresenter: FC<Props> = memo(({ onBack, book }) => {
         <VStack flex={1} bg={colors.White} alignItems="center" width="100%">
           <Spacer size={16} />
           <Image
-            source={{ uri: book.thumbnail }}
+            source={img}
             width="140px"
             height="220px"
             resizeMode="contain"
@@ -26,15 +29,15 @@ export const BookInfoPresenter: FC<Props> = memo(({ onBack, book }) => {
           />
           <Spacer size={16} />
           <Text fontWeight={600} fontSize="lg" maxWidth="80%">
-            {book.title}
+            {bookInfo.title}
           </Text>
           <Spacer size={8} />
           <Text color={colors.Info400} mx="auto" fontSize="md">
-            {book.authors[0]}
+            {bookInfo.authors[0]}
           </Text>
           <Spacer size={8} />
           <Text mx="auto" fontSize="md" color="gray.700">
-            {book.publishedDate}
+            {bookInfo.publishedDate}
           </Text>
           <Spacer size={8} />
           <Button px={16} py={2} _text={{ fontSize: 'lg' }}>
@@ -49,9 +52,9 @@ export const BookInfoPresenter: FC<Props> = memo(({ onBack, book }) => {
             本書の説明
           </Text>
           <Spacer size={8} />
-          {book.description ? (
+          {bookInfo.description ? (
             <Text textAlign="left" mx={16} alignSelf="flex-start">
-              {book.description}
+              {bookInfo.description}
             </Text>
           ) : (
             <Text

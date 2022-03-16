@@ -13,7 +13,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 import {
   isBookResponse,
-  Book,
+  BookInfo,
   convertRespToBook,
   BookResponse,
 } from '@src/entities';
@@ -21,7 +21,7 @@ import {
 export const SearchBookContainer: FC = () => {
   const navigation = useHomeNavigation();
   const [keyword, setKeyword] = useState<string>();
-  const [books, setBooks] = useState<Book[]>();
+  const [bookInfos, setBookInfos] = useState<BookInfo[]>();
   const [focused, setFocused] = useState(false);
   const [loading, setLoading] = useState(false);
   const focus = useCallback(() => {
@@ -46,19 +46,19 @@ export const SearchBookContainer: FC = () => {
 
   const searchBook = useCallback(async (keyword: string) => {
     unstable_batchedUpdates(() => {
-      setBooks(undefined);
+      setBookInfos(undefined);
       setLoading(true);
     });
     const res = await fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${keyword}`,
     );
     const json = await res.json();
-    const items: Book[] = json.items
+    const items: BookInfo[] = json.items
       .filter(isBookResponse)
       .map((item: BookResponse) => convertRespToBook(item));
     if (items.length > 0) {
       unstable_batchedUpdates(() => {
-        setBooks(items);
+        setBookInfos(items);
         setLoading(false);
       });
     } else {
@@ -78,8 +78,8 @@ export const SearchBookContainer: FC = () => {
   }, [navigation]);
 
   const navigateBookInfo = useCallback(
-    (book: Book) => {
-      navigation.navigate(HomeKeys.BookInfo, { bookInfo: book });
+    (bookInfo: BookInfo) => {
+      navigation.navigate(HomeKeys.BookInfo, { bookInfo });
     },
     [navigation],
   );
@@ -91,7 +91,7 @@ export const SearchBookContainer: FC = () => {
       onFocus={focus}
       focused={focused}
       cameraIcon={cameraIcon}
-      books={books}
+      bookInfos={bookInfos}
       onNavigateBookInfo={navigateBookInfo}
       loading={loading}
     />

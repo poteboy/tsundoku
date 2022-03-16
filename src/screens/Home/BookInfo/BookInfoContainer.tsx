@@ -15,5 +15,5 @@ export const BookInfoContainer: FC = () => {
     navigation.goBack();
   }, [navigation]);
 
-  return <BookInfoPresenter onBack={back} book={route.params.bookInfo} />;
+  return <BookInfoPresenter onBack={back} bookInfo={route.params.bookInfo} />;
 };
