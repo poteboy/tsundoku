@@ -25,7 +25,7 @@ export const BookInfoPresenter: FC<Props> = memo(({ onBack, book }) => {
             shadow={4}
           />
           <Spacer size={16} />
-          <Text fontWeight={600} fontSize="lg">
+          <Text fontWeight={600} fontSize="lg" maxWidth="80%">
             {book.title}
           </Text>
           <Spacer size={8} />
@@ -63,6 +63,7 @@ export const BookInfoPresenter: FC<Props> = memo(({ onBack, book }) => {
               この本に説明はありません
             </Text>
           )}
+          <Spacer size={24} />
         </VStack>
       </ScrollView>
     </View>

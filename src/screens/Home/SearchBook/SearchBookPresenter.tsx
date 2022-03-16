@@ -8,9 +8,11 @@ import {
   Icon,
   Box,
   Pressable,
-  Card,
+  Divider,
   HStack,
   Text,
+  ScrollView,
+  Spinner,
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
@@ -24,26 +26,36 @@ export type Props = {
   onDismiss: (key?: string) => void;
   cameraIcon: () => JSX.Element;
   books: Book[] | undefined;
+  onNavigateBookInfo: (book: Book) => void;
+  loading: boolean;
 };
 
 export const SearchBookPresenter: FC<Props> = memo(
-  ({ onBack, onFocus, onDismiss, focused, cameraIcon, books }) => {
+  ({
+    onBack,
+    onFocus,
+    onDismiss,
+    focused,
+    cameraIcon,
+    books,
+    onNavigateBookInfo,
+    loading,
+  }) => {
     const [key, setKey] = useState<string>();
-    const submit = () => {
-      console.log('submit', key);
+    const submit = useCallback(() => {
       onDismiss(key);
-    };
+    }, [key, onDismiss]);
 
     return (
       <>
         <Header title="本を探す" onBack={onBack} RightIcon={cameraIcon} />
         <View flex={1}>
           <VStack w="100%" space={5}>
-            <Box>
+            <Box bg={colors.lightGray}>
               <Input
                 alignSelf="center"
                 placeholder="検索（タイトル）"
-                bg="gray.200"
+                bg={colors.medGray}
                 borderRadius="4"
                 py="1"
                 px="1"
@@ -56,6 +68,7 @@ export const SearchBookPresenter: FC<Props> = memo(
                   setKey(text);
                 }}
                 onSubmitEditing={submit}
+                onEndEditing={submit}
                 InputLeftElement={
                   <Icon
                     m="2"
@@ -74,11 +87,25 @@ export const SearchBookPresenter: FC<Props> = memo(
               height="100%"
               bg={!focused ? colors.White : 'rgba(0, 0, 0, 0.1)'}
             >
-              {books &&
-                books.map((book, index) => {
-                  return <BookCard book={book} key={index} />;
-                })}
-              <VStack height={'200px'} bg={'black'} />
+              <ScrollView>
+                {loading && (
+                  <Box alignItems="center" justifyContent="center" flex={1}>
+                    <Spinner mt={40} />
+                  </Box>
+                )}
+                {books &&
+                  books.map((book, index) => {
+                    return (
+                      <View key={book.uid}>
+                        <BookCard
+                          {...{ book, onNavigateBookInfo }}
+                          key={index}
+                        />
+                        <Divider />
+                      </View>
+                    );
+                  })}
+              </ScrollView>
             </VStack>
           </TouchableWithoutFeedback>
         </View>
@@ -87,23 +114,39 @@ export const SearchBookPresenter: FC<Props> = memo(
   },
 );
 
-const BookCard: FC<{ book: Book }> = memo(({ book }) => {
-  console.log(book);
-  return (
-    <Pressable>
-      <Card>
-        <HStack>
+const BookCard: FC<{ book: Book } & Pick<Props, 'onNavigateBookInfo'>> = memo(
+  ({ book, onNavigateBookInfo }) => {
+    const [bg, setBg] = useState(colors.White);
+    const onPressIn = useCallback(() => {
+      setBg('gray.300');
+    }, []);
+    const onPressOut = useCallback(() => {
+      setBg(colors.White);
+    }, []);
+    const navigate = useCallback(() => {
+      onNavigateBookInfo(book);
+    }, []);
+
+    return (
+      <Pressable
+        onPress={navigate}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+      >
+        <HStack bg={bg} py={4}>
           <Image
             source={{ uri: book.thumbnail }}
-            width="70px"
-            height="110px"
+            width="60px"
+            height="100px"
             resizeMode="contain"
+            mx={4}
           />
           <VStack>
             <Text>{book.title}</Text>
+            <Text>{book.subtitle}</Text>
           </VStack>
         </HStack>
-      </Card>
-    </Pressable>
-  );
-});
+      </Pressable>
+    );
+  },
+);

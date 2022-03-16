@@ -5,4 +5,7 @@ export const colors = {
 
   Info400: '#38bdf8',
   Info500: '#0ea5e9',
+
+  lightGray: '#f2f2f6',
+  medGray: '#e3e3e9',
 };

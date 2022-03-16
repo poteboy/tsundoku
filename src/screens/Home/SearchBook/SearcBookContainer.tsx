@@ -4,7 +4,11 @@ import {
   HomeKeys,
 } from '@src/navigation/HomeNavigator/route';
 import { SearchBookPresenter } from './SearchBookPresenter';
-import { Keyboard, TouchableOpacity } from 'react-native';
+import {
+  Keyboard,
+  TouchableOpacity,
+  unstable_batchedUpdates,
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 import {
@@ -19,6 +23,7 @@ export const SearchBookContainer: FC = () => {
   const [keyword, setKeyword] = useState<string>();
   const [books, setBooks] = useState<Book[]>();
   const [focused, setFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
   const focus = useCallback(() => {
     setFocused(true);
   }, [setFocused]);
@@ -40,15 +45,25 @@ export const SearchBookContainer: FC = () => {
   }, [keyword]);
 
   const searchBook = useCallback(async (keyword: string) => {
-    console.log(keyword);
+    unstable_batchedUpdates(() => {
+      setBooks(undefined);
+      setLoading(true);
+    });
     const res = await fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${keyword}`,
     );
     const json = await res.json();
-    const items: Book[] = json.items.filter((item: BookResponse | unknown) => {
-      if (isBookResponse(item)) return convertRespToBook(item);
-    });
-    if (items.length > 0) setBooks(items);
+    const items: Book[] = json.items
+      .filter(isBookResponse)
+      .map((item: BookResponse) => convertRespToBook(item));
+    if (items.length > 0) {
+      unstable_batchedUpdates(() => {
+        setBooks(items);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const cameraIcon = useCallback(() => {
@@ -57,10 +72,17 @@ export const SearchBookContainer: FC = () => {
     };
     return (
       <TouchableOpacity onPress={navigateQR}>
-        <MaterialIcons name="camera-alt" size={24} color={colors.Info500} />
+        <MaterialIcons name="camera-alt" size={28} color={colors.Info500} />
       </TouchableOpacity>
     );
   }, [navigation]);
+
+  const navigateBookInfo = useCallback(
+    (book: Book) => {
+      navigation.navigate(HomeKeys.BookInfo, { bookInfo: book });
+    },
+    [navigation],
+  );
 
   return (
     <SearchBookPresenter
@@ -70,6 +92,8 @@ export const SearchBookContainer: FC = () => {
       focused={focused}
       cameraIcon={cameraIcon}
       books={books}
+      onNavigateBookInfo={navigateBookInfo}
+      loading={loading}
     />
   );
 };

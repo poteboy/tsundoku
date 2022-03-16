@@ -11,8 +11,9 @@ export const BookInfoContainer: FC = () => {
   const route = useRoute<RouteProp<HomeParamList, 'Home/BookInfo'>>();
 
   const back = useCallback(() => {
-    navigation.dispatch(StackActions.popToTop());
-  }, []);
+    // navigation.dispatch(StackActions.popToTop());
+    navigation.goBack();
+  }, [navigation]);
 
   return <BookInfoPresenter onBack={back} book={route.params.bookInfo} />;
 };

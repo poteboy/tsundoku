@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { HStack, VStack, Text, Divider } from 'native-base';
 import { colors } from '@src/styles/colors';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 
 export type Props = {
   title: string;
@@ -17,7 +18,7 @@ export const Header: FC<Props> = memo(
       <VStack safeAreaTop bg={colors.White}>
         <HStack
           bg={colors.White}
-          height="45px"
+          height="50px"
           overflow="hidden"
           px={4}
           alignItems="center"
@@ -25,7 +26,7 @@ export const Header: FC<Props> = memo(
           {onBack && (
             <MaterialIcons
               name="arrow-back-ios"
-              size={24}
+              size={28}
               color={colors.Info500}
               style={{ position: 'absolute', left: '5%' }}
               onPress={onBack}
@@ -42,7 +43,7 @@ export const Header: FC<Props> = memo(
               testID="close"
             />
           )}
-          <Text mx="auto" fontWeight={500} fontSize={16}>
+          <Text mx="auto" fontWeight={500} fontSize="lg">
             {title}
           </Text>
           {!!RightIcon && <RightIcon />}

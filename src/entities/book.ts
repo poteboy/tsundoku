@@ -33,14 +33,18 @@ export const isBookResponse = (arg: unknown): arg is BookResponse => {
   if (!arg) return false;
   const res = arg as BookResponse;
 
-  return (
-    !!res.volumeInfo.authors &&
-    !!res.volumeInfo.title &&
-    !!res.volumeInfo.publishedDate &&
-    !!res.volumeInfo.pageCount &&
-    !!res.volumeInfo.industryIdentifiers &&
-    res.volumeInfo.industryIdentifiers.some(v => v.type === 'ISBN_13')
-  );
+  try {
+    return (
+      !!res.volumeInfo.authors &&
+      !!res.volumeInfo.title &&
+      !!res.volumeInfo.publishedDate &&
+      !!res.volumeInfo.pageCount &&
+      !!res.volumeInfo.industryIdentifiers &&
+      res.volumeInfo.industryIdentifiers.some(v => v.type === 'ISBN_13')
+    );
+  } catch {
+    return false;
+  }
 };
 
 export const convertRespToBook = (res: BookResponse): Book => {
