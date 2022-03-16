@@ -1,20 +1,39 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Header } from '@src/components';
-import { View, Button, VStack, Input, Icon, Box, Pressable } from 'native-base';
+import { Header, Spacer } from '@src/components';
+import {
+  View,
+  Image,
+  VStack,
+  Input,
+  Icon,
+  Box,
+  Pressable,
+  Card,
+  HStack,
+  Text,
+} from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Book } from '@src/entities';
 
 export type Props = {
   onBack: () => void;
   focused: boolean;
   onFocus: () => void;
-  onDismiss: () => void;
+  onDismiss: (key?: string) => void;
   cameraIcon: () => JSX.Element;
+  books: Book[] | undefined;
 };
 
 export const SearchBookPresenter: FC<Props> = memo(
-  ({ onBack, onFocus, onDismiss, focused, cameraIcon }) => {
+  ({ onBack, onFocus, onDismiss, focused, cameraIcon, books }) => {
+    const [key, setKey] = useState<string>();
+    const submit = () => {
+      console.log('submit', key);
+      onDismiss(key);
+    };
+
     return (
       <>
         <Header title="本を探す" onBack={onBack} RightIcon={cameraIcon} />
@@ -33,7 +52,10 @@ export const SearchBookPresenter: FC<Props> = memo(
                 variant="unstyled"
                 fontSize="16"
                 onFocus={onFocus}
-                onSubmitEditing={onDismiss}
+                onChangeText={text => {
+                  setKey(text);
+                }}
+                onSubmitEditing={submit}
                 InputLeftElement={
                   <Icon
                     m="2"
@@ -46,12 +68,17 @@ export const SearchBookPresenter: FC<Props> = memo(
               />
             </Box>
           </VStack>
-          <TouchableWithoutFeedback onPress={onDismiss} accessible={false}>
+          <TouchableWithoutFeedback onPress={submit} accessible={false}>
             <VStack
               flex={1}
+              height="100%"
               bg={!focused ? colors.White : 'rgba(0, 0, 0, 0.1)'}
             >
-              <></>
+              {books &&
+                books.map((book, index) => {
+                  return <BookCard book={book} key={index} />;
+                })}
+              <VStack height={'200px'} bg={'black'} />
             </VStack>
           </TouchableWithoutFeedback>
         </View>
@@ -59,3 +86,24 @@ export const SearchBookPresenter: FC<Props> = memo(
     );
   },
 );
+
+const BookCard: FC<{ book: Book }> = memo(({ book }) => {
+  console.log(book);
+  return (
+    <Pressable>
+      <Card>
+        <HStack>
+          <Image
+            source={{ uri: book.thumbnail }}
+            width="70px"
+            height="110px"
+            resizeMode="contain"
+          />
+          <VStack>
+            <Text>{book.title}</Text>
+          </VStack>
+        </HStack>
+      </Card>
+    </Pressable>
+  );
+});

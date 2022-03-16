@@ -24,7 +24,7 @@ export const QRcodeContainer: FC = () => {
 
   useEffect(() => {
     if (!!book && !!isbn) {
-      const bookInfo = convertRespToBook(book, isbn);
+      const bookInfo = convertRespToBook(book);
       close();
       navigation.navigate(HomeKeys.BookInfo, { bookInfo });
     }
