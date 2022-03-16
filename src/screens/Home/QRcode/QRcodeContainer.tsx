@@ -13,6 +13,7 @@ export const QRcodeContainer: FC = () => {
   const [scanned, setScanned] = useState(false);
   const [book, setBook] = useState<BookResponse | undefined>(undefined);
   const [isbn, setIsbn] = useState<string>();
+  const [isError, setIsError] = useState(false);
   const navigation = useHomeNavigation();
 
   useEffect(() => {
@@ -45,7 +46,10 @@ export const QRcodeContainer: FC = () => {
           setBook(item);
         });
       } else {
-        setScanned(false);
+        unstable_batchedUpdates(() => {
+          setScanned(false);
+          setIsError(true);
+        });
       }
     }
     return;
@@ -61,6 +65,7 @@ export const QRcodeContainer: FC = () => {
       onHandleQR={handleQR}
       scanned={scanned}
       onClose={close}
+      isError={isError}
     />
   );
 };

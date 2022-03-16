@@ -122,7 +122,7 @@ const BookCard: FC<{ bookInfo: BookInfo } & Pick<Props, 'onNavigateBookInfo'>> =
   memo(({ bookInfo, onNavigateBookInfo }) => {
     const [bg, setBg] = useState(colors.White);
     const onPressIn = useCallback(() => {
-      setBg('gray.300');
+      setBg(colors.lightGray);
     }, []);
     const onPressOut = useCallback(() => {
       setBg(colors.White);
@@ -141,17 +141,23 @@ const BookCard: FC<{ bookInfo: BookInfo } & Pick<Props, 'onNavigateBookInfo'>> =
         onPressIn={onPressIn}
         onPressOut={onPressOut}
       >
-        <HStack bg={bg} py={4}>
+        <HStack bg={bg} py={4} width="100%">
           <Image
             source={img}
             width="60px"
             height="100px"
             resizeMode="contain"
             mx={4}
+            alt={bookInfo.title}
           />
-          <VStack>
-            <Text>{bookInfo.title}</Text>
-            <Text>{bookInfo.subtitle}</Text>
+          <VStack mx={4} width="70%">
+            <Text fontWeight={500} numberOfLines={1}>
+              {bookInfo.title}
+            </Text>
+            <Spacer size={4} />
+            <Text color={'gray.600'}>{bookInfo.authors[0]}</Text>
+            <Spacer size={2} />
+            <Text color={'gray.600'}>{bookInfo.publishedDate}</Text>
           </VStack>
         </HStack>
       </Pressable>

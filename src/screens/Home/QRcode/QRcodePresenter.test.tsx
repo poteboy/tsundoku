@@ -8,6 +8,7 @@ describe(`QRcodePresenter`, () => {
     onHandleQR: ({ type, data }) => {},
     scanned: false,
     onClose: () => {},
+    isError: false,
   };
 
   it(`renders correctly`, () => {
