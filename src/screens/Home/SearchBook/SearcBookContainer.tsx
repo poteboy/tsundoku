@@ -44,11 +44,6 @@ export const SearchBookContainer: FC = () => {
     if (keyword) searchBook(keyword);
   }, [keyword]);
 
-  useEffect(() => {
-    if (bookInfos && bookInfos.length > 0)
-      navigation.navigate(HomeKeys.BookInfo, { bookInfo: bookInfos[0] });
-  }, [bookInfos]);
-
   const searchBook = useCallback(async (keyword: string) => {
     unstable_batchedUpdates(() => {
       setBookInfos(undefined);
@@ -58,6 +53,7 @@ export const SearchBookContainer: FC = () => {
       `https://www.googleapis.com/books/v1/volumes?q=${keyword}`,
     );
     const json = await res.json();
+    console.log(json.items);
     const items: BookInfo[] = json.items
       .filter(isBookResponse)
       .map((item: BookResponse) => convertRespToBook(item));

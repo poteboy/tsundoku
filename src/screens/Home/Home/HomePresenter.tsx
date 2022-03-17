@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
 import { VStack, Image, View, Fab, Icon, HStack, Pressable } from 'native-base';
 import { colors } from '@src/styles';
-import { Header } from '@src/components';
+import { Header, Spacer } from '@src/components';
 import { ScrollView, Animated, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { BookInfo } from '@src/entities';
@@ -21,7 +21,8 @@ export const HomePresenter: FC<Props> = memo(
         <Header title="ホーム" />
         <ScrollView>
           <VStack height="100%" bg={colors.lightGray} justifyContent="center">
-            <HStack flexWrap="wrap" justifyContent="space-between" mx={2}>
+            <Spacer size={4} />
+            <HStack flexWrap="wrap">
               {bookInfos.map(bookInfo => (
                 <BookInfoItem bookInfo={bookInfo} />
               ))}
@@ -71,6 +72,7 @@ const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
         height={`${(screenWidth / 5) * 1.5}px`}
         resizeMode="contain"
         mt={2}
+        ml={`${screenWidth / 25}px`} // 1/5分スペースが余ったさらに5等分
         style={{ transform: [{ scale: scale }] }}
       />
     </Pressable>

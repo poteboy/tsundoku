@@ -4,6 +4,7 @@ import { useContainer, createContainer } from 'unstated-next';
 
 const container = () => {
   const [bookInfos, setBooks] = useState<BookInfo[]>([]);
+  const [loadingBookInfo, setLoadingBookInfo] = useState(false);
 
   const updateBookInfos = useCallback(
     (info: BookInfo) => {
@@ -14,7 +15,7 @@ const container = () => {
     [setBooks],
   );
 
-  return { bookInfos, updateBookInfos };
+  return { bookInfos, loadingBookInfo, updateBookInfos };
 };
 
 export const BookInfoContainer = createContainer(container);

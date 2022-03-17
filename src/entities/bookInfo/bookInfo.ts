@@ -5,7 +5,7 @@ export type BookResponse = {
     authors: string[];
     description?: string;
     imageLinks?: {
-      smallThumbnai: string;
+      smallThumbnail: string;
       thumbnail: string;
     };
     publishedDate: string;
