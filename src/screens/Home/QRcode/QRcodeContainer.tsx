@@ -5,7 +5,11 @@ import {
 import { BarCodeScanner, BarCodeEvent } from 'expo-barcode-scanner';
 import React, { FC, useEffect, useState, useCallback } from 'react';
 import { QRcodePresenter } from './QRcodePresenter';
-import { BookResponse, isBookResponse, convertRespToBook } from '@src/entities';
+import {
+  BookResponse,
+  isBookResponse,
+  convertRespToBook,
+} from '@src/entities/bookInfo';
 import { unstable_batchedUpdates } from 'react-native';
 
 export const QRcodeContainer: FC = () => {

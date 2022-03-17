@@ -16,7 +16,7 @@ import {
   BookInfo,
   convertRespToBook,
   BookResponse,
-} from '@src/entities';
+} from '@src/entities/bookInfo';
 
 export const SearchBookContainer: FC = () => {
   const navigation = useHomeNavigation();

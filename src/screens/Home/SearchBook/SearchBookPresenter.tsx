@@ -21,7 +21,7 @@ import {
   TouchableWithoutFeedback,
   ImageSourcePropType,
 } from 'react-native';
-import { BookInfo } from '@src/entities';
+import { BookInfo } from '@src/entities/bookInfo';
 
 export type Props = {
   onBack: () => void;
