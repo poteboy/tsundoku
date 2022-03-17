@@ -1,1 +1,2 @@
-export * from './collections';
+export * from './collectionPath';
+export * from './firebase';

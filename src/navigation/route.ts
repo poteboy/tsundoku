@@ -5,10 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 // RootStack
 export const RootKeys = {
   Tab: 'Root/Tab',
+  Register: 'Root/Register',
 } as const;
 
 export type RootParamList = {
   [RootKeys.Tab]: undefined;
+  [RootKeys.Register]: undefined;
 };
 
 export const useRootNavigation = () =>

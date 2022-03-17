@@ -1,6 +1,6 @@
 // firestoreのPATH
 
-export const collections = {
+export const collectionPath = {
   users: {
     users: 'users',
     books: {
@@ -9,8 +9,8 @@ export const collections = {
   },
   bookInfos: {
     bookInfos: 'bookInfos',
-    reviews: {
-      reviews: 'reviews',
-    },
+  },
+  reviews: {
+    reviews: 'reviews',
   },
 } as const;

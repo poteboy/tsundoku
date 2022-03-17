@@ -2,8 +2,8 @@ import { Model as _Model, Active } from '@src/entities';
 
 export class Model {
   public model: _Model;
-  constructor() {
-    this.model = this.createModel();
+  constructor(uid?: string) {
+    this.model = this.createModel(uid);
   }
 
   private generateUid(): string {

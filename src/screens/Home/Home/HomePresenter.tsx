@@ -1,8 +1,9 @@
 import React, { FC, memo } from 'react';
-import { VStack, Button, View } from 'native-base';
+import { VStack, Button, View, Fab, Icon } from 'native-base';
 import { colors } from '@src/styles';
 import { Header } from '@src/components';
 import { ScrollView } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 export type Props = {
   onNavigateSearchBook: () => void;
@@ -17,7 +18,7 @@ export const HomePresenter: FC<Props> = memo(({ onNavigateSearchBook }) => {
           <></>
         </VStack>
       </ScrollView>
-      <Button
+      {/* <Button
         width="80%"
         alignSelf="center"
         position="absolute"
@@ -29,7 +30,16 @@ export const HomePresenter: FC<Props> = memo(({ onNavigateSearchBook }) => {
         shadow={4}
       >
         追加
-      </Button>
+      </Button> */}
+      <Fab
+        position="absolute"
+        bottom={8}
+        right={4}
+        size="sm"
+        renderInPortal={false}
+        onPress={onNavigateSearchBook}
+        icon={<Icon color="white" as={<AntDesign name="plus" />} size="md" />}
+      />
     </View>
   );
 });

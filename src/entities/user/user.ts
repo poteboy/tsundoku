@@ -2,7 +2,7 @@ import { Model, isModel } from '../model';
 
 export interface User extends Model {
   authUid: string;
-  profile: Profile;
+  // profile: Profile;
 }
 
 type Profile = {
@@ -13,5 +13,6 @@ type Profile = {
 export const isUser = (arg: unknown): arg is User => {
   if (!isModel(arg)) return false;
   const _user = arg as User;
-  return !!_user.profile && !!_user.authUid;
+  // return !!_user.profile && !!_user.authUid;
+  return !!_user.authUid;
 };

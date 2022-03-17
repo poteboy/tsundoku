@@ -1,7 +1,4 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore, setDoc, doc } from 'firebase/firestore';
-import * as db from 'firebase/firestore';
+import fb from 'firebase';
 import {
   FIREBASE_API_KEY_DEV,
   FIREBASE_APP_ID_DEV,
@@ -22,13 +19,14 @@ export const firebaseConfig = {
   measurementId: FIREBASE_MEASUREMENT_ID_DEV,
 };
 
-export const firebase = !getApps().length
-  ? initializeApp(firebaseConfig)
-  : getApp();
-export const auth = getAuth(firebase);
-export const firestore = getFirestore(firebase);
-export const batch = db.writeBatch(firestore);
-export * from 'firebase/firestore';
+export const firebase = !fb.apps.length
+  ? fb.initializeApp(firebaseConfig)
+  : fb.app();
+firebase.firestore().settings({
+  cacheSizeBytes: 10485760, // 10MB
+  ignoreUndefinedProperties: true,
+});
+export const auth = firebase.auth();
 
 export const collections = {
   users: 'users',
