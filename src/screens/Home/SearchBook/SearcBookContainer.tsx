@@ -44,6 +44,11 @@ export const SearchBookContainer: FC = () => {
     if (keyword) searchBook(keyword);
   }, [keyword]);
 
+  useEffect(() => {
+    if (bookInfos && bookInfos.length > 0)
+      navigation.navigate(HomeKeys.BookInfo, { bookInfo: bookInfos[0] });
+  }, [bookInfos]);
+
   const searchBook = useCallback(async (keyword: string) => {
     unstable_batchedUpdates(() => {
       setBookInfos(undefined);

@@ -1,45 +1,79 @@
-import React, { FC, memo } from 'react';
-import { VStack, Button, View, Fab, Icon } from 'native-base';
+import React, { FC, memo, useCallback } from 'react';
+import { VStack, Image, View, Fab, Icon, HStack, Pressable } from 'native-base';
 import { colors } from '@src/styles';
 import { Header } from '@src/components';
-import { ScrollView } from 'react-native';
+import { ScrollView, Animated, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { BookInfo } from '@src/entities';
+import { getImg } from '@src/util/getImg';
 
 export type Props = {
   onNavigateSearchBook: () => void;
+  bookInfos: BookInfo[];
 };
 
-export const HomePresenter: FC<Props> = memo(({ onNavigateSearchBook }) => {
+export const HomePresenter: FC<Props> = memo(
+  ({ onNavigateSearchBook, bookInfos }) => {
+    console.log(bookInfos);
+
+    return (
+      <View flex={1} bg={colors.lightGray}>
+        <Header title="ホーム" />
+        <ScrollView>
+          <VStack height="100%" bg={colors.lightGray} justifyContent="center">
+            <HStack flexWrap="wrap" justifyContent="space-between" mx={2}>
+              {bookInfos.map(bookInfo => (
+                <BookInfoItem bookInfo={bookInfo} />
+              ))}
+            </HStack>
+          </VStack>
+        </ScrollView>
+        <Fab
+          position="absolute"
+          bottom={8}
+          right={4}
+          size="sm"
+          renderInPortal={false}
+          onPress={onNavigateSearchBook}
+          icon={<Icon color="white" as={<AntDesign name="plus" />} size="md" />}
+        />
+      </View>
+    );
+  },
+);
+
+const screenWidth = Dimensions.get('screen').width;
+const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
+  const scale = new Animated.Value(1);
+
+  const onPressIn = useCallback(() => {
+    Animated.timing(scale, {
+      toValue: 0.9,
+      duration: 40,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const onPressOut = useCallback(() => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 0,
+      useNativeDriver: true,
+      overshootClamping: true,
+    }).start();
+  }, []);
+
   return (
-    <View flex={1} bg={colors.White}>
-      <Header title="ホーム" />
-      <ScrollView>
-        <VStack height="100%" bg={colors.White} justifyContent="center">
-          <></>
-        </VStack>
-      </ScrollView>
-      {/* <Button
-        width="80%"
-        alignSelf="center"
-        position="absolute"
-        bottom={20}
-        onPress={onNavigateSearchBook}
-        px={16}
-        py={2}
-        _text={{ fontSize: 'lg' }}
-        shadow={4}
-      >
-        追加
-      </Button> */}
-      <Fab
-        position="absolute"
-        bottom={8}
-        right={4}
-        size="sm"
-        renderInPortal={false}
-        onPress={onNavigateSearchBook}
-        icon={<Icon color="white" as={<AntDesign name="plus" />} size="md" />}
+    <Pressable onPressIn={onPressIn} onPressOut={onPressOut}>
+      <AnimatedImage
+        source={getImg(bookInfo.thumbnail)}
+        width={`${screenWidth / 5}px`}
+        height={`${(screenWidth / 5) * 1.5}px`}
+        resizeMode="contain"
+        mt={2}
+        style={{ transform: [{ scale: scale }] }}
       />
-    </View>
+    </Pressable>
   );
 });
+const AnimatedImage = Animated.createAnimatedComponent(Image);

@@ -41,6 +41,7 @@ export const isBookResponse = (arg: unknown): arg is BookResponse => {
       !!res.id &&
       !!res.volumeInfo.authors &&
       !!res.volumeInfo.title &&
+      !!res.volumeInfo.imageLinks &&
       !!res.volumeInfo.imageLinks?.thumbnail &&
       !!res.volumeInfo.publishedDate &&
       !!res.volumeInfo.pageCount &&

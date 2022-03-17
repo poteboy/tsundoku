@@ -5,6 +5,7 @@ import React from 'react';
 describe(`HomePresenter`, () => {
   const defaultProps: Props = {
     onNavigateSearchBook: () => {},
+    bookInfos: [],
   };
 
   it(`renders correctly`, () => {

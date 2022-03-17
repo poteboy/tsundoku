@@ -16,12 +16,9 @@ import {
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
-import {
-  Keyboard,
-  TouchableWithoutFeedback,
-  ImageSourcePropType,
-} from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 import { BookInfo } from '@src/entities/bookInfo';
+import { getImg } from '@src/util/getImg';
 
 export type Props = {
   onBack: () => void;
@@ -131,10 +128,6 @@ const BookCard: FC<{ bookInfo: BookInfo } & Pick<Props, 'onNavigateBookInfo'>> =
       onNavigateBookInfo(bookInfo);
     }, []);
 
-    const img: ImageSourcePropType = bookInfo.thumbnail
-      ? { uri: bookInfo.thumbnail }
-      : require('@assets/no-image.png');
-
     return (
       <Pressable
         onPress={navigate}
@@ -143,7 +136,7 @@ const BookCard: FC<{ bookInfo: BookInfo } & Pick<Props, 'onNavigateBookInfo'>> =
       >
         <HStack bg={bg} py={4} width="100%">
           <Image
-            source={img}
+            source={getImg(bookInfo.thumbnail)}
             width="60px"
             height="100px"
             resizeMode="contain"
