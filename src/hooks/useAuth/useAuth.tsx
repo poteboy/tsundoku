@@ -8,12 +8,15 @@ import { storageKeys } from '@src/constants/storageKey';
 import * as SplashScreen from 'expo-splash-screen';
 import { collectionPath } from '@src/constants';
 import { unstable_batchedUpdates } from 'react-native';
+import { useToast } from '..';
 
 const userRef = db.collection(collectionPath.users.users);
 const container = () => {
+  const { showToast } = useToast();
   const [authorized, setAuthorized] = useState(false);
   const [user, setUser] = useState<User>();
   const [loadingRegistration, setLoadingRegistration] = useState(false);
+  const [loadingDeletion, setLoadingDeletion] = useState(false);
   const userUid = auth.currentUser?.uid;
 
   auth.onAuthStateChanged(authUser => {
@@ -67,20 +70,33 @@ const container = () => {
 
   // アカウント削除
   const deleteUser = useCallback(async () => {
+    setLoadingDeletion(true);
     if (user) {
-      await userRef.doc(user.uid).delete();
-      await auth.currentUser?.delete();
-      await AsyncStorage.removeItem(storageKeys.user);
-      setUser(undefined);
+      try {
+        await userRef.doc(user.uid).delete();
+        await auth.currentUser?.delete();
+        await AsyncStorage.removeItem(storageKeys.user);
+        setUser(undefined);
+      } catch {
+        showToast({
+          message: 'アカウントの削除に失敗しました',
+          status: 'error',
+        });
+      }
     }
+    setLoadingDeletion(false);
   }, [user]);
 
   // TabNavigator遷移後にユーザーをDBから取得
   const getUser = useCallback(async () => {
     if (userUid) {
-      const data = await userRef.doc(userUid).get();
-      const _user = await data.data();
-      if (isUser(_user)) return _user;
+      try {
+        const data = await userRef.doc(userUid).get();
+        const _user = await data.data();
+        if (isUser(_user)) return _user;
+      } catch {
+        return;
+      }
     }
   }, [authorized]);
 
