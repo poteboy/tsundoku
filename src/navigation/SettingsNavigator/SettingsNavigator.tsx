@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SettingsParamList, SettingsKeys } from './route';
 import { SettingsHomeContainer } from '@src/screens/Settings/SettingsHome/SettingsHomeContainer';
+import { AccountContainer } from '@src/screens/Settings/Account/AccountContainer';
 
 const SettingsStack = createNativeStackNavigator<SettingsParamList>();
 
@@ -11,10 +12,10 @@ export const SettingsStackNavigator: FC = () => {
       <SettingsStack.Screen
         name={SettingsKeys.SettingsHome}
         component={SettingsHomeContainer}
-        options={{
-          title: '設定',
-          headerShadowVisible: true,
-        }}
+      />
+      <SettingsStack.Screen
+        name={SettingsKeys.Account}
+        component={AccountContainer}
       />
     </SettingsStack.Navigator>
   );

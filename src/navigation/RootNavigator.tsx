@@ -9,19 +9,20 @@ const RootStack = createNativeStackNavigator<RootParamList>();
 
 // Add Authentication & Walkthrough Screens Here
 export const RootStackNavigator: FC = () => {
-  const { authorized } = useAuth();
+  const { authorized, userUid } = useAuth();
   const navigation = useRootNavigation();
-  // const initialRouteName = authorized ? RootKeys.Tab : RootKeys.Register;
+  const initialRouteName = authorized ? RootKeys.Tab : RootKeys.Register;
 
-  // useEffect(() => {
-  //   if (authorized) navigation.navigate(RootKeys.Tab);
-  // }, [authorized]);
+  useEffect(() => {
+    if (authorized && userUid) navigation.navigate(RootKeys.Tab);
+    else navigation.navigate(RootKeys.Register);
+  }, [authorized, userUid]);
 
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false }}
-      // initialRouteName={initialRouteName}
-      initialRouteName={RootKeys.Tab}
+      initialRouteName={initialRouteName}
+      // initialRouteName={RootKeys.Tab}
     >
       <RootStack.Screen name={RootKeys.Tab} component={TabStackNavigator} />
       <RootStack.Screen

@@ -26,7 +26,9 @@ firebase.firestore().settings({
   cacheSizeBytes: 10485760, // 10MB
   ignoreUndefinedProperties: true,
 });
+export const firestore = firebase.firestore();
 export const auth = firebase.auth();
+export const session = fb.auth.Auth.Persistence.LOCAL;
 
 export const collections = {
   users: 'users',
