@@ -30,6 +30,28 @@ export const firestore = firebase.firestore();
 export const auth = firebase.auth();
 export const session = fb.auth.Auth.Persistence.LOCAL;
 
-export const collections = {
-  users: 'users',
+export const collectionPath = {
+  users: {
+    users: 'users',
+    books: 'books',
+  },
+  bookInfos: {
+    bookInfos: 'bookInfos',
+    reviews: 'reviews',
+  },
 } as const;
+
+// // user
+// export const userRef = firestore.collection(collectionPath.users.users);
+// export const bookRef = (userUid: string) =>
+//   userRef.doc(userUid).collection(collectionPath.users.books.books);
+// // bookInfo
+// export const bookInfoRef = firestore.collection(
+//   collectionPath.bookInfos.bookInfos,
+// );
+
+export type DocumentReference =
+  fb.firestore.DocumentReference<fb.firestore.DocumentData>;
+export type DocumentData = fb.firestore.DocumentData;
+
+// fb.firestore.DocumentReference<fb.firestore.DocumentData>

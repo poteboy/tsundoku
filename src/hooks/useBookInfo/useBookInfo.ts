@@ -1,11 +1,13 @@
 import { useCallback, useState } from 'react';
-import { BookInfo } from '@src/entities';
+import { BookInfo, Book } from '@src/entities';
 import { useContainer, createContainer } from 'unstated-next';
 import { useAuth } from '..';
+import { useTabContext } from '@src/navigation/context';
 
 const container = () => {
-  const { userUid } = useAuth();
-
+  const { user } = useTabContext();
+  const { uid } = user;
+  const [book, setBook] = useState<Book>();
   const [bookInfos, setBooks] = useState<BookInfo[]>([]);
   const [loadingBookInfo, setLoadingBookInfo] = useState(false);
 

@@ -21,11 +21,9 @@ export default function App() {
     <SafeAreaProvider>
       <NativeBaseProvider theme={theme}>
         <AuthContainer.Provider>
-          <BookInfoContainer.Provider>
-            <NavigationContainer>
-              <AppRoot />
-            </NavigationContainer>
-          </BookInfoContainer.Provider>
+          <NavigationContainer>
+            <AppRoot />
+          </NavigationContainer>
         </AuthContainer.Provider>
       </NativeBaseProvider>
     </SafeAreaProvider>

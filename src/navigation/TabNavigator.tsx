@@ -3,18 +3,21 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList, TabKeys } from './route';
 import { HomeStackNavigator } from './HomeNavigator/HomeNavigator';
 import { SettingsStackNavigator } from './SettingsNavigator/SettingsNavigator';
-import { useAuth } from '@src/hooks';
+import { useAuth, BookInfoContainer } from '@src/hooks';
 import { User } from '@src/entities';
 import { unstable_batchedUpdates } from 'react-native';
 import { Box, Spinner } from 'native-base';
 import { TabContext } from './context';
+import { firestore, collectionPath } from '@src/constants';
 
 const TabStack = createBottomTabNavigator<TabParamList>();
+const userRef = firestore.collection(collectionPath.users.users);
 
 export const TabStackNavigator: FC = () => {
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(false);
   const { getUser, userUid, updateUser } = useAuth();
+  const userDocRef = userRef.doc(user?.uid);
 
   useEffect(() => {
     (async () => {
@@ -38,14 +41,16 @@ export const TabStackNavigator: FC = () => {
   }
 
   return (
-    <TabContext.Provider value={{ user }}>
-      <TabStack.Navigator screenOptions={{ headerShown: false }}>
-        <TabStack.Screen name={TabKeys.Home} component={HomeStackNavigator} />
-        <TabStack.Screen
-          name={TabKeys.Settings}
-          component={SettingsStackNavigator}
-        />
-      </TabStack.Navigator>
+    <TabContext.Provider value={{ user, userDocRef }}>
+      <BookInfoContainer.Provider>
+        <TabStack.Navigator screenOptions={{ headerShown: false }}>
+          <TabStack.Screen name={TabKeys.Home} component={HomeStackNavigator} />
+          <TabStack.Screen
+            name={TabKeys.Settings}
+            component={SettingsStackNavigator}
+          />
+        </TabStack.Navigator>
+      </BookInfoContainer.Provider>
     </TabContext.Provider>
   );
 };

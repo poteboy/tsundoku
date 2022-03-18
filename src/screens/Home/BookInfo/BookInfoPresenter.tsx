@@ -9,10 +9,11 @@ type Props = {
   bookInfo: BookInfo;
   onBack: () => void;
   onRegisterBookInfo: () => void;
+  loadingCheck: boolean;
 };
 
 export const BookInfoPresenter: FC<Props> = memo(
-  ({ onBack, bookInfo, onRegisterBookInfo }) => {
+  ({ onBack, bookInfo, onRegisterBookInfo, loadingCheck }) => {
     const img: ImageSourcePropType = bookInfo.thumbnail
       ? { uri: bookInfo.thumbnail }
       : require('@assets/no-image.png');
@@ -47,6 +48,7 @@ export const BookInfoPresenter: FC<Props> = memo(
               px={16}
               py={2}
               _text={{ fontSize: 'lg' }}
+              disabled={loadingCheck}
             >
               本棚に登録する
             </Button>
