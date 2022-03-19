@@ -6,7 +6,7 @@ import { colors } from '@src/styles';
 import { getImg } from '@src/util';
 import { ScrollView } from 'react-native';
 
-type Props = {
+export type Props = {
   onBack: () => void;
   bookInfo: BookInfo;
   book: Book;

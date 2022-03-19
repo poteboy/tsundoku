@@ -1,4 +1,4 @@
-import { Model } from '@src/entities';
+import { Model, Active } from '@src/entities';
 import { DocumentReference } from '@src/constants';
 
 export interface Book extends Model {
@@ -13,4 +13,11 @@ export const isBook = (arg: unknown): arg is Book => {
   } catch {
     return false;
   }
+};
+
+export const mockBook: Book = {
+  uid: 'test-book',
+  createdAt: new Date(),
+  active: Active.Activated,
+  bookInfoRef: null as any,
 };
