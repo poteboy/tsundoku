@@ -52,7 +52,7 @@ const container = () => {
     get().then(b => setBookInfos(b));
   }, [books]);
 
-  return { bookInfos, loadingBookInfo, fetchBookOnLoad, fetching };
+  return { bookInfos, loadingBookInfo, fetchBookOnLoad, fetching, books };
 };
 
 export const BookInfoContainer = createContainer(container);

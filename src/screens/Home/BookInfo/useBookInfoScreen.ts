@@ -49,5 +49,9 @@ export const useBookInfoScreen = () => {
     setLoadingCheck(false);
   }, []);
 
+  const checkAlreadyRegistered = useCallback(async () => {
+    return true;
+  }, []);
+
   return { checkAndCreate, loadingCheck };
 };

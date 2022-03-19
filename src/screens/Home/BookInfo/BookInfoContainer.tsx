@@ -2,7 +2,7 @@ import {
   useHomeNavigation,
   HomeParamList,
 } from '@src/navigation/HomeNavigator/route';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { BookInfoPresenter } from './BookInfoPresenter';
 import { StackActions, useRoute, RouteProp } from '@react-navigation/native';
 import { useToast, useBookInfo } from '@src/hooks';
@@ -13,7 +13,7 @@ export const BookInfoContainer: FC = () => {
   const navigation = useHomeNavigation();
   const route = useRoute<RouteProp<HomeParamList, 'Home/BookInfo'>>();
   const { checkAndCreate, loadingCheck } = useBookInfoScreen();
-  const { fetchBookOnLoad } = useBookInfo();
+  const { fetchBookOnLoad, bookInfos } = useBookInfo();
 
   const back = useCallback(() => {
     // navigation.dispatch(StackActions.popToTop());
@@ -37,12 +37,17 @@ export const BookInfoContainer: FC = () => {
     navigation.dispatch(StackActions.popToTop());
   }, [checkAndCreate]);
 
+  const isRegistered = useMemo(() => {
+    return bookInfos.map(i => i.uid).includes(route.params.bookInfo.uid);
+  }, [bookInfos]);
+
   return (
     <BookInfoPresenter
       onBack={back}
       bookInfo={route.params.bookInfo}
       onRegisterBookInfo={registerBookInfo}
       loadingCheck={loadingCheck}
+      isRegistered={isRegistered}
     />
   );
 };

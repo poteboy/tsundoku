@@ -6,15 +6,16 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { HomePresenter } from './HomePresenter';
 import { useBookInfo } from '@src/hooks';
 import { useFocusEffect } from '@react-navigation/native';
+import { BookInfo } from '@src/entities';
+import { collectionPath, firestore as db } from '@src/constants';
 
 export const HomeContainer: FC = () => {
   const navigation = useHomeNavigation();
-  const { bookInfos, fetchBookOnLoad, fetching } = useBookInfo();
+  const { bookInfos, fetchBookOnLoad, fetching, books } = useBookInfo();
 
   // ページがFocusされた時に発火
   useFocusEffect(
     useCallback(() => {
-      console.log('hello');
       fetchBookOnLoad();
     }, []),
   );
@@ -23,12 +24,24 @@ export const HomeContainer: FC = () => {
     navigation.navigate(HomeKeys.SearchBook);
   }, []);
 
+  const navigateBookDetail = useCallback(
+    (bookInfo: BookInfo) => {
+      const path = db
+        .collection(collectionPath.bookInfos.bookInfos)
+        .doc(bookInfo.uid).path;
+      const book = books.find(_book => _book.bookInfoRef.path === path);
+      if (book) navigation.navigate(HomeKeys.BookDetail, { book, bookInfo });
+    },
+    [navigation, bookInfos, books],
+  );
+
   return (
     <HomePresenter
       onNavigateSearchBook={navigateSearchBook}
       bookInfos={bookInfos}
       onFetchBookInfo={fetchBookOnLoad}
       fetching={fetching}
+      onNavigateBookDetail={navigateBookDetail}
     />
   );
 };

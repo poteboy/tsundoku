@@ -12,10 +12,17 @@ export type Props = {
   bookInfos: BookInfo[];
   onFetchBookInfo: () => void;
   fetching: boolean;
+  onNavigateBookDetail: (bookInfo: BookInfo) => void;
 };
 
 export const HomePresenter: FC<Props> = memo(
-  ({ onNavigateSearchBook, bookInfos, onFetchBookInfo, fetching }) => {
+  ({
+    onNavigateSearchBook,
+    bookInfos,
+    onFetchBookInfo,
+    fetching,
+    onNavigateBookDetail,
+  }) => {
     return (
       <View flex={1} bg={colors.lightGray}>
         <Header title="ホーム" />
@@ -28,7 +35,11 @@ export const HomePresenter: FC<Props> = memo(
             <Spacer size={4} />
             <HStack flexWrap="wrap">
               {bookInfos.map(bookInfo => (
-                <BookInfoItem bookInfo={bookInfo} key={bookInfo.uid} />
+                <BookInfoItem
+                  onNavigateBookDetail={onNavigateBookDetail}
+                  bookInfo={bookInfo}
+                  key={bookInfo.uid}
+                />
               ))}
             </HStack>
           </VStack>
@@ -47,8 +58,12 @@ export const HomePresenter: FC<Props> = memo(
   },
 );
 
+// onNavigateBookDetail
+
 const screenWidth = Dimensions.get('screen').width;
-const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
+const BookInfoItem: FC<
+  { bookInfo: BookInfo } & Pick<Props, 'onNavigateBookDetail'>
+> = memo(({ bookInfo, onNavigateBookDetail }) => {
   const scale = new Animated.Value(1);
 
   const onPressIn = useCallback(() => {
@@ -68,8 +83,12 @@ const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
     }).start();
   }, [scale]);
 
+  const onPress = useCallback(() => {
+    onNavigateBookDetail(bookInfo);
+  }, [onNavigateBookDetail, bookInfo]);
+
   return (
-    <Pressable onPressIn={onPressIn} onPressOut={onPressOut}>
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
       <AnimatedImage
         source={getImg(bookInfo.thumbnail)}
         width={`${screenWidth / 5}px`}
@@ -78,6 +97,7 @@ const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
         mt={2}
         ml={`${screenWidth / 25}px`} // 1/5分スペースが余ったさらに5等分
         style={{ transform: [{ scale: scale }] }}
+        alt={bookInfo.uid}
       />
     </Pressable>
   );

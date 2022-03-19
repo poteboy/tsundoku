@@ -43,7 +43,13 @@ export const Header: FC<Props> = memo(
               testID="close"
             />
           )}
-          <Text mx="auto" fontWeight={500} fontSize="lg">
+          <Text
+            mx="auto"
+            fontWeight={500}
+            fontSize="lg"
+            maxW="75%"
+            numberOfLines={1}
+          >
             {title}
           </Text>
           {!!RightIcon && <RightIcon />}

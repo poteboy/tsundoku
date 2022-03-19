@@ -6,6 +6,9 @@ describe(`HomePresenter`, () => {
   const defaultProps: Props = {
     onNavigateSearchBook: () => {},
     bookInfos: [],
+    onNavigateBookDetail: bf => {},
+    onFetchBookInfo: () => {},
+    fetching: false,
   };
 
   it(`renders correctly`, () => {
