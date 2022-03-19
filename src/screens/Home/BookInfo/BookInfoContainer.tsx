@@ -16,7 +16,6 @@ export const BookInfoContainer: FC = () => {
   const { fetchBookOnLoad, bookInfos } = useBookInfo();
 
   const back = useCallback(() => {
-    // navigation.dispatch(StackActions.popToTop());
     navigation.goBack();
   }, [navigation]);
 

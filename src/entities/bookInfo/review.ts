@@ -6,3 +6,13 @@ export interface Review extends Model {
   star?: 1 | 2 | 3 | 4 | 5;
   review?: string;
 }
+
+export const isReview = (arg: unknown): arg is Review => {
+  if (!arg) return false;
+  const data = arg as Review;
+  try {
+    return !!data.uid && !!data.userRef;
+  } catch {
+    return false;
+  }
+};

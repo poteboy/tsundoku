@@ -16,6 +16,20 @@ export const theme = extendTheme({
             },
           };
         },
+        danger: ({ disabled }: IButtonProps) => {
+          return {
+            px: 16,
+            py: 12,
+            bg: disabled ? 'dark.500' : 'danger.500',
+            _text: {
+              color: colors.White,
+              fontSize: 'lg',
+            },
+            _pressed: {
+              bg: 'danger.600',
+            },
+          };
+        },
       },
     },
   },
