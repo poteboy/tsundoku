@@ -17,6 +17,7 @@ import {
   convertRespToBook,
   BookResponse,
 } from '@src/entities/bookInfo';
+import { urls } from '@src/constants';
 
 export const SearchBookContainer: FC = () => {
   const navigation = useHomeNavigation();
@@ -49,9 +50,7 @@ export const SearchBookContainer: FC = () => {
       setBookInfos(undefined);
       setLoading(true);
     });
-    const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${keyword}`,
-    );
+    const res = await fetch(`${urls.endPoing.googleBook}${keyword}`);
     const json = await res.json();
     const items: BookInfo[] = json.items
       .filter(isBookResponse)

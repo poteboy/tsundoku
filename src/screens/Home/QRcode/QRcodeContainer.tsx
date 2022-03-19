@@ -11,6 +11,8 @@ import {
   convertRespToBook,
 } from '@src/entities/bookInfo';
 import { unstable_batchedUpdates } from 'react-native';
+import { urls } from '@src/constants';
+import { useToast } from '@src/hooks';
 
 export const QRcodeContainer: FC = () => {
   const [permitted, setPermitted] = useState(false);
@@ -18,6 +20,7 @@ export const QRcodeContainer: FC = () => {
   const [book, setBook] = useState<BookResponse | undefined>(undefined);
   const [isbn, setIsbn] = useState<string>();
   const [isError, setIsError] = useState(false);
+  const { showToast } = useToast();
   const navigation = useHomeNavigation();
 
   useEffect(() => {
@@ -35,29 +38,40 @@ export const QRcodeContainer: FC = () => {
     }
   }, [book, isbn]);
 
-  const handleQR = useCallback(async ({ type, data }: BarCodeEvent) => {
-    if (data.slice(0, 3) === '192') return;
-    if (data.slice(0, 3) === '978' || data.slice(0, 2) === '979') {
-      setScanned(true);
-      const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=isbn:${data}`,
-      );
-      const json = await res.json();
-      const item = json.items[0];
-      if (isBookResponse(item)) {
-        unstable_batchedUpdates(() => {
-          setIsbn(data);
-          setBook(item);
-        });
-      } else {
-        unstable_batchedUpdates(() => {
-          setScanned(false);
-          setIsError(true);
-        });
+  const disable = useCallback(() => {
+    unstable_batchedUpdates(() => {
+      setScanned(false);
+      setIsError(true);
+    });
+    showToast({ message: '読み取りエラーが発生しました', status: 'error' });
+    navigation.goBack();
+  }, [setScanned, setIsError]);
+
+  const handleQR = useCallback(
+    async ({ type, data }: BarCodeEvent) => {
+      if (data.slice(0, 3) === '192') return;
+      if (data.slice(0, 3) === '978' || data.slice(0, 2) === '979') {
+        setScanned(true);
+        try {
+          const res = await fetch(`${urls.endPoing.googleBook}isbn:${data}`);
+          const json = await res.json();
+          const item = json.items[0];
+          if (isBookResponse(item)) {
+            unstable_batchedUpdates(() => {
+              setIsbn(data);
+              setBook(item);
+              setScanned(false);
+            });
+          } else {
+            disable();
+          }
+        } catch (e) {
+          disable();
+        }
       }
-    }
-    return;
-  }, []);
+    },
+    [disable],
+  );
 
   const close = useCallback(() => {
     navigation.goBack();

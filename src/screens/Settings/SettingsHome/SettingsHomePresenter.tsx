@@ -35,7 +35,7 @@ export const SettingsHomePresenter: FC<Props> = memo(({ menuItems }) => {
 
 const MenuItemCard: FC<{ item: MenuItem; first: boolean; last: boolean }> =
   memo(({ item, first, last }) => {
-    const { Icon, title, onPress } = item;
+    const { title, onPress } = item;
 
     const scale = new Animated.Value(1);
 
@@ -72,7 +72,6 @@ const MenuItemCard: FC<{ item: MenuItem; first: boolean; last: boolean }> =
           mb={0.5}
         >
           <HStack my={4} mx={2} alignItems="center" width="100%">
-            {Icon}
             <Text ml={5} fontSize="md" fontWeight={500}>
               {title}
             </Text>

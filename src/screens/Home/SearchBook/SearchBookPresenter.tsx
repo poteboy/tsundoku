@@ -64,6 +64,7 @@ export const SearchBookPresenter: FC<Props> = memo(
                 mx={4}
                 variant="unstyled"
                 fontSize="16"
+                autoFocus
                 onFocus={onFocus}
                 onChangeText={text => {
                   setKey(text);

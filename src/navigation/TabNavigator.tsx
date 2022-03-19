@@ -9,6 +9,8 @@ import { unstable_batchedUpdates } from 'react-native';
 import { Box, Spinner } from 'native-base';
 import { TabContext } from './context';
 import { firestore, collectionPath } from '@src/constants';
+import { HomeIcon, MenuIcon } from '@src/icons/tab';
+import { colors } from '@src/styles';
 
 const TabStack = createBottomTabNavigator<TabParamList>();
 const userRef = firestore.collection(collectionPath.users.users);
@@ -42,10 +44,29 @@ export const TabStackNavigator: FC = () => {
     <TabContext.Provider value={{ user, userDocRef }}>
       <BookInfoContainer.Provider>
         <TabStack.Navigator screenOptions={{ headerShown: false }}>
-          <TabStack.Screen name={TabKeys.Home} component={HomeStackNavigator} />
+          <TabStack.Screen
+            name={TabKeys.Home}
+            component={HomeStackNavigator}
+            options={{
+              title: 'ホーム',
+              tabBarActiveTintColor: colors.Black,
+              tabBarInactiveTintColor: colors.gray,
+              tabBarIcon: ({ focused }) => {
+                return <HomeIcon focused={focused} size={6} />;
+              },
+            }}
+          />
           <TabStack.Screen
             name={TabKeys.Settings}
             component={SettingsStackNavigator}
+            options={{
+              title: 'メニュー',
+              tabBarActiveTintColor: colors.Black,
+              tabBarInactiveTintColor: colors.gray,
+              tabBarIcon: ({ focused }) => {
+                return <MenuIcon focused={focused} size={6} />;
+              },
+            }}
           />
         </TabStack.Navigator>
       </BookInfoContainer.Provider>

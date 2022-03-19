@@ -1,14 +1,13 @@
 import React, { memo, FC, useMemo } from 'react';
 import { SettingsHomePresenter } from './SettingsHomePresenter';
-import { TwitterIcon } from '@src/icons';
-import { View } from 'native-base';
+import { Linking } from 'react-native';
 import {
   SettingsKeys,
   useSettingsNavigation,
 } from '@src/navigation/SettingsNavigator/route';
+import { urls } from '@src/constants';
 
 export type MenuItem = {
-  Icon: JSX.Element;
   title: string;
   onPress: () => void;
 };
@@ -16,25 +15,37 @@ export type MenuItem = {
 export const SettingsHomeContainer: FC = () => {
   const navigation = useSettingsNavigation();
 
-  const twitterItem: MenuItem = useMemo(() => {
+  const accountItem: MenuItem = useMemo(() => {
     return {
-      // Icon: () => {
-      //   return (
-      //     // <View>
-      //     <TwitterIcon />
-      //     // </View>
-      //   );
-      // },
-      Icon: <TwitterIcon fill="white" size="sm" />,
-      title: '開発者のTwitter',
+      title: 'アカウント情報',
       onPress: () => {
         navigation.navigate(SettingsKeys.Account);
       },
     };
   }, [navigation]);
 
+  const twitterItem: MenuItem = useMemo(() => {
+    return {
+      title: '開発者のTwitter',
+      onPress: async () => {
+        const supported = await Linking.canOpenURL(urls.twitter);
+        if (supported) await Linking.openURL(urls.twitter);
+      },
+    };
+  }, [navigation]);
+
+  const appListItem: MenuItem = useMemo(() => {
+    return {
+      title: '開発者の他のアプリ',
+      onPress: async () => {
+        const supported = await Linking.canOpenURL(urls.appList);
+        if (supported) await Linking.openURL(urls.appList);
+      },
+    };
+  }, [navigation]);
+
   const menuItems: MenuItem[] = useMemo(() => {
-    return [twitterItem, twitterItem, twitterItem, twitterItem, twitterItem];
+    return [accountItem, twitterItem, appListItem];
   }, [twitterItem]);
 
   return <SettingsHomePresenter menuItems={menuItems} />;
