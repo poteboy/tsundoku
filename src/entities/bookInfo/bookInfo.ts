@@ -32,6 +32,16 @@ export type BookInfo = {
   pageCount: number;
 };
 
+export const isBookInfo = (arg: unknown): arg is BookInfo => {
+  if (!arg) return false;
+  const res = arg as BookInfo;
+  try {
+    return !!res.uid && !!res.isbn;
+  } catch {
+    return false;
+  }
+};
+
 export const isBookResponse = (arg: unknown): arg is BookResponse => {
   if (!arg) return false;
   const res = arg as BookResponse;

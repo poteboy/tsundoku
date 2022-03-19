@@ -2,17 +2,24 @@ import {
   useHomeNavigation,
   HomeKeys,
 } from '@src/navigation/HomeNavigator/route';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { HomePresenter } from './HomePresenter';
 import { useBookInfo } from '@src/hooks';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const HomeContainer: FC = () => {
   const navigation = useHomeNavigation();
-  const { bookInfos } = useBookInfo();
+  const { bookInfos, fetchBookOnLoad, fetching } = useBookInfo();
+
+  // ページがFocusされた時に発火
+  useFocusEffect(
+    useCallback(() => {
+      console.log('hello');
+      fetchBookOnLoad();
+    }, []),
+  );
 
   const navigateSearchBook = useCallback(() => {
-    // if (__DEV__) navigation.navigate(HomeKeys.BookInfo, { bookInfo: mockBook });
-
     navigation.navigate(HomeKeys.SearchBook);
   }, []);
 
@@ -20,6 +27,8 @@ export const HomeContainer: FC = () => {
     <HomePresenter
       onNavigateSearchBook={navigateSearchBook}
       bookInfos={bookInfos}
+      onFetchBookInfo={fetchBookOnLoad}
+      fetching={fetching}
     />
   );
 };

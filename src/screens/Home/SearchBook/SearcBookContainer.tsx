@@ -53,7 +53,6 @@ export const SearchBookContainer: FC = () => {
       `https://www.googleapis.com/books/v1/volumes?q=${keyword}`,
     );
     const json = await res.json();
-    console.log(json.items);
     const items: BookInfo[] = json.items
       .filter(isBookResponse)
       .map((item: BookResponse) => convertRespToBook(item));

@@ -98,7 +98,7 @@ const container = () => {
         return;
       }
     }
-  }, [authorized]);
+  }, [authorized, userUid]);
 
   // TabNavigator遷移後getUser()から取得したデータで更新
   const updateUser = useCallback(

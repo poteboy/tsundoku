@@ -5,14 +5,15 @@ import {
 import React, { FC, useCallback } from 'react';
 import { BookInfoPresenter } from './BookInfoPresenter';
 import { StackActions, useRoute, RouteProp } from '@react-navigation/native';
-import { useToast } from '@src/hooks';
-import { useBookInfo } from './useBookInfo';
+import { useToast, useBookInfo } from '@src/hooks';
+import { useBookInfoScreen } from './useBookInfoScreen';
 
 export const BookInfoContainer: FC = () => {
   const { showToast } = useToast();
   const navigation = useHomeNavigation();
   const route = useRoute<RouteProp<HomeParamList, 'Home/BookInfo'>>();
-  const { checkAndCreate, loadingCheck } = useBookInfo();
+  const { checkAndCreate, loadingCheck } = useBookInfoScreen();
+  const { fetchBookOnLoad } = useBookInfo();
 
   const back = useCallback(() => {
     // navigation.dispatch(StackActions.popToTop());
@@ -22,6 +23,7 @@ export const BookInfoContainer: FC = () => {
   const registerBookInfo = useCallback(async () => {
     try {
       await checkAndCreate(route.params.bookInfo);
+      await fetchBookOnLoad();
       showToast({
         message: `${route.params.bookInfo.title}を追加しました`,
         status: 'success',

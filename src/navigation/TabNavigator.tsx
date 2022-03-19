@@ -15,13 +15,11 @@ const userRef = firestore.collection(collectionPath.users.users);
 
 export const TabStackNavigator: FC = () => {
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState(false);
   const { getUser, userUid, updateUser } = useAuth();
   const userDocRef = userRef.doc(user?.uid);
 
   useEffect(() => {
     (async () => {
-      setLoading(true);
       const _user = await getUser();
       if (_user) {
         unstable_batchedUpdates(() => {

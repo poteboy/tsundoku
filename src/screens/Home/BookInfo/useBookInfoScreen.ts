@@ -6,7 +6,7 @@ import { Model } from '@src/util';
 
 const userRef = db.collection(collectionPath.users.users);
 const bookInfoRef = db.collection(collectionPath.bookInfos.bookInfos);
-export const useBookInfo = () => {
+export const useBookInfoScreen = () => {
   const {
     user: { uid },
     userDocRef,

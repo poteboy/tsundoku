@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback } from 'react';
 import { VStack, Image, View, Fab, Icon, HStack, Pressable } from 'native-base';
 import { colors } from '@src/styles';
 import { Header, Spacer } from '@src/components';
-import { ScrollView, Animated, Dimensions } from 'react-native';
+import { ScrollView, Animated, Dimensions, RefreshControl } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { BookInfo } from '@src/entities';
 import { getImg } from '@src/util/getImg';
@@ -10,21 +10,25 @@ import { getImg } from '@src/util/getImg';
 export type Props = {
   onNavigateSearchBook: () => void;
   bookInfos: BookInfo[];
+  onFetchBookInfo: () => void;
+  fetching: boolean;
 };
 
 export const HomePresenter: FC<Props> = memo(
-  ({ onNavigateSearchBook, bookInfos }) => {
-    console.log(bookInfos);
-
+  ({ onNavigateSearchBook, bookInfos, onFetchBookInfo, fetching }) => {
     return (
       <View flex={1} bg={colors.lightGray}>
         <Header title="ホーム" />
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl onRefresh={onFetchBookInfo} refreshing={fetching} />
+          }
+        >
           <VStack height="100%" bg={colors.lightGray} justifyContent="center">
             <Spacer size={4} />
             <HStack flexWrap="wrap">
               {bookInfos.map(bookInfo => (
-                <BookInfoItem bookInfo={bookInfo} />
+                <BookInfoItem bookInfo={bookInfo} key={bookInfo.uid} />
               ))}
             </HStack>
           </VStack>
@@ -53,7 +57,7 @@ const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
       duration: 40,
       useNativeDriver: true,
     }).start();
-  }, []);
+  }, [scale]);
 
   const onPressOut = useCallback(() => {
     Animated.spring(scale, {
@@ -62,7 +66,7 @@ const BookInfoItem: FC<{ bookInfo: BookInfo }> = memo(({ bookInfo }) => {
       useNativeDriver: true,
       overshootClamping: true,
     }).start();
-  }, []);
+  }, [scale]);
 
   return (
     <Pressable onPressIn={onPressIn} onPressOut={onPressOut}>
