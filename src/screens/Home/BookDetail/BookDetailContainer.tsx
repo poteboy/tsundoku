@@ -33,6 +33,7 @@ export const BookDetailContainer: FC = () => {
             showToast({ message: `エラーが起きました`, status: 'error' });
           }
         },
+        style: 'destructive',
       },
       {
         text: 'キャンセル',

@@ -19,7 +19,7 @@ export const BookDetailPresenter: FC<Props> = memo(
     return (
       <>
         <Header title={bookInfo.title} onBack={onBack} />
-        <VStack flex={1}>
+        <VStack flex={1} bg={colors.lightGray}>
           <ScrollView>
             <Spacer size={16} />
             <HStack mx={4}>

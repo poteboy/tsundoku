@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { useTabContext } from '@src/navigation/context';
 import { AdMobBanner } from 'expo-ads-admob';
 import { StyleProp, ViewStyle } from 'react-native';
@@ -18,9 +18,9 @@ export const useAdMob = () => {
     }
   }, [premium]);
 
-  const AdBanner: React.FC<AdProps> = ({ style }) => {
+  const AdBanner: React.FC<AdProps> = memo(({ style }) => {
     return !premium ? <AdMobBanner style={style} adUnitID={unitId} /> : <></>;
-  };
+  });
 
   return {
     showAdMob,

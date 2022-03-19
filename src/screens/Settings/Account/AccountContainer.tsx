@@ -2,6 +2,7 @@ import { useSettingsNavigation } from '@src/navigation/SettingsNavigator/route';
 import React, { FC, useCallback } from 'react';
 import { AccountPresenter } from './AccountPresenter';
 import { useAuth, useToast } from '@src/hooks';
+import { Alert } from 'react-native';
 
 export const AccountContainer: FC = () => {
   const navigation = useSettingsNavigation();
@@ -13,12 +14,31 @@ export const AccountContainer: FC = () => {
   }, [navigation]);
 
   const onDeleteUser = useCallback(async () => {
-    try {
-      await deleteUser();
-      showToast({ message: 'アカウントを削除しました', status: 'success' });
-    } catch {
-      showToast({ message: 'エラーが起きました', status: 'error' });
-    }
+    Alert.alert(
+      '本当に削除しますか？',
+      '一度削除したアカウントは復元できません',
+      [
+        {
+          text: '削除する',
+          onPress: async () => {
+            try {
+              await deleteUser();
+              showToast({
+                message: 'アカウントを削除しました',
+                status: 'success',
+              });
+            } catch {
+              showToast({ message: 'エラーが起きました', status: 'error' });
+            }
+          },
+          style: 'destructive',
+        },
+        {
+          text: 'キャンセル',
+          style: 'cancel',
+        },
+      ],
+    );
   }, [deleteUser, showToast]);
 
   return <AccountPresenter onBack={back} onDeleteUser={onDeleteUser} />;
