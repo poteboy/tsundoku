@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BookInfo, isBookInfo, isBook, Book } from '@src/entities';
+import {
+  BookInfo,
+  isBookInfo,
+  isBook,
+  Book,
+  isBooksEqual,
+} from '@src/entities';
 import { useContainer, createContainer } from 'unstated-next';
 import { useAuth } from '..';
 import { useTabContext } from '@src/navigation/context';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { firestore as db, collectionPath } from '@src/constants';
-import _ from 'underscore';
 import { unstable_batchedUpdates } from 'react-native';
 
 const userRef = db.collection(collectionPath.users.users);
@@ -18,7 +23,7 @@ const container = () => {
   const [loadingBookInfo, setLoadingBookInfo] = useState(false);
   const [fetching, setFetching] = useState(false);
 
-  async function fetchBookInfos(arr: Book[]) {
+  const fetchBookInfos = useCallback(async (arr: Book[]) => {
     return (
       await Promise.all(
         arr.map(async v => {
@@ -28,9 +33,9 @@ const container = () => {
         }),
       )
     ).filter(info => !!info) as BookInfo[];
-  }
+  }, []);
 
-  const fetchBookOnLoad = async () => {
+  const fetchBookOnLoad = useCallback(async () => {
     setFetching(true);
     const arr: Book[] = [];
     await userRef
@@ -48,7 +53,10 @@ const container = () => {
       })
       .finally(() => {
         arr.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-        if (!_.isEqual(arr, books)) {
+        books.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+        // JSON.stringifyだと何故か無限ループに陥る
+        if (!isBooksEqual(arr, books)) {
+          console.log('change');
           unstable_batchedUpdates(() => {
             setBooks(arr);
             fetchBookInfos(arr).then(b => setBookInfos(b));
@@ -56,7 +64,7 @@ const container = () => {
         }
         setFetching(false);
       });
-  };
+  }, [books, fetching, fetchBookInfos]);
 
   return { bookInfos, loadingBookInfo, fetchBookOnLoad, fetching, books };
 };

@@ -4,7 +4,6 @@ export const getImg = (uri?: string): ImageSourcePropType =>
   uri ? { uri: uri } : require('@assets/no-image.png');
 
 export const compare = (arrA: any[], arrB: any[]) => {
-  console.log(arrA, arrB);
   if (!arrA || !arrB) return false;
   if (arrA.length !== arrB.length) return false;
 
@@ -16,3 +15,5 @@ export const compare = (arrA: any[], arrB: any[]) => {
   }
   return true;
 };
+
+// export const

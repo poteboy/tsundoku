@@ -24,7 +24,7 @@ export const HomeContainer: FC = () => {
           showToast({ message: 'エラーが起きました', status: 'error' });
         }
       })();
-    }, []),
+    }, [books]),
   );
 
   const navigateSearchBook = useCallback(() => {

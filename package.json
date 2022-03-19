@@ -75,7 +75,6 @@
     "react-native-web": "0.17.1",
     "react-test-renderer": "^17.0.2",
     "sentry-expo": "^4.0.3",
-    "underscore": "^1.13.2",
     "unstated-next": "^1.1.0",
     "yup": "^0.32.11"
   },

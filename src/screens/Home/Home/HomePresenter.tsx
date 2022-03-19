@@ -30,9 +30,9 @@ export const HomePresenter: FC<Props> = memo(
       <View flex={1} bg={colors.lightGray}>
         <Header title="ホーム" />
         <ScrollView
-          refreshControl={
-            <RefreshControl onRefresh={onFetchBookInfo} refreshing={fetching} />
-          }
+        // refreshControl={
+        //   <RefreshControl onRefresh={onFetchBookInfo} refreshing={fetching} />
+        // }
         >
           <VStack height="100%" bg={colors.lightGray} justifyContent="center">
             <Spacer size={4} />
@@ -61,8 +61,6 @@ export const HomePresenter: FC<Props> = memo(
     );
   },
 );
-
-// onNavigateBookDetail
 
 const screenWidth = Dimensions.get('screen').width;
 const BookInfoItem: FC<
