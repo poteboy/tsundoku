@@ -5,7 +5,7 @@ import { Header, Spacer } from '@src/components';
 import { ScrollView, Animated, Dimensions, RefreshControl } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { BookInfo } from '@src/entities';
-import { getImg } from '@src/util/getImg';
+import { getImg } from '@src/util';
 
 export type Props = {
   onNavigateSearchBook: () => void;

@@ -18,7 +18,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 import { TouchableWithoutFeedback } from 'react-native';
 import { BookInfo } from '@src/entities/bookInfo';
-import { getImg } from '@src/util/getImg';
+import { getImg } from '@src/util';
 
 export type Props = {
   onBack: () => void;

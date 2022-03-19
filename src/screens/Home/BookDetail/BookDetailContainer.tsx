@@ -20,7 +20,5 @@ export const BookDetailContainer: FC = () => {
     navigation.goBack();
   }, [navigation]);
 
-  console.log(book);
-
   return <BookDetailPresenter onBack={back} book={book} bookInfo={bookInfo} />;
 };

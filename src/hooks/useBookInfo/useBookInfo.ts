@@ -34,6 +34,7 @@ const container = () => {
         });
       })
       .finally(() => {
+        arr.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
         setBooks(arr);
         setFetching(false);
       });
@@ -41,6 +42,7 @@ const container = () => {
 
   useEffect(() => {
     async function get() {
+      console.log('change');
       return (await Promise.all(
         books.map(async v => {
           const ref = v.bookInfoRef;
