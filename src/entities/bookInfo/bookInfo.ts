@@ -29,7 +29,7 @@ export type BookInfo = {
   thumbnail?: string;
   description?: string;
   authors: string[];
-  pageCount: number;
+  pageCount?: number;
 };
 
 export const isBookInfo = (arg: unknown): arg is BookInfo => {
@@ -54,7 +54,6 @@ export const isBookResponse = (arg: unknown): arg is BookResponse => {
       !!res.volumeInfo.imageLinks &&
       !!res.volumeInfo.imageLinks?.thumbnail &&
       !!res.volumeInfo.publishedDate &&
-      !!res.volumeInfo.pageCount &&
       !!res.volumeInfo.industryIdentifiers &&
       res.volumeInfo.industryIdentifiers.some(
         v => v.type === 'ISBN_13' && !!v.identifier,

@@ -1,15 +1,20 @@
 import React, { FC, memo } from 'react';
 import { VStack, Button } from 'native-base';
-import { useAuth } from '@src/hooks';
 
-type Props = {};
+import { Header } from '@src/components';
 
-export const AccountPresenter: FC = memo(() => {
-  const { deleteUser } = useAuth();
+type Props = {
+  onBack: () => void;
+  onDeleteUser: () => void;
+};
 
+export const AccountPresenter: FC<Props> = memo(({ onBack, onDeleteUser }) => {
   return (
-    <VStack flex={1} justifyContent="center">
-      <Button onPress={deleteUser}>DELETE</Button>
-    </VStack>
+    <>
+      <Header title="アカウント情報" onBack={onBack} />
+      <VStack flex={1} justifyContent="center">
+        <Button onPress={onDeleteUser}>DELETE</Button>
+      </VStack>
+    </>
   );
 });

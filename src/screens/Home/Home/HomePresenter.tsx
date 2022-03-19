@@ -6,6 +6,7 @@ import { ScrollView, Animated, Dimensions, RefreshControl } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { BookInfo } from '@src/entities';
 import { getImg } from '@src/util';
+import { useAdMob } from '@src/hooks';
 
 export type Props = {
   onNavigateSearchBook: () => void;
@@ -23,6 +24,8 @@ export const HomePresenter: FC<Props> = memo(
     fetching,
     onNavigateBookDetail,
   }) => {
+    const { AdBanner, premium } = useAdMob();
+
     return (
       <View flex={1} bg={colors.lightGray}>
         <Header title="ホーム" />
@@ -46,13 +49,14 @@ export const HomePresenter: FC<Props> = memo(
         </ScrollView>
         <Fab
           position="absolute"
-          bottom={8}
+          bottom={!premium ? 16 : 8}
           right={4}
           size="sm"
           renderInPortal={false}
           onPress={onNavigateSearchBook}
           icon={<Icon color="white" as={<AntDesign name="plus" />} size="md" />}
         />
+        <AdBanner />
       </View>
     );
   },

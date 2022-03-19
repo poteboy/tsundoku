@@ -4,11 +4,9 @@ import { useContainer, createContainer } from 'unstated-next';
 import { useAuth } from '..';
 import { useTabContext } from '@src/navigation/context';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import {
-  firestore as db,
-  collectionPath,
-  DocumentReference,
-} from '@src/constants';
+import { firestore as db, collectionPath } from '@src/constants';
+import _ from 'underscore';
+import { unstable_batchedUpdates } from 'react-native';
 
 const userRef = db.collection(collectionPath.users.users);
 const container = () => {
@@ -19,6 +17,18 @@ const container = () => {
   const [bookInfos, setBookInfos] = useState<BookInfo[]>([]);
   const [loadingBookInfo, setLoadingBookInfo] = useState(false);
   const [fetching, setFetching] = useState(false);
+
+  async function fetchBookInfos(arr: Book[]) {
+    return (
+      await Promise.all(
+        arr.map(async v => {
+          const ref = v.bookInfoRef;
+          const data = await (await ref.get()).data();
+          if (isBookInfo(data)) return data;
+        }),
+      )
+    ).filter(info => !!info) as BookInfo[];
+  }
 
   const fetchBookOnLoad = async () => {
     setFetching(true);
@@ -33,26 +43,20 @@ const container = () => {
           if (isBook(_book)) arr.push(_book);
         });
       })
+      .catch(() => {
+        throw new Error();
+      })
       .finally(() => {
         arr.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-        setBooks(arr);
+        if (!_.isEqual(arr, books)) {
+          unstable_batchedUpdates(() => {
+            setBooks(arr);
+            fetchBookInfos(arr).then(b => setBookInfos(b));
+          });
+        }
         setFetching(false);
       });
   };
-
-  useEffect(() => {
-    async function get() {
-      console.log('change');
-      return (await Promise.all(
-        books.map(async v => {
-          const ref = v.bookInfoRef;
-          const data = await (await ref.get()).data();
-          if (isBookInfo(data)) return data;
-        }),
-      )) as BookInfo[];
-    }
-    get().then(b => setBookInfos(b));
-  }, [books]);
 
   return { bookInfos, loadingBookInfo, fetchBookOnLoad, fetching, books };
 };

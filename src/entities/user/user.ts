@@ -3,6 +3,7 @@ import { Model, isModel } from '../model';
 export interface User extends Model {
   authUid: string;
   // profile: Profile;
+  premium: boolean;
 }
 
 type Profile = {

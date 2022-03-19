@@ -42,7 +42,7 @@ export const useBookDetail = (params: Params) => {
           userRef.doc(uid).collection(collectionPath.users.books).doc(book.uid),
         );
       });
-    } catch {
+    } catch (e) {
       throw new Error();
     }
     setLoadingDelete(false);

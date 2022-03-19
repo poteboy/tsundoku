@@ -13,7 +13,7 @@ export const BookInfoContainer: FC = () => {
   const navigation = useHomeNavigation();
   const route = useRoute<RouteProp<HomeParamList, 'Home/BookInfo'>>();
   const { checkAndCreate, loadingCheck } = useBookInfoScreen();
-  const { fetchBookOnLoad, bookInfos } = useBookInfo();
+  const { bookInfos } = useBookInfo();
 
   const back = useCallback(() => {
     navigation.goBack();
@@ -22,7 +22,6 @@ export const BookInfoContainer: FC = () => {
   const registerBookInfo = useCallback(async () => {
     try {
       await checkAndCreate(route.params.bookInfo);
-      await fetchBookOnLoad();
       showToast({
         message: `${route.params.bookInfo.title}を追加しました`,
         status: 'success',

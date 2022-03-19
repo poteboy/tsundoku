@@ -4,6 +4,7 @@ import { BookInfo } from '@src/entities/bookInfo';
 import { VStack, Image, Text, Divider, View, Button } from 'native-base';
 import { colors } from '@src/styles';
 import { ScrollView, ImageSourcePropType } from 'react-native';
+import { useAdMob } from '@src/hooks';
 
 type Props = {
   bookInfo: BookInfo;
@@ -18,6 +19,8 @@ export const BookInfoPresenter: FC<Props> = memo(
     const img: ImageSourcePropType = bookInfo.thumbnail
       ? { uri: bookInfo.thumbnail }
       : require('@assets/no-image.png');
+    const { AdBanner } = useAdMob();
+
     return (
       <View flex={1} bg={colors.White}>
         <Header title="本の情報" onBack={onBack} />
@@ -83,6 +86,7 @@ export const BookInfoPresenter: FC<Props> = memo(
             <Spacer size={24} />
           </VStack>
         </ScrollView>
+        <AdBanner />
       </View>
     );
   },
