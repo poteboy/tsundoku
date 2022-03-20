@@ -15,7 +15,7 @@ Sentry.init({
   enableInExpoDevelopment: true,
   debug: !!__DEV__,
 });
-console.disableYellowBox;
+console.disableYellowBox = true;
 export default function App() {
   return (
     <SafeAreaProvider>

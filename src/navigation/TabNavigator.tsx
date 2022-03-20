@@ -44,7 +44,12 @@ export const TabStackNavigator: FC = () => {
   return (
     <TabContext.Provider value={{ user, userDocRef }}>
       <BookInfoContainer.Provider>
-        <TabStack.Navigator screenOptions={{ headerShown: false }}>
+        <TabStack.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: { height: 85 },
+          }}
+        >
           <TabStack.Screen
             name={TabKeys.Home}
             component={HomeStackNavigator}

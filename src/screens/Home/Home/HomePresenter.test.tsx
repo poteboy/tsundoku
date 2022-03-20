@@ -9,6 +9,8 @@ describe(`HomePresenter`, () => {
     onNavigateBookDetail: bf => {},
     onFetchBookInfo: () => {},
     fetching: false,
+    AdBanner: () => <></>,
+    premium: false,
   };
 
   it(`renders correctly`, () => {

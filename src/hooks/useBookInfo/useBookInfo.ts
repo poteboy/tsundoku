@@ -64,7 +64,7 @@ const container = () => {
         }
         setFetching(false);
       });
-  }, [books, fetching, fetchBookInfos]);
+  }, [books]);
 
   return { bookInfos, loadingBookInfo, fetchBookOnLoad, fetching, books };
 };

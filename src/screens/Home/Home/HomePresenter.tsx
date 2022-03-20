@@ -14,6 +14,8 @@ export type Props = {
   onFetchBookInfo: () => void;
   fetching: boolean;
   onNavigateBookDetail: (bookInfo: BookInfo) => void;
+  AdBanner: React.FC<any>;
+  premium: boolean;
 };
 
 export const HomePresenter: FC<Props> = memo(
@@ -23,9 +25,9 @@ export const HomePresenter: FC<Props> = memo(
     onFetchBookInfo,
     fetching,
     onNavigateBookDetail,
+    AdBanner,
+    premium,
   }) => {
-    const { AdBanner, premium } = useAdMob();
-
     return (
       <View flex={1} bg={colors.lightGray}>
         <Header title="ホーム" />
