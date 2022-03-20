@@ -3,11 +3,13 @@ import React, { FC, useCallback } from 'react';
 import { AccountPresenter } from './AccountPresenter';
 import { useAuth, useToast } from '@src/hooks';
 import { Alert } from 'react-native';
+import { useTabContext } from '@src/navigation/context';
 
 export const AccountContainer: FC = () => {
   const navigation = useSettingsNavigation();
   const { deleteUser } = useAuth();
   const { showToast } = useToast();
+  const { user } = useTabContext();
 
   const back = useCallback(() => {
     navigation.goBack();
@@ -41,5 +43,7 @@ export const AccountContainer: FC = () => {
     );
   }, [deleteUser, showToast]);
 
-  return <AccountPresenter onBack={back} onDeleteUser={onDeleteUser} />;
+  return (
+    <AccountPresenter user={user} onBack={back} onDeleteUser={onDeleteUser} />
+  );
 };

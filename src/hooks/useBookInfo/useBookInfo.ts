@@ -12,6 +12,7 @@ import { useTabContext } from '@src/navigation/context';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { firestore as db, collectionPath } from '@src/constants';
 import { unstable_batchedUpdates } from 'react-native';
+import { convertDate } from '@src/util';
 
 const userRef = db.collection(collectionPath.users.users);
 const container = () => {

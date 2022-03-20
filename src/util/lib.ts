@@ -1,4 +1,5 @@
 import { ImageSourcePropType } from 'react-native';
+import { format } from 'date-fns';
 
 export const getImg = (uri?: string): ImageSourcePropType =>
   uri ? { uri: uri } : require('@assets/no-image.png');
@@ -16,4 +17,16 @@ export const compare = (arrA: any[], arrB: any[]) => {
   return true;
 };
 
-// export const
+type TimeStamp = {
+  nanoseconds: number;
+  seconds: number;
+};
+
+export const convertDate = (arg: Date | TimeStamp): Date => {
+  if (arg instanceof Date) return arg;
+  return new Date(arg.seconds * 1000);
+};
+
+export const formatDate = (arg: Date) => {
+  return format(arg, 'yyyy年MM月dd日');
+};
