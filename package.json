@@ -40,6 +40,7 @@
     "@types/underscore": "^1.11.4",
     "@typescript-eslint/eslint-plugin": "^5.9.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "amazon-paapi": "^1.0.6",
     "babel-plugin-dotenv-import": "^2.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
