@@ -5,22 +5,19 @@ import {
 import { BarCodeScanner, BarCodeEvent } from 'expo-barcode-scanner';
 import React, { FC, useEffect, useState, useCallback } from 'react';
 import { QRcodePresenter } from './QRcodePresenter';
-import {
-  BookResponse,
-  isBookResponse,
-  convertRespToBook,
-} from '@src/entities/bookInfo';
+import { BookInfo } from '@src/entities/bookInformation/bookInformation';
 import { unstable_batchedUpdates } from 'react-native';
 import { urls } from '@src/constants';
-import { useToast } from '@src/hooks';
+import { useToast, useRakuten } from '@src/hooks';
 
 export const QRcodeContainer: FC = () => {
   const [permitted, setPermitted] = useState(false);
   const [scanned, setScanned] = useState(false);
-  const [book, setBook] = useState<BookResponse | undefined>(undefined);
+  const [book, setBook] = useState<BookInfo | undefined>(undefined);
   const [isbn, setIsbn] = useState<string>();
   const [isError, setIsError] = useState(false);
   const { showToast } = useToast();
+  const { searchBookByIsbn } = useRakuten();
   const navigation = useHomeNavigation();
 
   useEffect(() => {
@@ -32,9 +29,8 @@ export const QRcodeContainer: FC = () => {
 
   useEffect(() => {
     if (!!book && !!isbn) {
-      const bookInfo = convertRespToBook(book);
       close();
-      navigation.navigate(HomeKeys.BookInfo, { bookInfo });
+      navigation.navigate(HomeKeys.BookInfo, { bookInfo: book });
     }
   }, [book, isbn]);
 
@@ -53,13 +49,11 @@ export const QRcodeContainer: FC = () => {
       if (data.slice(0, 3) === '978' || data.slice(0, 2) === '979') {
         setScanned(true);
         try {
-          const res = await fetch(`${urls.endPoing.googleBook}isbn:${data}`);
-          const json = await res.json();
-          const item = json.items[0];
-          if (isBookResponse(item)) {
+          const bookInfo = await searchBookByIsbn(data);
+          if (bookInfo) {
             unstable_batchedUpdates(() => {
               setIsbn(data);
-              setBook(item);
+              setBook(bookInfo);
               setScanned(false);
             });
           } else {

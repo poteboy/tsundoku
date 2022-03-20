@@ -1,4 +1,4 @@
-export type BookInformationResponse = {
+export type BookInfoResponse = {
   Item: {
     affiliateUrl: string;
     author: string;
@@ -25,7 +25,7 @@ export type BookInformationResponse = {
   };
 };
 
-export type BookInformation = {
+export type BookInfo = {
   uid: string; // isbn + bookGenreId 12文字
   author: string;
   itemUrl: string;
@@ -41,8 +41,8 @@ export type BookInformation = {
 };
 
 export const convertRespToBookInformation = (
-  arg: BookInformationResponse,
-): BookInformation => {
+  arg: BookInfoResponse,
+): BookInfo => {
   const item = arg.Item;
 
   return {
@@ -63,9 +63,9 @@ export const convertRespToBookInformation = (
 
 export const isBookInformationResponse = (
   arg: unknown,
-): arg is BookInformationResponse => {
+): arg is BookInfoResponse => {
   if (!arg) return false;
-  const resp = arg as BookInformationResponse;
+  const resp = arg as BookInfoResponse;
   if (!resp.Item) return false;
 
   const item = resp.Item;
@@ -90,11 +90,11 @@ export const isBookInformationResponse = (
 
 export type RakutenSearchResult = {
   GenreInformation: any[];
-  Items: BookInformationResponse[];
+  Items: BookInfoResponse[];
 };
 
 export const retrieveResponseFromResult = (
   result: RakutenSearchResult,
-): BookInformationResponse[] => {
+): BookInfoResponse[] => {
   return result.Items.map(item => item);
 };

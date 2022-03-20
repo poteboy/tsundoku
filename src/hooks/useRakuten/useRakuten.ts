@@ -5,7 +5,7 @@ import {
   retrieveResponseFromResult,
   isBookInformationResponse,
   convertRespToBookInformation,
-  BookInformation,
+  BookInfo,
 } from '@src/entities/bookInformation/bookInformation';
 
 const BASE_URL = urls.endPoing.rakutenBook;
@@ -15,7 +15,7 @@ export const useRakuten = () => {
       const url = `${BASE_URL}&title=${title}`;
       const res = await fetch(url);
       const json = (await res.json()) as RakutenSearchResult;
-      const infos: BookInformation[] = retrieveResponseFromResult(json)
+      const infos: BookInfo[] = retrieveResponseFromResult(json)
         .filter(isBookInformationResponse)
         .map(convertRespToBookInformation);
       return infos;
@@ -29,7 +29,7 @@ export const useRakuten = () => {
       const url = `${BASE_URL}&isbn=${isbn}`;
       const res = await fetch(url);
       const json = (await res.json()) as RakutenSearchResult;
-      const infos: BookInformation[] = retrieveResponseFromResult(json)
+      const infos: BookInfo[] = retrieveResponseFromResult(json)
         .filter(isBookInformationResponse)
         .map(convertRespToBookInformation);
       if (infos.length > 0) return infos[0];
