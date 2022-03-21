@@ -6,7 +6,7 @@ import { ScrollView, Animated } from 'react-native';
 import { MenuItem } from './SettingsHomeContainer';
 import { MaterialIcons } from '@expo/vector-icons';
 
-type Props = {
+export type Props = {
   menuItems: MenuItem[];
 };
 

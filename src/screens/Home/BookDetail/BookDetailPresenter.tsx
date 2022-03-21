@@ -60,6 +60,7 @@ export const BookDetailPresenter: FC<Props> = memo(
               onPress={onDeleteBook}
               variant="danger"
               disabled={loadingDeletion}
+              testID="delete"
             >
               {loadingDeletion ? '削除中...' : '本棚から削除する'}
             </Button>
