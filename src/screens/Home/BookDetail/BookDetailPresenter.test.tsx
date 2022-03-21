@@ -5,10 +5,10 @@ import { mockBook, mockBookInfo } from '@src/entities';
 
 describe(`BookDetailPresenter`, () => {
   const defaultProps: Props = {
-    onBack: () => {},
+    onBack: jest.fn(() => {}),
     bookInfo: mockBookInfo,
     book: mockBook,
-    onDeleteBook: () => {},
+    onDeleteBook: jest.fn(() => {}),
     loadingDeletion: false,
     AdBanner: () => <></>,
   };

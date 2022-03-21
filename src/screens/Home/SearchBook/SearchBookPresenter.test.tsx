@@ -5,13 +5,13 @@ import { mockBookInfo } from '@src/entities';
 
 describe(`SearchBookPresenter`, () => {
   const defaultProps: Props = {
-    onBack: () => {},
-    onDismiss: () => {},
-    onFocus: () => {},
+    onBack: jest.fn(() => {}),
+    onDismiss: jest.fn(() => {}),
+    onFocus: jest.fn(() => {}),
     focused: false,
     cameraIcon: () => <></>,
     bookInfos: [mockBookInfo],
-    onNavigateBookInfo: () => {},
+    onNavigateBookInfo: jest.fn(() => {}),
     loading: false,
   };
 

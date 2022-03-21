@@ -6,20 +6,27 @@ import { colors } from '@src/styles';
 import { ScrollView, ImageSourcePropType } from 'react-native';
 import { useAdMob } from '@src/hooks';
 
-type Props = {
+export type Props = {
   bookInfo: BookInfo;
   onBack: () => void;
   onRegisterBookInfo: () => void;
   loadingCheck: boolean;
   isRegistered: boolean;
+  AdBanner: React.FC<any>;
 };
 
 export const BookInfoPresenter: FC<Props> = memo(
-  ({ onBack, bookInfo, onRegisterBookInfo, loadingCheck, isRegistered }) => {
+  ({
+    onBack,
+    bookInfo,
+    onRegisterBookInfo,
+    loadingCheck,
+    isRegistered,
+    AdBanner,
+  }) => {
     const img: ImageSourcePropType = bookInfo.imgUrl
       ? { uri: bookInfo.imgUrl }
       : require('@assets/no-image.png');
-    const { AdBanner } = useAdMob();
 
     return (
       <View flex={1} bg={colors.White}>
@@ -53,6 +60,7 @@ export const BookInfoPresenter: FC<Props> = memo(
               py={2}
               _text={{ fontSize: 'lg' }}
               disabled={loadingCheck || isRegistered}
+              testID="registerButton"
             >
               {isRegistered
                 ? '既に登録されています'

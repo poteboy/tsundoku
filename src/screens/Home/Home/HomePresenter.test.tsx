@@ -4,10 +4,10 @@ import React from 'react';
 
 describe(`HomePresenter`, () => {
   const defaultProps: Props = {
-    onNavigateSearchBook: () => {},
+    onNavigateSearchBook: jest.fn(() => {}),
     bookInfos: [],
-    onNavigateBookDetail: bf => {},
-    onFetchBookInfo: () => {},
+    onNavigateBookDetail: jest.fn(bf => {}),
+    onFetchBookInfo: jest.fn(() => {}),
     fetching: false,
     AdBanner: () => <></>,
     premium: false,

@@ -5,7 +5,7 @@ import {
 import React, { FC, useCallback, useMemo } from 'react';
 import { BookInfoPresenter } from './BookInfoPresenter';
 import { StackActions, useRoute, RouteProp } from '@react-navigation/native';
-import { useToast, useBookInfo } from '@src/hooks';
+import { useToast, useBookInfo, useAdMob } from '@src/hooks';
 import { useBookInfoScreen } from './useBookInfoScreen';
 
 export const BookInfoContainer: FC = () => {
@@ -14,6 +14,7 @@ export const BookInfoContainer: FC = () => {
   const route = useRoute<RouteProp<HomeParamList, 'Home/BookInfo'>>();
   const { checkAndCreate, loadingCheck } = useBookInfoScreen();
   const { bookInfos } = useBookInfo();
+  const { AdBanner } = useAdMob();
 
   const back = useCallback(() => {
     navigation.goBack();
@@ -46,6 +47,7 @@ export const BookInfoContainer: FC = () => {
       onRegisterBookInfo={registerBookInfo}
       loadingCheck={loadingCheck}
       isRegistered={isRegistered}
+      AdBanner={AdBanner}
     />
   );
 };
