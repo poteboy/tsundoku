@@ -4,7 +4,7 @@ import { colors } from '@src/styles';
 import { Header, Spacer } from '@src/components';
 import { ScrollView, Animated, Dimensions, RefreshControl } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { BookInfo } from '@src/entities';
+import { BookInfo } from '@src/entities/bookInformation/bookInformation';
 import { getImg } from '@src/util';
 import { useAdMob } from '@src/hooks';
 
@@ -94,7 +94,7 @@ const BookInfoItem: FC<
   return (
     <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
       <AnimatedImage
-        source={getImg(bookInfo.thumbnail)}
+        source={getImg(bookInfo.imgUrl)}
         width={`${screenWidth / 5}px`}
         height={`${(screenWidth / 5) * 1.5}px`}
         resizeMode="contain"

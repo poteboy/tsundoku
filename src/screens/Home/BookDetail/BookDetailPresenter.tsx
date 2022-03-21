@@ -1,10 +1,11 @@
 import React, { FC, useState, memo } from 'react';
 import { VStack, Button, HStack, Image, Text } from 'native-base';
 import { Header, Spacer } from '@src/components';
-import { BookInfo, Book } from '@src/entities';
+import { Book } from '@src/entities';
+import { BookInfo } from '@src/entities/bookInformation/bookInformation';
 import { colors } from '@src/styles';
-import { getImg } from '@src/util';
-import { ScrollView } from 'react-native';
+import { getImg, divideAuthor } from '@src/util';
+import { ScrollView, Button as RNButton, Linking } from 'react-native';
 
 export type Props = {
   onBack: () => void;
@@ -24,7 +25,7 @@ export const BookDetailPresenter: FC<Props> = memo(
             <Spacer size={16} />
             <HStack mx={4}>
               <Image
-                source={getImg(bookInfo.thumbnail)}
+                source={getImg(bookInfo.imgUrl)}
                 resizeMode="contain"
                 h="160px"
                 w="120px"
@@ -35,18 +36,25 @@ export const BookDetailPresenter: FC<Props> = memo(
                 </Text>
                 <Spacer size={4} />
                 <Text fontSize="md" numberOfLines={1} color={colors.Info500}>
-                  {bookInfo.authors[0]}
+                  {divideAuthor(bookInfo.author)[0]}
                 </Text>
                 <Spacer size={4} />
                 <Text fontSize="sm" color={colors.dartGray} numberOfLines={1}>
-                  {bookInfo.pageCount}ページ
+                  {bookInfo.publisher}
                 </Text>
                 <Spacer size={4} />
                 <Text fontSize="sm" color={colors.dartGray} numberOfLines={1}>
-                  {bookInfo.publishedDate}
+                  {bookInfo.publishedAt}
                 </Text>
               </VStack>
             </HStack>
+            <Spacer size={16} />
+            <RNButton
+              onPress={() => {
+                Linking.openURL(bookInfo.itemUrl);
+              }}
+              title="この本の詳細"
+            />
             <Spacer size={16} />
             <Button
               onPress={onDeleteBook}

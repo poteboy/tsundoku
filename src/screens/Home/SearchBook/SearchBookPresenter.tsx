@@ -128,7 +128,7 @@ const BookCard: FC<
     setBg(colors.White);
   }, []);
   const navigate = useCallback(() => {
-    // onNavigateBookInfo(bookInfo);
+    onNavigateBookInfo(bookInformation);
   }, []);
 
   return (

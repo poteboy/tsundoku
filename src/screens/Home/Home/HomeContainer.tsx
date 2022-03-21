@@ -6,7 +6,7 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { HomePresenter } from './HomePresenter';
 import { useBookInfo, useToast, useAdMob } from '@src/hooks';
 import { useFocusEffect } from '@react-navigation/native';
-import { BookInfo } from '@src/entities';
+import { BookInfo } from '@src/entities/bookInformation/bookInformation';
 import { collectionPath, firestore as db } from '@src/constants';
 
 export const HomeContainer: FC = () => {

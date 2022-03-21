@@ -44,7 +44,7 @@ export const BookInfoPresenter: FC<Props> = memo(
             </Text>
             <Spacer size={8} />
             <Text mx="auto" fontSize="md" color="gray.700">
-              {bookInfo.publishedAt}
+              {bookInfo.publisher}
             </Text>
             <Spacer size={8} />
             <Button

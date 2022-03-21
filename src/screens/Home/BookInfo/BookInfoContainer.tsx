@@ -21,7 +21,7 @@ export const BookInfoContainer: FC = () => {
 
   const registerBookInfo = useCallback(async () => {
     try {
-      // await checkAndCreate(route.params.bookInfo);
+      await checkAndCreate(route.params.bookInfo);
       showToast({
         message: `${route.params.bookInfo.title}を追加しました`,
         status: 'success',

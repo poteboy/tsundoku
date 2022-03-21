@@ -48,7 +48,7 @@ export const convertRespToBookInformation = (
   return {
     uid: item.isbn + '-' + item.booksGenreId.slice(0, 12),
     author: item.author,
-    itemUrl: item.affiliateUrl ?? item.itemUrl,
+    itemUrl: item.itemUrl,
     isbn: item.isbn,
     imgUrl: item.largeImageUrl ?? item.mediumImageUrl,
     caption: item.itemCaption,
@@ -83,6 +83,16 @@ export const isBookInformationResponse = (
       !!item.size &&
       !!item.salesDate
     );
+  } catch {
+    return false;
+  }
+};
+
+export const isBookInfo = (arg: unknown): arg is BookInfo => {
+  if (!arg) return false;
+  const info = arg as BookInfo;
+  try {
+    return !!info.author && !!info.uid && !!info.isbn;
   } catch {
     return false;
   }

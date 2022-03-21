@@ -68,7 +68,7 @@ export const SearchBookContainer: FC = () => {
 
   const navigateBookInfo = useCallback(
     (bookInfo: BookInfo) => {
-      // navigation.navigate(HomeKeys.BookInfo, { bookInfo });
+      navigation.navigate(HomeKeys.BookInfo, { bookInfo });
     },
     [navigation],
   );

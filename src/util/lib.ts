@@ -16,4 +16,6 @@ export const compare = (arrA: any[], arrB: any[]) => {
   return true;
 };
 
-// export const
+export const divideAuthor = (authors: string) => {
+  return authors.split('/');
+};
