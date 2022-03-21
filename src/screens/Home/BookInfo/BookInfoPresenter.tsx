@@ -1,6 +1,6 @@
 import { Header, Spacer } from '@src/components';
 import React, { FC, memo } from 'react';
-import { BookInfo } from '@src/entities/bookInformation/bookInformation';
+import { BookInfo } from '@src/entities';
 import { VStack, Image, Text, Divider, View, Button } from 'native-base';
 import { colors } from '@src/styles';
 import { ScrollView, ImageSourcePropType } from 'react-native';

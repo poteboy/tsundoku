@@ -1,8 +1,7 @@
 import React, { FC, useState, memo } from 'react';
 import { VStack, Button, HStack, Image, Text } from 'native-base';
 import { Header, Spacer } from '@src/components';
-import { Book } from '@src/entities';
-import { BookInfo } from '@src/entities/bookInformation/bookInformation';
+import { Book, BookInfo } from '@src/entities';
 import { colors } from '@src/styles';
 import { getImg, divideAuthor } from '@src/util';
 import { ScrollView, Button as RNButton, Linking } from 'react-native';

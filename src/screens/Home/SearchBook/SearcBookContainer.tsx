@@ -12,7 +12,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 
-import { BookInfo } from '@src/entities/bookInformation/bookInformation';
+import { BookInfo } from '@src/entities';
 import { useRakuten } from '@src/hooks';
 
 export const SearchBookContainer: FC = () => {

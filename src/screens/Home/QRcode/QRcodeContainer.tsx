@@ -5,7 +5,7 @@ import {
 import { BarCodeScanner, BarCodeEvent } from 'expo-barcode-scanner';
 import React, { FC, useEffect, useState, useCallback } from 'react';
 import { QRcodePresenter } from './QRcodePresenter';
-import { BookInfo } from '@src/entities/bookInformation/bookInformation';
+import { BookInfo } from '@src/entities';
 import { unstable_batchedUpdates } from 'react-native';
 import { urls } from '@src/constants';
 import { useToast, useRakuten } from '@src/hooks';

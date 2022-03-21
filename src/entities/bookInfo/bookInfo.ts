@@ -1,96 +1,127 @@
-// google api からのレスポンス
-export type BookResponse = {
-  id: string;
-  volumeInfo: {
-    authors: string[];
-    description?: string;
-    imageLinks?: {
-      smallThumbnail: string;
-      thumbnail: string;
-    };
-    publishedDate: string;
-    subtitle: string;
+export type BookInfoResponse = {
+  Item: {
+    affiliateUrl: string;
+    author: string;
+    authorKana: string;
+    availability: string;
+    booksGenreId: string;
+    isbn: string;
+    itemCaption: string;
+    itemPrice: number;
+    itemUrl: string;
+    largeImageUrl: string;
+    mediumImageUrl: string;
+    publisherName: string;
+    reviewAverage: string; // '0.0
+    reviewCount: number;
+    salesDate: string;
+    seriesName: string; //'新潮文庫'
+    seriesNameKana: string;
+    size: string; // '文庫';
+    subTitle?: string;
+    subTitleKana: string;
     title: string;
-    pageCount: number;
-    industryIdentifiers: {
-      identifier: string;
-      type: 'ISBN_13' | 'ISBN_10';
-    }[];
+    titleKana: string;
   };
 };
 
-// ISBNは重複があるので、UIDをID+ISBNで表す
 export type BookInfo = {
-  uid: string;
+  uid: string; // isbn + bookGenreId 12文字
+  author: string;
+  itemUrl: string;
   isbn: string;
+  imgUrl: string;
+  caption?: string;
+  publisher: string;
+  publishedAt: string;
+  size: string;
   title: string;
   subtitle?: string;
-  publishedDate: string;
-  thumbnail?: string;
-  description?: string;
-  authors: string[];
-  pageCount?: number;
+  reviewAverage?: string;
 };
 
-export const isBookInfo = (arg: unknown): arg is BookInfo => {
-  if (!arg) return false;
-  const res = arg as BookInfo;
-  try {
-    return !!res.uid && !!res.isbn;
-  } catch {
-    return false;
-  }
+export const convertRespToBookInformation = (
+  arg: BookInfoResponse,
+): BookInfo => {
+  const item = arg.Item;
+
+  console.log({
+    uid: item.isbn + '-' + item.booksGenreId.slice(0, 12),
+    author: item.author,
+    itemUrl: item.itemUrl,
+    isbn: item.isbn,
+    imgUrl: item.largeImageUrl ?? item.mediumImageUrl,
+    caption: item.itemCaption,
+    publisher: item.publisherName,
+    publishedAt: item.salesDate,
+    size: item.size,
+    title: item.title,
+    subtitle: item.subTitle,
+    reviewAverage: item.reviewAverage,
+  });
+
+  return {
+    uid: item.isbn + '-' + item.booksGenreId.slice(0, 12),
+    author: item.author,
+    itemUrl: item.itemUrl,
+    isbn: item.isbn,
+    imgUrl: item.largeImageUrl ?? item.mediumImageUrl,
+    caption: item.itemCaption,
+    publisher: item.publisherName,
+    publishedAt: item.salesDate,
+    size: item.size,
+    title: item.title,
+    subtitle: item.subTitle,
+    reviewAverage: item.reviewAverage,
+  };
 };
 
-export const isBookResponse = (arg: unknown): arg is BookResponse => {
+export const isBookInformationResponse = (
+  arg: unknown,
+): arg is BookInfoResponse => {
   if (!arg) return false;
-  const res = arg as BookResponse;
+  const resp = arg as BookInfoResponse;
+  if (!resp.Item) return false;
+
+  const item = resp.Item;
 
   try {
     return (
-      !!res.id &&
-      !!res.volumeInfo.authors &&
-      !!res.volumeInfo.title &&
-      !!res.volumeInfo.imageLinks &&
-      !!res.volumeInfo.imageLinks?.thumbnail &&
-      !!res.volumeInfo.publishedDate &&
-      !!res.volumeInfo.industryIdentifiers &&
-      res.volumeInfo.industryIdentifiers.some(
-        v => v.type === 'ISBN_13' && !!v.identifier,
-      )
+      !!item.isbn &&
+      !!item.title &&
+      !!item.author &&
+      !!item.booksGenreId &&
+      item.booksGenreId.length >= 12 &&
+      (!!item.largeImageUrl || !!item.mediumImageUrl) &&
+      !!item.publisherName &&
+      !!item.itemUrl &&
+      !!item.size &&
+      !!item.salesDate
     );
   } catch {
     return false;
   }
 };
 
-export const convertRespToBook = (res: BookResponse): BookInfo => {
-  const isbn = res.volumeInfo.industryIdentifiers.find(
-    v => v.type === 'ISBN_13',
-  )?.identifier as string;
-  return {
-    uid: `${res.id}-${isbn}`,
-    isbn: isbn,
-    title: res.volumeInfo.title,
-    subtitle: res.volumeInfo.subtitle,
-    publishedDate: res.volumeInfo.publishedDate,
-    thumbnail: res.volumeInfo.imageLinks?.thumbnail,
-    description: res.volumeInfo.description,
-    authors: res.volumeInfo.authors,
-    pageCount: res.volumeInfo.pageCount,
-  };
+export const isBookInfo = (arg: unknown): arg is BookInfo => {
+  if (!arg) return false;
+  const info = arg as BookInfo;
+  try {
+    return !!info.author && !!info.uid && !!info.isbn;
+  } catch {
+    return false;
+  }
 };
 
-export const mockBookInfo: BookInfo = {
-  uid: 'cdZzzgEACAAJ-9784873119496',
-  isbn: '9784873119496',
-  title: 'UXデザインの法則',
-  subtitle: '最高のプロダクトとサービスを支える心理学',
-  publishedDate: '2021-05',
-  thumbnail:
-    'http://books.google.com/books/content?id=cdZzzgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
-  description:
-    'UXデザインにおける心理的法則と事例を、10通りに絞り解説。ノンデザイナーにもセンスが求められる時代のハンドブック。',
-  authors: ['ジョンヤブロンスキ'],
-  pageCount: 160,
+export type RakutenSearchResult = {
+  GenreInformation: any[];
+  Items: BookInfoResponse[];
 };
+
+export const retrieveResponseFromResult = (
+  result: RakutenSearchResult,
+): BookInfoResponse[] => {
+  return result.Items.map(item => item);
+};
+
+export const mockBookInfo: BookInfo = null as any;

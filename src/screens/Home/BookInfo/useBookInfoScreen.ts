@@ -1,8 +1,7 @@
 import { useTabContext } from '@src/navigation/context';
 import React, { useCallback, useState } from 'react';
 import { collectionPath, firestore as db } from '@src/constants';
-import { Book, Review } from '@src/entities';
-import { BookInfo } from '@src/entities/bookInformation/bookInformation';
+import { Book, Review, BookInfo } from '@src/entities';
 import { Model } from '@src/util';
 
 const userRef = db.collection(collectionPath.users.users);

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { isBook, Book, isBooksEqual } from '@src/entities';
 import {
+  isBook,
+  Book,
+  isBooksEqual,
   BookInfo,
   isBookInfo,
-} from '@src/entities/bookInformation/bookInformation';
+} from '@src/entities';
 import { useContainer, createContainer } from 'unstated-next';
 import { useAuth } from '..';
 import { useTabContext } from '@src/navigation/context';

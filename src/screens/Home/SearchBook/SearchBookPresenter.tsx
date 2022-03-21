@@ -17,8 +17,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 import { TouchableWithoutFeedback } from 'react-native';
-// import { BookInfo } from '@src/entities/bookInfo';
-import { BookInfo } from '@src/entities/bookInformation/bookInformation';
+import { BookInfo } from '@src/entities';
 import { getImg } from '@src/util';
 
 export type Props = {
