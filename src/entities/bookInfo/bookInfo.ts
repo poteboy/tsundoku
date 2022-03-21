@@ -44,22 +44,6 @@ export const convertRespToBookInformation = (
   arg: BookInfoResponse,
 ): BookInfo => {
   const item = arg.Item;
-
-  console.log({
-    uid: item.isbn + '-' + item.booksGenreId.slice(0, 12),
-    author: item.author,
-    itemUrl: item.itemUrl,
-    isbn: item.isbn,
-    imgUrl: item.largeImageUrl ?? item.mediumImageUrl,
-    caption: item.itemCaption,
-    publisher: item.publisherName,
-    publishedAt: item.salesDate,
-    size: item.size,
-    title: item.title,
-    subtitle: item.subTitle,
-    reviewAverage: item.reviewAverage,
-  });
-
   return {
     uid: item.isbn + '-' + item.booksGenreId.slice(0, 12),
     author: item.author,
@@ -124,4 +108,19 @@ export const retrieveResponseFromResult = (
   return result.Items.map(item => item);
 };
 
-export const mockBookInfo: BookInfo = null as any;
+export const mockBookInfo: BookInfo = {
+  author: '筒井美希',
+  caption:
+    '「デザイン＝楽しい」を実感できる！デザイナーのあたまの中を豊富なビジュアルでひも解く。',
+  imgUrl:
+    'https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/5174/9784844365174.jpg?_ex=200x200',
+  isbn: '9784844365174',
+  itemUrl: 'https://books.rakuten.co.jp/rb/13318064/',
+  publishedAt: '2015年08月',
+  publisher: 'エムディエヌコーポレーション',
+  reviewAverage: '4.35',
+  size: '単行本',
+  subtitle: '目で見て楽しむデザインの本。',
+  title: 'なるほどデザイン',
+  uid: '9784844365174-001009009006',
+};

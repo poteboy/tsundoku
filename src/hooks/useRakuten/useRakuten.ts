@@ -6,7 +6,7 @@ import {
   isBookInformationResponse,
   convertRespToBookInformation,
   BookInfo,
-} from '@src/entities/bookInformation/bookInformation';
+} from '@src/entities';
 
 const BASE_URL = urls.endPoing.rakutenBook;
 export const useRakuten = () => {
