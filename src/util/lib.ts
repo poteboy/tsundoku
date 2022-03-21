@@ -1,5 +1,6 @@
 import { ImageSourcePropType } from 'react-native';
 import { format } from 'date-fns';
+import { TimeStamp } from '@src/entities';
 
 export const getImg = (uri?: string): ImageSourcePropType =>
   uri ? { uri: uri } : require('@assets/no-image.png');
@@ -19,11 +20,6 @@ export const compare = (arrA: any[], arrB: any[]) => {
 
 export const divideAuthor = (authors: string) => {
   return authors.split('/');
-};
-
-type TimeStamp = {
-  nanoseconds: number;
-  seconds: number;
 };
 
 export const convertDate = (arg: Date | TimeStamp): Date => {

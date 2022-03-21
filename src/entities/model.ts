@@ -1,7 +1,12 @@
 export type Model = {
   uid: string;
-  createdAt: Date;
+  createdAt: Date | TimeStamp;
   active: Active;
+};
+
+export type TimeStamp = {
+  nanoseconds: number;
+  seconds: number;
 };
 
 export enum Active {
@@ -20,4 +25,9 @@ export const isModel = (arg: unknown): arg is Model => {
     !!model.createdAt &&
     !!model.active
   );
+};
+
+export const mockTimeStamp: TimeStamp = {
+  nanoseconds: 744000000,
+  seconds: 1647883850,
 };
