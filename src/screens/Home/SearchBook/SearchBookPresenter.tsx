@@ -146,7 +146,7 @@ const BookCard: FC<
             {bookInformation.title}
           </Text>
           <Spacer size={4} />
-          <Text color={'gray.600'}>{bookInformation.author}</Text>
+          <Text color={'gray.600'}>{bookInformation.authors[0]}</Text>
           <Spacer size={2} />
           <Text color={'gray.600'}>{bookInformation.publisher}</Text>
         </VStack>

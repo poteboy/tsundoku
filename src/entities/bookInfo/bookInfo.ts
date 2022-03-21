@@ -27,15 +27,16 @@ export type BookInfoResponse = {
 
 export type BookInfo = {
   uid: string; // isbn + bookGenreId 12文字
-  author: string;
+  authors: string[];
   itemUrl: string;
   isbn: string;
   imgUrl: string;
-  caption?: string;
   publisher: string;
   publishedAt: string;
   size: string;
   title: string;
+  caption?: string;
+  affiliateUrl?: string;
   subtitle?: string;
   reviewAverage?: string;
 };
@@ -45,11 +46,12 @@ export const convertRespToBookInformation = (
 ): BookInfo => {
   const item = arg.Item;
   return {
-    uid: item.isbn + '-' + item.booksGenreId.slice(0, 12),
-    author: item.author,
+    uid: item.isbn + '-' + item.booksGenreId.split('/')[0],
+    authors: item.author.split('/'),
     itemUrl: item.itemUrl,
     isbn: item.isbn,
     imgUrl: item.largeImageUrl ?? item.mediumImageUrl,
+    affiliateUrl: item.affiliateUrl,
     caption: item.itemCaption,
     publisher: item.publisherName,
     publishedAt: item.salesDate,
@@ -75,7 +77,6 @@ export const isBookInformationResponse = (
       !!item.title &&
       !!item.author &&
       !!item.booksGenreId &&
-      item.booksGenreId.length >= 12 &&
       (!!item.largeImageUrl || !!item.mediumImageUrl) &&
       !!item.publisherName &&
       !!item.itemUrl &&
@@ -91,7 +92,7 @@ export const isBookInfo = (arg: unknown): arg is BookInfo => {
   if (!arg) return false;
   const info = arg as BookInfo;
   try {
-    return !!info.author && !!info.uid && !!info.isbn;
+    return !!info.authors && !!info.uid && !!info.isbn;
   } catch {
     return false;
   }
@@ -109,7 +110,7 @@ export const retrieveResponseFromResult = (
 };
 
 export const mockBookInfo: BookInfo = {
-  author: '筒井美希',
+  authors: ['筒井美希'],
   caption:
     '「デザイン＝楽しい」を実感できる！デザイナーのあたまの中を豊富なビジュアルでひも解く。',
   imgUrl:

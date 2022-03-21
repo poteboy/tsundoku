@@ -6,13 +6,14 @@ import {
   HomeParamList,
 } from '@src/navigation/HomeNavigator/route';
 import { useBookDetail } from './useBookDetail';
-import { useToast } from '@src/hooks';
+import { useAdMob, useToast } from '@src/hooks';
 import { Alert } from 'react-native';
 
 export const BookDetailContainer: FC = () => {
   const navigation = useHomeNavigation();
   const route = useRoute<RouteProp<HomeParamList, 'Home/BookDetail'>>();
   const { showToast } = useToast();
+  const { AdBanner, premium } = useAdMob();
 
   const { bookInfo, book } = route.params;
   const { deleteBook, loadingDelete } = useBookDetail(route.params);
@@ -53,6 +54,7 @@ export const BookDetailContainer: FC = () => {
       book={book}
       bookInfo={bookInfo}
       loadingDeletion={loadingDelete}
+      AdBanner={AdBanner}
     />
   );
 };

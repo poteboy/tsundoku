@@ -12,10 +12,11 @@ export type Props = {
   book: Book;
   onDeleteBook: () => void;
   loadingDeletion: boolean;
+  AdBanner: React.FC<any>;
 };
 
 export const BookDetailPresenter: FC<Props> = memo(
-  ({ book, bookInfo, onBack, onDeleteBook, loadingDeletion }) => {
+  ({ book, bookInfo, onBack, onDeleteBook, loadingDeletion, AdBanner }) => {
     return (
       <>
         <Header title={bookInfo.title} onBack={onBack} />
@@ -35,7 +36,7 @@ export const BookDetailPresenter: FC<Props> = memo(
                 </Text>
                 <Spacer size={4} />
                 <Text fontSize="md" numberOfLines={1} color={colors.Info500}>
-                  {divideAuthor(bookInfo.author)[0]}
+                  {bookInfo.authors[0]}
                 </Text>
                 <Spacer size={4} />
                 <Text fontSize="sm" color={colors.dartGray} numberOfLines={1}>
@@ -63,6 +64,7 @@ export const BookDetailPresenter: FC<Props> = memo(
               {loadingDeletion ? '削除中...' : '本棚から削除する'}
             </Button>
           </ScrollView>
+          <AdBanner style={{ position: 'absolute', bottom: 0 }} />
         </VStack>
       </>
     );

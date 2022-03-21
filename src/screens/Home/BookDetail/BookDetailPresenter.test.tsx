@@ -10,6 +10,7 @@ describe(`BookDetailPresenter`, () => {
     book: mockBook,
     onDeleteBook: () => {},
     loadingDeletion: false,
+    AdBanner: () => <></>,
   };
 
   it(`renders correctly`, () => {

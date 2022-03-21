@@ -40,7 +40,7 @@ export const BookInfoPresenter: FC<Props> = memo(
             </Text>
             <Spacer size={8} />
             <Text color={colors.Info400} mx="auto" fontSize="md">
-              {bookInfo.author}
+              {bookInfo.authors[0]}
             </Text>
             <Spacer size={8} />
             <Text mx="auto" fontSize="md" color="gray.700">

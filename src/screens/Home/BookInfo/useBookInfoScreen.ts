@@ -39,7 +39,7 @@ export const useBookInfoScreen = () => {
         const _doc = await transaction.get(bookInfoDoc);
         if (!_doc.exists) {
           await transaction.set(bookInfoDoc, bookInfo);
-        }
+        } else await transaction.update(bookInfoDoc, bookInfo);
         await transaction.set(reviewDoc, review);
         await transaction.set(bookDoc, book);
       });
