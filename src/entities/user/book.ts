@@ -1,5 +1,6 @@
 import { Model, Active } from '@src/entities';
 import { DocumentReference } from '@src/constants';
+import { BookInfo } from '../bookInfo';
 
 export interface Book extends Model {
   bookInfoRef: DocumentReference;

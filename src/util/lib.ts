@@ -17,6 +17,10 @@ export const compare = (arrA: any[], arrB: any[]) => {
   return true;
 };
 
+export const divideAuthor = (authors: string) => {
+  return authors.split('/');
+};
+
 type TimeStamp = {
   nanoseconds: number;
   seconds: number;

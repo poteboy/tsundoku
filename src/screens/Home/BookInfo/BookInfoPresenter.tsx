@@ -1,6 +1,6 @@
 import { Header, Spacer } from '@src/components';
 import React, { FC, memo } from 'react';
-import { BookInfo } from '@src/entities/bookInfo';
+import { BookInfo } from '@src/entities';
 import { VStack, Image, Text, Divider, View, Button } from 'native-base';
 import { colors } from '@src/styles';
 import { ScrollView, ImageSourcePropType } from 'react-native';
@@ -16,8 +16,8 @@ type Props = {
 
 export const BookInfoPresenter: FC<Props> = memo(
   ({ onBack, bookInfo, onRegisterBookInfo, loadingCheck, isRegistered }) => {
-    const img: ImageSourcePropType = bookInfo.thumbnail
-      ? { uri: bookInfo.thumbnail }
+    const img: ImageSourcePropType = bookInfo.imgUrl
+      ? { uri: bookInfo.imgUrl }
       : require('@assets/no-image.png');
     const { AdBanner } = useAdMob();
 
@@ -40,11 +40,11 @@ export const BookInfoPresenter: FC<Props> = memo(
             </Text>
             <Spacer size={8} />
             <Text color={colors.Info400} mx="auto" fontSize="md">
-              {bookInfo.authors[0]}
+              {bookInfo.author}
             </Text>
             <Spacer size={8} />
             <Text mx="auto" fontSize="md" color="gray.700">
-              {bookInfo.publishedDate}
+              {bookInfo.publisher}
             </Text>
             <Spacer size={8} />
             <Button
@@ -69,9 +69,9 @@ export const BookInfoPresenter: FC<Props> = memo(
               本書の説明
             </Text>
             <Spacer size={8} />
-            {bookInfo.description ? (
+            {bookInfo.caption ? (
               <Text textAlign="left" mx={16} alignSelf="flex-start">
-                {bookInfo.description}
+                {bookInfo.caption}
               </Text>
             ) : (
               <Text

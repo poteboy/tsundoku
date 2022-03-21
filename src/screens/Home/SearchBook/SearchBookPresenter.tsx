@@ -17,7 +17,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
 import { TouchableWithoutFeedback } from 'react-native';
-import { BookInfo } from '@src/entities/bookInfo';
+import { BookInfo } from '@src/entities';
 import { getImg } from '@src/util';
 
 export type Props = {
@@ -38,9 +38,9 @@ export const SearchBookPresenter: FC<Props> = memo(
     onDismiss,
     focused,
     cameraIcon,
-    bookInfos,
     onNavigateBookInfo,
     loading,
+    bookInfos,
   }) => {
     const [key, setKey] = useState<string>();
     const submit = useCallback(() => {
@@ -96,11 +96,11 @@ export const SearchBookPresenter: FC<Props> = memo(
                   </Box>
                 )}
                 {bookInfos &&
-                  bookInfos.map((bookInfo, index) => {
+                  bookInfos.map((bookInformation, index) => {
                     return (
-                      <View key={bookInfo.uid}>
+                      <View key={bookInformation.uid}>
                         <BookCard
-                          {...{ bookInfo, onNavigateBookInfo }}
+                          {...{ bookInformation, onNavigateBookInfo }}
                           key={index}
                         />
                         <Divider />
@@ -116,44 +116,41 @@ export const SearchBookPresenter: FC<Props> = memo(
   },
 );
 
-const BookCard: FC<{ bookInfo: BookInfo } & Pick<Props, 'onNavigateBookInfo'>> =
-  memo(({ bookInfo, onNavigateBookInfo }) => {
-    const [bg, setBg] = useState(colors.White);
-    const onPressIn = useCallback(() => {
-      setBg(colors.lightGray);
-    }, []);
-    const onPressOut = useCallback(() => {
-      setBg(colors.White);
-    }, []);
-    const navigate = useCallback(() => {
-      onNavigateBookInfo(bookInfo);
-    }, []);
+const BookCard: FC<
+  { bookInformation: BookInfo } & Pick<Props, 'onNavigateBookInfo'>
+> = memo(({ bookInformation, onNavigateBookInfo }) => {
+  const [bg, setBg] = useState(colors.White);
+  const onPressIn = useCallback(() => {
+    setBg(colors.lightGray);
+  }, []);
+  const onPressOut = useCallback(() => {
+    setBg(colors.White);
+  }, []);
+  const navigate = useCallback(() => {
+    onNavigateBookInfo(bookInformation);
+  }, []);
 
-    return (
-      <Pressable
-        onPress={navigate}
-        onPressIn={onPressIn}
-        onPressOut={onPressOut}
-      >
-        <HStack bg={bg} py={4} width="100%">
-          <Image
-            source={getImg(bookInfo.thumbnail)}
-            width="60px"
-            height="100px"
-            resizeMode="contain"
-            mx={4}
-            alt={bookInfo.title}
-          />
-          <VStack mx={4} width="70%">
-            <Text fontWeight={500} numberOfLines={1}>
-              {bookInfo.title}
-            </Text>
-            <Spacer size={4} />
-            <Text color={'gray.600'}>{bookInfo.authors[0]}</Text>
-            <Spacer size={2} />
-            <Text color={'gray.600'}>{bookInfo.publishedDate}</Text>
-          </VStack>
-        </HStack>
-      </Pressable>
-    );
-  });
+  return (
+    <Pressable onPress={navigate} onPressIn={onPressIn} onPressOut={onPressOut}>
+      <HStack bg={bg} py={4} width="100%">
+        <Image
+          source={getImg(bookInformation.imgUrl)}
+          width="60px"
+          height="100px"
+          resizeMode="contain"
+          mx={4}
+          alt={bookInformation.title}
+        />
+        <VStack mx={4} width="70%">
+          <Text fontWeight={500} numberOfLines={1}>
+            {bookInformation.title}
+          </Text>
+          <Spacer size={4} />
+          <Text color={'gray.600'}>{bookInformation.author}</Text>
+          <Spacer size={2} />
+          <Text color={'gray.600'}>{bookInformation.publisher}</Text>
+        </VStack>
+      </HStack>
+    </Pressable>
+  );
+});

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@src/util';
 import { SearchBookPresenter, Props } from './SearchBookPresenter';
+import { mockBookInfo } from '@src/entities';
 
 describe(`SearchBookPresenter`, () => {
   const defaultProps: Props = {
@@ -9,7 +10,7 @@ describe(`SearchBookPresenter`, () => {
     onFocus: () => {},
     focused: false,
     cameraIcon: () => <></>,
-    bookInfos: undefined,
+    bookInfos: [mockBookInfo],
     onNavigateBookInfo: () => {},
     loading: false,
   };

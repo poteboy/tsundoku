@@ -11,15 +11,12 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@src/styles';
-import {
-  isBookResponse,
-  BookInfo,
-  convertRespToBook,
-  BookResponse,
-} from '@src/entities/bookInfo';
-import { urls } from '@src/constants';
+
+import { BookInfo } from '@src/entities';
+import { useRakuten } from '@src/hooks';
 
 export const SearchBookContainer: FC = () => {
+  const { searchBookByTitle } = useRakuten();
   const navigation = useHomeNavigation();
   const [keyword, setKeyword] = useState<string>();
   const [bookInfos, setBookInfos] = useState<BookInfo[]>();
@@ -50,17 +47,10 @@ export const SearchBookContainer: FC = () => {
       setBookInfos(undefined);
       setLoading(true);
     });
-    const res = await fetch(`${urls.endPoing.googleBook}${keyword}`);
-    const json = await res.json();
-    const items: BookInfo[] = json.items
-      .filter(isBookResponse)
-      .map((item: BookResponse) => convertRespToBook(item));
-    if (items.length > 0) {
-      unstable_batchedUpdates(() => {
-        setBookInfos(items);
-        setLoading(false);
-      });
-    } else {
+    try {
+      const bookInfo = await searchBookByTitle(keyword);
+      setBookInfos(bookInfo);
+    } finally {
       setLoading(false);
     }
   }, []);

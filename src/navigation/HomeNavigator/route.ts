@@ -1,7 +1,6 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { BookInfo } from '@src/entities/bookInfo';
-import { Book } from '@src/entities';
+import { Book, BookInfo } from '@src/entities';
 
 export const HomeKeys = {
   Home: 'Home/Home',

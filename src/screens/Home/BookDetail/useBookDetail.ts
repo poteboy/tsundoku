@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { firestore as db, collectionPath } from '@src/constants';
-import { Book, BookInfo, Review, isReview } from '@src/entities';
+import { Book, Review, isReview, BookInfo } from '@src/entities';
 import { useTabContext } from '@src/navigation/context';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 

@@ -94,7 +94,7 @@ const BookInfoItem: FC<
   return (
     <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut}>
       <AnimatedImage
-        source={getImg(bookInfo.thumbnail)}
+        source={getImg(bookInfo.imgUrl)}
         width={`${screenWidth / 5}px`}
         height={`${(screenWidth / 5) * 1.5}px`}
         resizeMode="contain"

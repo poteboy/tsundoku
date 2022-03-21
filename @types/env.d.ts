@@ -7,6 +7,8 @@ declare module '@env' {
   const FIREBASE_MESSAGE_ID_DEV: string;
   const FIREBASE_APP_ID_DEV: string;
   const FIREBASE_MEASUREMENT_ID_DEV: string;
+  const RAKUTEN_APPLICATION_ID: string;
+  const RAKUTEN_AFFILIATE_ID: string;
   export {
     SENTRY_DSN,
     FIREBASE_API_KEY_DEV,
@@ -16,5 +18,7 @@ declare module '@env' {
     FIREBASE_MESSAGE_ID_DEV,
     FIREBASE_APP_ID_DEV,
     FIREBASE_MEASUREMENT_ID_DEV,
+    RAKUTEN_APPLICATION_ID,
+    RAKUTEN_AFFILIATE_ID,
   };
 }
