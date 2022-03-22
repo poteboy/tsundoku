@@ -9,7 +9,7 @@ export const theme = extendTheme({
           return {
             px: 16,
             py: 12,
-            bg: disabled ? 'dark.500' : 'info.500',
+            bg: disabled ? 'dark.500' : 'info.400',
             _text: {
               color: colors.White,
               fontSize: 'lg',

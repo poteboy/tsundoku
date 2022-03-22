@@ -38,6 +38,7 @@ export const collectionPath = {
   bookInfos: {
     bookInfos: 'bookInfos',
     reviews: 'reviews',
+    category: 'category',
   },
 } as const;
 

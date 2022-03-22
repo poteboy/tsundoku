@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   isBook,
   Book,
   isBooksEqual,
   BookInfo,
   isBookInfo,
+  BookSet,
+  isBookSet,
 } from '@src/entities';
 import { useContainer, createContainer } from 'unstated-next';
 import { useAuth } from '..';
@@ -13,6 +15,8 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { firestore as db, collectionPath } from '@src/constants';
 import { unstable_batchedUpdates } from 'react-native';
 import { convertDate } from '@src/util';
+
+const bookInfoRef = db.collection(collectionPath.bookInfos.bookInfos);
 
 const userRef = db.collection(collectionPath.users.users);
 const container = () => {
@@ -23,6 +27,23 @@ const container = () => {
   const [bookInfos, setBookInfos] = useState<BookInfo[]>([]);
   const [loadingBookInfo, setLoadingBookInfo] = useState(false);
   const [fetching, setFetching] = useState(false);
+  // const [bookSets, setBookSets] = useState<BookSet[]>([]);
+
+  const bookSets: BookSet[] = useMemo(() => {
+    const tmp = books.map(book => {
+      const bookInfo = bookInfos.find(
+        info => bookInfoRef.doc(info.uid).path === book.bookInfoRef.path,
+      );
+      return bookInfo
+        ? {
+            book,
+            bookInfo,
+          }
+        : undefined;
+    });
+    const sets = tmp.filter(isBookSet) as BookSet[];
+    return sets;
+  }, [books, bookInfos]);
 
   const fetchBookInfos = useCallback(async (arr: Book[]) => {
     return (
@@ -67,7 +88,14 @@ const container = () => {
       });
   }, [books]);
 
-  return { bookInfos, loadingBookInfo, fetchBookOnLoad, fetching, books };
+  return {
+    bookInfos,
+    loadingBookInfo,
+    fetchBookOnLoad,
+    fetching,
+    books,
+    bookSets,
+  };
 };
 
 export const BookInfoContainer = createContainer(container);
