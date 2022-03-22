@@ -34,11 +34,11 @@ export const collectionPath = {
   users: {
     users: 'users',
     books: 'books',
+    category: 'category',
   },
   bookInfos: {
     bookInfos: 'bookInfos',
     reviews: 'reviews',
-    category: 'category',
   },
 } as const;
 

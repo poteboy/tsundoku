@@ -28,6 +28,7 @@ export const useBookInfoScreen = () => {
     const book: Book = {
       ...bookModel,
       bookInfoRef: bookInfoDoc,
+      categoryRefs: [],
     };
     const bookDoc = userRef
       .doc(uid)

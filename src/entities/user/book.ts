@@ -6,6 +6,7 @@ export interface Book extends Model {
   bookInfoRef: DocumentReference;
   opinion?: string;
   memo?: string;
+  categoryRefs: DocumentReference[];
 }
 
 export const isBook = (arg: unknown): arg is Book => {
@@ -23,6 +24,7 @@ export const mockBook: Book = {
   createdAt: new Date(),
   active: Active.Activated,
   bookInfoRef: 'null' as any,
+  categoryRefs: [],
 };
 
 export const isBooksEqual = (a: Book[], b: Book[]) => {

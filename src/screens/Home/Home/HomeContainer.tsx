@@ -2,7 +2,7 @@ import {
   useHomeNavigation,
   HomeKeys,
 } from '@src/navigation/HomeNavigator/route';
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import { HomePresenter } from './HomePresenter';
 import { useBookInfo, useToast, useAdMob } from '@src/hooks';
 import { useFocusEffect } from '@react-navigation/native';
@@ -13,7 +13,9 @@ export const HomeContainer: FC = () => {
   const navigation = useHomeNavigation();
   const { bookInfos, fetchBookOnLoad, fetching, books } = useBookInfo();
   const { showToast } = useToast();
-  const { AdBanner, premium } = useAdMob();
+  const { AdBanner: _AD, premium } = useAdMob();
+
+  const AdBanner = useMemo(() => _AD, []);
 
   // ページがFocusされた時に発火
   useFocusEffect(
