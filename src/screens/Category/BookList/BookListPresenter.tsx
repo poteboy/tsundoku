@@ -16,7 +16,7 @@ export const BookListPresenter: FC<Props> = memo(
   ({ category, onBack, bookSets, onNavigateBookInfo }) => {
     return (
       <VStack flex={1} bg={colors.lightGray}>
-        <Header title={category.name} onBack={onBack} />
+        <Header title={category.name} onBack={onBack} reverse />
         <ScrollView>
           {bookSets.map(set => {
             return (

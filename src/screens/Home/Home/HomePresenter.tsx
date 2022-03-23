@@ -30,13 +30,13 @@ export const HomePresenter: FC<Props> = memo(
   }) => {
     return (
       <View flex={1} bg={colors.lightGray}>
-        <Header title="ホーム" />
+        <Header title="ホーム" reverse />
         <ScrollView
         // refreshControl={
         //   <RefreshControl onRefresh={onFetchBookInfo} refreshing={fetching} />
         // }
         >
-          <VStack height="100%" bg={colors.lightGray} justifyContent="center">
+          <VStack height="100%" justifyContent="center">
             <Spacer size={4} />
             <HStack flexWrap="wrap">
               {bookInfos.map(bookInfo => (

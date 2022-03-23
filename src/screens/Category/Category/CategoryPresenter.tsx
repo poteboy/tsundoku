@@ -44,7 +44,7 @@ export const CategoryPresenter: FC<Props> = memo(
     const { createCategory } = useCategory();
     return (
       <VStack flex={1} bg={colors.lightGray}>
-        <Header title="カテゴリー" />
+        <Header title="カテゴリー" reverse />
         <ScrollView>
           <Spacer size={16} />
           {categories.map(category => {

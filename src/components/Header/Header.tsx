@@ -10,14 +10,15 @@ export type Props = {
   onBack?: () => void;
   onClose?: () => void;
   RightIcon?: () => JSX.Element;
+  reverse?: boolean;
 };
 
 export const Header: FC<Props> = memo(
-  ({ title, onBack, onClose, RightIcon }) => {
+  ({ title, onBack, onClose, RightIcon, reverse }) => {
     return (
-      <VStack safeAreaTop bg={colors.White}>
+      <VStack safeAreaTop bg={reverse ? colors.Main : colors.White} shadow={4}>
         <HStack
-          bg={colors.White}
+          bg={reverse ? colors.Main : colors.White}
           height="50px"
           overflow="hidden"
           px={4}
@@ -27,7 +28,7 @@ export const Header: FC<Props> = memo(
             <MaterialIcons
               name="arrow-back-ios"
               size={28}
-              color={colors.Main}
+              color={reverse ? colors.White : colors.Main}
               style={{ position: 'absolute', left: '5%' }}
               onPress={onBack}
               testID="back"
@@ -37,7 +38,7 @@ export const Header: FC<Props> = memo(
             <Ionicons
               name="ios-close"
               size={28}
-              color={colors.Main}
+              color={reverse ? colors.White : colors.Main}
               style={{ position: 'absolute', left: '5%' }}
               onPress={onClose}
               testID="close"
@@ -49,6 +50,7 @@ export const Header: FC<Props> = memo(
             fontSize="lg"
             maxW="75%"
             numberOfLines={1}
+            color={reverse ? colors.White : colors.Black}
           >
             {title}
           </Text>

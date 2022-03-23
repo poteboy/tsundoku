@@ -73,7 +73,7 @@ export const BookDetailPresenter: FC<Props> = memo(
               title="この本の詳細"
             /> */}
             <Spacer size={16} />
-            <HStack pl={2} py={1} bg={colors.Info400}>
+            <HStack pl={2} py={1} bg={colors.Main}>
               <Text color={colors.White} fontSize="md" fontWeight={400}>
                 追加日
               </Text>
@@ -86,7 +86,7 @@ export const BookDetailPresenter: FC<Props> = memo(
               </View>
               <Divider />
             </Pressable>
-            <HStack pl={2} py={1} bg={colors.Info400}>
+            <HStack pl={2} py={1} bg={colors.Main}>
               <Text color={colors.White} fontSize="md" fontWeight={400}>
                 メモ
               </Text>
@@ -97,7 +97,7 @@ export const BookDetailPresenter: FC<Props> = memo(
               </View>
               <Divider />
             </Pressable>
-            <HStack pl={2} py={1} bg={colors.Info400}>
+            <HStack pl={2} py={1} bg={colors.Main}>
               <Text color={colors.White} fontSize="md" fontWeight={400}>
                 感想
               </Text>
