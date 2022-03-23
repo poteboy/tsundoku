@@ -116,7 +116,7 @@ export const SearchBookPresenter: FC<Props> = memo(
   },
 );
 
-const BookCard: FC<
+export const BookCard: FC<
   { bookInformation: BookInfo } & Pick<Props, 'onNavigateBookInfo'>
 > = memo(({ bookInformation, onNavigateBookInfo }) => {
   const [bg, setBg] = useState(colors.White);

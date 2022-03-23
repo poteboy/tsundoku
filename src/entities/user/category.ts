@@ -3,12 +3,17 @@ import { DocumentReference } from '@src/constants';
 
 export interface Category extends Model {
   name: string;
-  bookSets: BookSet[];
+  bookSetRefs: BookSetRef[];
 }
 
 export type BookSet = {
   book: Book;
   bookInfo: BookInfo;
+};
+
+export type BookSetRef = {
+  bookRef: DocumentReference;
+  bookInfoRef: DocumentReference;
 };
 
 export const isBookSet = (arg: unknown): arg is BookSet => {

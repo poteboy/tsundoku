@@ -1,14 +1,40 @@
 import React, { useCallback, useMemo } from 'react';
-import { BookSet, Category } from '@src/entities';
+import { BookSet, Category, BookSetRef } from '@src/entities';
 import { useBookInfo } from '@src/hooks';
 import { useTabContext } from '@src/navigation/context';
 import { firestore as db, collectionPath } from '@src/constants';
 import { Model } from '@src/util/model';
 
 const categoryRef = db.collection(collectionPath.users.category);
+const bookRef = db.collection(collectionPath.users.books);
+const bookInfoRef = db.collection(collectionPath.bookInfos.bookInfos);
 export const useCategory = () => {
   const { bookSets } = useBookInfo();
   const { user } = useTabContext();
+
+  const bookSetRefs: BookSetRef[] = useMemo(() => {
+    return bookSets.map(set => {
+      const ref = {
+        bookRef: bookRef.doc(set.book.uid),
+        bookInfoRef: bookInfoRef.doc(set.bookInfo.uid),
+      };
+      return ref;
+    });
+  }, [bookSets]);
+
+  const getBookSetFromRef = useCallback(
+    (ref: BookSetRef): BookSet => {
+      const set = bookSets.find(set => {
+        return (
+          bookRef.doc(set.book.uid).path === ref.bookRef.path &&
+          bookInfoRef.doc(set.bookInfo.uid).path === ref.bookInfoRef.path
+        );
+      });
+      // 必ず存在する
+      return set as BookSet;
+    },
+    [bookSets],
+  );
 
   const preDefinedCategories: Category[] = useMemo(() => {
     return [
@@ -17,7 +43,7 @@ export const useCategory = () => {
         createdAt: user.createdAt,
         active: user.active,
         name: 'すべて',
-        bookSets,
+        bookSetRefs,
       },
     ];
   }, [bookSets, user]);
@@ -26,7 +52,7 @@ export const useCategory = () => {
     const merge = new Model().mergeModel;
     const category = merge<Category>({
       name,
-      bookSets: [],
+      bookSetRefs: [],
     });
     console.log(category.uid);
     // try {
@@ -42,5 +68,5 @@ export const useCategory = () => {
     });
   }, []);
 
-  return { preDefinedCategories, createCategory };
+  return { preDefinedCategories, createCategory, getBookSetFromRef };
 };

@@ -32,7 +32,6 @@ export const useRakuten = () => {
       const infos: BookInfo[] = retrieveResponseFromResult(json)
         .filter(isBookInformationResponse)
         .map(convertRespToBookInformation);
-      console.log(infos);
       if (infos.length > 0) return infos[0];
       else throw new Error();
     } catch {

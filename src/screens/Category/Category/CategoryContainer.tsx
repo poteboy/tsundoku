@@ -1,11 +1,17 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { CategoryPresenter } from './CategoryPresenter';
 import { useAdMob, useBookInfo, useCategory } from '@src/hooks';
+import {
+  useCategoryNavigation,
+  CategoryKeys,
+} from '@src/navigation/CategoryNavigator/route';
+import { BookSet, Category } from '@src/entities';
 
 export const CategoryContainer: FC = () => {
   const { AdBanner: _Ad } = useAdMob();
-  const { preDefinedCategories } = useCategory();
+  const { preDefinedCategories, getBookSetFromRef } = useCategory();
   const [modalOpen, setModalOpen] = useState(false);
+  const navigation = useCategoryNavigation();
 
   const AdBanner = useMemo(() => _Ad, []);
 
@@ -21,6 +27,13 @@ export const CategoryContainer: FC = () => {
     return preDefinedCategories;
   }, [preDefinedCategories]);
 
+  const navigateBookList = useCallback(
+    (category: Category, bookSets: BookSet[]) => {
+      navigation.navigate(CategoryKeys.BookList, { category, bookSets });
+    },
+    [navigation],
+  );
+
   return (
     <CategoryPresenter
       AdBanner={AdBanner}
@@ -28,6 +41,8 @@ export const CategoryContainer: FC = () => {
       onCloseModal={closeModal}
       onOpenModal={openModal}
       modalOpen={modalOpen}
+      getBookSetFromRef={getBookSetFromRef}
+      onNavigateBookList={navigateBookList}
     />
   );
 };
