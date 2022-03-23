@@ -27,7 +27,7 @@ export const Header: FC<Props> = memo(
             <MaterialIcons
               name="arrow-back-ios"
               size={28}
-              color={colors.Info500}
+              color={colors.Main}
               style={{ position: 'absolute', left: '5%' }}
               onPress={onBack}
               testID="back"
@@ -37,7 +37,7 @@ export const Header: FC<Props> = memo(
             <Ionicons
               name="ios-close"
               size={28}
-              color={colors.Info500}
+              color={colors.Main}
               style={{ position: 'absolute', left: '5%' }}
               onPress={onClose}
               testID="close"
@@ -54,7 +54,7 @@ export const Header: FC<Props> = memo(
           </Text>
           {!!RightIcon && <RightIcon />}
         </HStack>
-        <Divider />
+        {/* <Divider /> */}
       </VStack>
     );
   },

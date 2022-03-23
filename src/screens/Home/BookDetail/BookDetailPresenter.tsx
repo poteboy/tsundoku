@@ -40,8 +40,7 @@ export const BookDetailPresenter: FC<Props> = memo(
         <Header title={bookInfo.title} onBack={onBack} RightIcon={TrashIcon} />
         <VStack flex={1} bg={colors.lightGray}>
           <ScrollView>
-            <Spacer size={16} />
-            <HStack mx={4}>
+            <HStack p={4} bg={colors.White}>
               <Image
                 source={getImg(bookInfo.imgUrl)}
                 resizeMode="contain"
@@ -66,13 +65,13 @@ export const BookDetailPresenter: FC<Props> = memo(
                 </Text>
               </VStack>
             </HStack>
-            <Spacer size={16} />
+            {/* <Spacer size={4} />
             <RNButton
               onPress={() => {
                 Linking.openURL(bookInfo.itemUrl);
               }}
               title="この本の詳細"
-            />
+            /> */}
             <Spacer size={16} />
             <HStack pl={2} py={1} bg={colors.Info400}>
               <Text color={colors.White} fontSize="md" fontWeight={400}>

@@ -22,7 +22,6 @@ export const BookListContainer: FC = () => {
   }, [navigation]);
 
   const navigateBookInfo = useCallback(() => {
-    // homeNavigation.navigate(HomeKeys.BookDetail, bookSets[0]);
     Alert.alert(`削除する`, '', [
       {
         text: '削除',

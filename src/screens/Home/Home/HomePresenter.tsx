@@ -55,6 +55,7 @@ export const HomePresenter: FC<Props> = memo(
           right={4}
           size="sm"
           renderInPortal={false}
+          bg={'#4d64a6'}
           onPress={onNavigateSearchBook}
           icon={<Icon color="white" as={<AntDesign name="plus" />} size="md" />}
         />

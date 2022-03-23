@@ -61,7 +61,7 @@ export const SearchBookContainer: FC = () => {
     };
     return (
       <TouchableOpacity onPress={navigateQR}>
-        <MaterialIcons name="camera-alt" size={28} color={colors.Info500} />
+        <MaterialIcons name="camera-alt" size={28} color={colors.Main} />
       </TouchableOpacity>
     );
   }, [navigation]);

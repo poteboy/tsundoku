@@ -10,6 +10,9 @@ export const colors = {
   Danger400: '#fb7185',
   Danger500: '#f43f5e',
 
+  Main: '#4d64a6',
+  MainPressed: '#3f507e',
+
   lightGray: '#f2f2f6',
   medGray: '#e3e3e9',
   gray: '#c5c5c5',
