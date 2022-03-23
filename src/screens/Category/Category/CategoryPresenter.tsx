@@ -71,7 +71,7 @@ export const CategoryPresenter: FC<Props> = memo(
           _text={{ fontSize: 'lg' }}
           onPress={onOpenModal}
         >
-          新規カテゴリを作成
+          新規カテゴリーを作成
         </Button>
         <AdBanner style={{ position: 'absolute', bottom: 0 }} />
         <CategoryModal isOpen={modalOpen} onClose={onCloseModal} />
@@ -88,9 +88,7 @@ type CategoryItemProps = {
 const CategoryItem: FC<CategoryItemProps> = memo(
   ({ category, bookSets, onNavigateBookList }) => {
     const navigate = useCallback(() => {
-      bookSets.length > 0
-        ? onNavigateBookList(category, bookSets)
-        : showAlert();
+      onNavigateBookList(category, bookSets);
     }, [onNavigateBookList, category, bookSets]);
 
     const scale = new Animated.Value(1);
@@ -153,12 +151,3 @@ const CategoryItem: FC<CategoryItemProps> = memo(
   },
 );
 const AnimatedStack = Animated.createAnimatedComponent(VStack);
-
-const showAlert = () => {
-  Alert.alert('エラー', 'このカテゴリーには本が1冊も登録されていません', [
-    {
-      text: '閉じる',
-      style: 'cancel',
-    },
-  ]);
-};

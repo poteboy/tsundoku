@@ -2,7 +2,7 @@ import { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useContainer, createContainer } from 'unstated-next';
 import { auth, session, firestore as db } from '@src/constants/firebase';
-import { User, isUser } from '@src/entities';
+import { User, isUser, generateNewCategory } from '@src/entities';
 import { Model } from '@src/util';
 import { storageKeys } from '@src/constants/storageKey';
 import * as SplashScreen from 'expo-splash-screen';
@@ -58,7 +58,18 @@ const container = () => {
           authUid: uid,
           premium: false,
         });
-        await userRef.doc(uid).set(user);
+        const _category = generateNewCategory('お気に入り');
+        db.runTransaction(async transaction => {
+          await transaction.set(userRef.doc(uid), user);
+          await transaction.set(
+            userRef
+              .doc(uid)
+              .collection(collectionPath.users.category)
+              .doc(_category.uid),
+            _category,
+          );
+        });
+
         unstable_batchedUpdates(() => {
           setUser(user);
           setLoadingRegistration(false);
@@ -74,7 +85,23 @@ const container = () => {
     setLoadingDeletion(true);
     if (user) {
       try {
-        await userRef.doc(user.uid).delete();
+        db.runTransaction(async transaction => {
+          await userRef
+            .doc(user.uid)
+            .collection(collectionPath.users.books)
+            .get()
+            .then(async snaps => {
+              snaps.forEach(snap => {
+                transaction.delete(
+                  userRef
+                    .doc(user.uid)
+                    .collection(collectionPath.users.books)
+                    .doc(snap.id),
+                );
+              });
+            });
+          await transaction.delete(userRef.doc(user.uid));
+        });
         await auth.currentUser?.delete();
         await AsyncStorage.removeItem(storageKeys.user);
         setUser(undefined);
