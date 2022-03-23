@@ -16,10 +16,11 @@ export const TrashIcon = createIcon({
 type TrashProps = {
   loading: boolean;
   onPress: () => void;
+  testID?: string;
 };
 
 export const TrashRightIcon: React.FC<TrashProps> = React.memo(
-  ({ loading, onPress }) => {
+  ({ loading, onPress, testID }) => {
     const Icon = createIcon({
       viewBox: '0 0 22 24',
       path: [
@@ -30,7 +31,7 @@ export const TrashRightIcon: React.FC<TrashProps> = React.memo(
       ],
     });
     return (
-      <Pressable onPress={onPress}>
+      <Pressable onPress={onPress} testID={testID}>
         <Icon size={6} />
       </Pressable>
     );

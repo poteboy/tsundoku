@@ -54,7 +54,11 @@ export const BookDetailContainer: FC = () => {
   }, [navigation]);
 
   const TrashIcon = () => (
-    <TrashRightIcon onPress={onDeleteBook} loading={loadingDelete} />
+    <TrashRightIcon
+      onPress={onDeleteBook}
+      loading={loadingDelete}
+      testID="delete"
+    />
   );
 
   return (

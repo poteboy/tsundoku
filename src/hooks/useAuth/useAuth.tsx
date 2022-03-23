@@ -9,6 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { collectionPath } from '@src/constants';
 import { unstable_batchedUpdates } from 'react-native';
 
+// これはApp.tsxでラップしているので、それ以下のhookは呼べないよ。気をつけてね！
 const userRef = db.collection(collectionPath.users.users);
 const container = () => {
   const [authorized, setAuthorized] = useState(false);
