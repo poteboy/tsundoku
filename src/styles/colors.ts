@@ -14,4 +14,5 @@ export const colors = {
   medGray: '#e3e3e9',
   gray: '#c5c5c5',
   dartGray: '#9e9e9e',
+  DimGray: '#606060',
 };

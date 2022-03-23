@@ -8,6 +8,8 @@ import {
 import { useBookDetail } from './useBookDetail';
 import { useAdMob, useToast } from '@src/hooks';
 import { Alert } from 'react-native';
+import { Pressable } from 'native-base';
+import { TrashRightIcon } from '@src/icons';
 
 export const BookDetailContainer: FC = () => {
   const navigation = useHomeNavigation();
@@ -19,33 +21,41 @@ export const BookDetailContainer: FC = () => {
   const { deleteBook, loadingDelete } = useBookDetail(route.params);
 
   const onDeleteBook = useCallback(async () => {
-    Alert.alert('本当に削除しますか？', '', [
-      {
-        text: '削除',
-        onPress: async () => {
-          try {
-            await deleteBook();
-            showToast({
-              message: `${bookInfo.title}を削除しました`,
-              status: 'success',
-            });
-            navigation.dispatch(StackActions.popToTop());
-          } catch {
-            showToast({ message: `エラーが起きました`, status: 'error' });
-          }
+    Alert.alert(
+      '本当に削除しますか？',
+      `削除すると「${bookInfo.title}」に記入した記録は全て失われます。`,
+      [
+        {
+          text: '削除',
+          onPress: async () => {
+            try {
+              await deleteBook();
+              showToast({
+                message: `${bookInfo.title}を削除しました`,
+                status: 'success',
+              });
+              navigation.dispatch(StackActions.popToTop());
+            } catch {
+              showToast({ message: `エラーが起きました`, status: 'error' });
+            }
+          },
+          style: 'destructive',
         },
-        style: 'destructive',
-      },
-      {
-        text: 'キャンセル',
-        style: 'cancel',
-      },
-    ]);
+        {
+          text: 'キャンセル',
+          style: 'cancel',
+        },
+      ],
+    );
   }, [showToast, deleteBook, navigation]);
 
   const back = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
+
+  const TrashIcon = () => (
+    <TrashRightIcon onPress={onDeleteBook} loading={loadingDelete} />
+  );
 
   return (
     <BookDetailPresenter
@@ -55,6 +65,7 @@ export const BookDetailContainer: FC = () => {
       bookInfo={bookInfo}
       loadingDeletion={loadingDelete}
       AdBanner={AdBanner}
+      TrashIcon={TrashIcon}
     />
   );
 };

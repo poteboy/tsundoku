@@ -8,6 +8,7 @@ export const HomeKeys = {
   SearchBook: 'Home/SearchBook',
   BookInfo: 'Home/BookInfo',
   BookDetail: 'Home/BookDetail',
+  EditBook: 'Home/EditBook',
 } as const;
 
 export type HomeParamList = {
@@ -16,6 +17,7 @@ export type HomeParamList = {
   [HomeKeys.SearchBook]: undefined;
   [HomeKeys.BookInfo]: { bookInfo: BookInfo };
   [HomeKeys.BookDetail]: BookSet;
+  [HomeKeys.EditBook]: undefined;
 };
 
 export const useHomeNavigation = () =>

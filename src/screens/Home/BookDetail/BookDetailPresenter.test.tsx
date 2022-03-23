@@ -12,6 +12,7 @@ describe(`BookDetailPresenter`, () => {
     onDeleteBook: jest.fn(() => {}),
     loadingDeletion: false,
     AdBanner: () => <></>,
+    TrashIcon: () => <></>,
   };
 
   it(`renders correctly`, () => {

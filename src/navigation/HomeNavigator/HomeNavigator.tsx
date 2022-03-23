@@ -6,6 +6,7 @@ import { QRcodeContainer } from '@src/screens/Home/QRcode/QRcodeContainer';
 import { SearchBookContainer } from '@src/screens/Home/SearchBook/SearcBookContainer';
 import { BookInfoContainer } from '@src/screens/Home/BookInfo/BookInfoContainer';
 import { BookDetailContainer } from '@src/screens/Home/BookDetail/BookDetailContainer';
+import { EditBookContainer } from '@src/screens/Home/EditBook/EditBookContainer';
 
 const HomeStack = createNativeStackNavigator<HomeParamList>();
 
@@ -31,6 +32,13 @@ export const HomeStackNavigator: FC = () => {
       <HomeStack.Screen
         name={HomeKeys.BookDetail}
         component={BookDetailContainer}
+      />
+      <HomeStack.Screen
+        name={HomeKeys.EditBook}
+        component={EditBookContainer}
+        options={{
+          presentation: 'modal',
+        }}
       />
       <HomeStack.Screen
         name={HomeKeys.QRcode}
