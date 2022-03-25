@@ -34,19 +34,17 @@ export const SettingsHomeContainer: FC = () => {
     };
   }, [navigation]);
 
-  const appListItem: MenuItem = useMemo(() => {
-    return {
-      title: '開発者の他のアプリ',
-      onPress: async () => {
-        const supported = await Linking.canOpenURL(urls.appList);
-        if (supported) await Linking.openURL(urls.appList);
-      },
-    };
-  }, [navigation]);
-
   const menuItems: MenuItem[] = useMemo(() => {
-    return [accountItem, twitterItem, appListItem];
+    return [accountItem, appListItem];
   }, [twitterItem]);
 
   return <SettingsHomePresenter menuItems={menuItems} />;
+};
+
+const appListItem: MenuItem = {
+  title: '開発者の他のアプリ',
+  onPress: async () => {
+    const supported = await Linking.canOpenURL(urls.appList);
+    if (supported) await Linking.openURL(urls.appList);
+  },
 };

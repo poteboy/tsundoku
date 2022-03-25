@@ -29,6 +29,7 @@ type Props = {
   modalOpen: boolean;
   getBookSetFromRef: (ref: BookSetRef) => BookSet;
   onNavigateBookList: (category: Category, bookSets: BookSet[]) => void;
+  onCreateCategory: (name: string) => void;
 };
 
 export const CategoryPresenter: FC<Props> = memo(
@@ -40,8 +41,8 @@ export const CategoryPresenter: FC<Props> = memo(
     modalOpen,
     getBookSetFromRef,
     onNavigateBookList,
+    onCreateCategory,
   }) => {
-    const { createCategory } = useCategory();
     return (
       <VStack flex={1} bg={colors.lightGray}>
         <Header title="カテゴリー" reverse />
@@ -74,7 +75,11 @@ export const CategoryPresenter: FC<Props> = memo(
           新規カテゴリーを作成
         </Button>
         <AdBanner style={{ position: 'absolute', bottom: 0 }} />
-        <CategoryModal isOpen={modalOpen} onClose={onCloseModal} />
+        <CategoryModal
+          isOpen={modalOpen}
+          onClose={onCloseModal}
+          onSubmit={onCreateCategory}
+        />
       </VStack>
     );
   },

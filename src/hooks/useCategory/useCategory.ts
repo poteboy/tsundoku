@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   BookSet,
   isCategory,
@@ -55,15 +55,6 @@ export const useCategory = () => {
     [bookSets],
   );
 
-  const createCategory = useCallback(async (name: string) => {
-    const _category = generateNewCategory(name);
-    // try {
-    //   await categoryRef.doc(category.uid).set(category);
-    // } catch {
-    //   throw new Error();
-    // }
-  }, []);
-
   const addSetToCategory = useCallback(async (bookSet: BookSet) => {
     await db.runTransaction(async transaction => {
       transaction;
@@ -71,7 +62,6 @@ export const useCategory = () => {
   }, []);
 
   return {
-    createCategory,
     getBookSetFromRef,
     generateNewCategory,
     fetchCategory,

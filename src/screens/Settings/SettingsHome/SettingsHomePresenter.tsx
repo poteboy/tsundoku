@@ -12,24 +12,22 @@ export type Props = {
 
 export const SettingsHomePresenter: FC<Props> = memo(({ menuItems }) => {
   return (
-    <>
-      <Header title="メニュー" />
-      <VStack flex={1} bg={colors.lightGray}>
-        <ScrollView>
-          <Spacer size={16} />
-          <VStack mx={4}>
-            {menuItems.map((item, index) => (
-              <MenuItemCard
-                key={index}
-                item={item}
-                first={index === 0}
-                last={menuItems.length === index + 1}
-              />
-            ))}
-          </VStack>
-        </ScrollView>
-      </VStack>
-    </>
+    <VStack flex={1} bg={colors.lightGray}>
+      <Header title="メニュー" reverse />
+      <ScrollView>
+        <Spacer size={16} />
+        <VStack mx={4}>
+          {menuItems.map((item, index) => (
+            <MenuItemCard
+              key={index}
+              item={item}
+              first={index === 0}
+              last={menuItems.length === index + 1}
+            />
+          ))}
+        </VStack>
+      </ScrollView>
+    </VStack>
   );
 });
 

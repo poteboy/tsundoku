@@ -1,11 +1,12 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { CategoryPresenter } from './CategoryPresenter';
-import { useAdMob, useBookInfo, useCategory } from '@src/hooks';
+import { useAdMob, useBookInfo, useCategory, useToast } from '@src/hooks';
 import {
   useCategoryNavigation,
   CategoryKeys,
 } from '@src/navigation/CategoryNavigator/route';
 import { BookSet, Category } from '@src/entities';
+import { useCategoryScreen } from './useCategoryScreen';
 
 export const CategoryContainer: FC = () => {
   const { AdBanner: _Ad } = useAdMob();
@@ -13,6 +14,8 @@ export const CategoryContainer: FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const navigation = useCategoryNavigation();
+  const { createCategory } = useCategoryScreen();
+  const { showToast } = useToast();
 
   const AdBanner = useMemo(() => _Ad, []);
 
@@ -37,6 +40,19 @@ export const CategoryContainer: FC = () => {
     [navigation],
   );
 
+  const onCreateCategory = useCallback(async (name: string) => {
+    try {
+      const _category = await createCategory(name);
+      showToast({
+        message: `${_category.name}を追加しました`,
+        status: 'success',
+      });
+      navigation.navigate(CategoryKeys.CategorizeBook, { category: _category });
+    } catch {
+      showToast({ message: 'エラーが起きました', status: 'error' });
+    }
+  }, []);
+
   return (
     <CategoryPresenter
       AdBanner={AdBanner}
@@ -46,6 +62,7 @@ export const CategoryContainer: FC = () => {
       modalOpen={modalOpen}
       getBookSetFromRef={getBookSetFromRef}
       onNavigateBookList={navigateBookList}
+      onCreateCategory={onCreateCategory}
     />
   );
 };

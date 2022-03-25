@@ -10,7 +10,7 @@ export const RecordPresenter: FC<Props> = memo(() => {
   return (
     <>
       <VStack bg={colors.lightGray} flex={1}>
-        <Header title="読書記録" />
+        <Header title="読書記録" reverse />
       </VStack>
     </>
   );
