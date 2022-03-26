@@ -10,20 +10,13 @@ import { useCategoryScreen } from './useCategoryScreen';
 
 export const CategoryContainer: FC = () => {
   const { AdBanner: _Ad } = useAdMob();
-  const { getBookSetFromRef, fetchCategory } = useCategory();
+  const { getBookSetFromRef, categories } = useCategory();
   const [modalOpen, setModalOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const navigation = useCategoryNavigation();
   const { createCategory } = useCategoryScreen();
   const { showToast } = useToast();
 
   const AdBanner = useMemo(() => _Ad, []);
-
-  useEffect(() => {
-    fetchCategory().then(_categories => {
-      setCategories(_categories);
-    });
-  }, []);
 
   const openModal = useCallback(() => {
     setModalOpen(true);

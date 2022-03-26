@@ -7,7 +7,6 @@ describe(`HomePresenter`, () => {
     onNavigateSearchBook: jest.fn(() => {}),
     bookInfos: [],
     onNavigateBookDetail: jest.fn(bf => {}),
-    onFetchBookInfo: jest.fn(() => {}),
     fetching: false,
     AdBanner: () => <></>,
     premium: false,

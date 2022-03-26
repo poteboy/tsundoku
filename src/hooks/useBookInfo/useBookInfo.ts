@@ -23,26 +23,31 @@ const container = () => {
   const {
     user: { uid: userUid },
   } = useTabContext();
-  const [books, setBooks] = useState<Book[]>([]);
   const [bookInfos, setBookInfos] = useState<BookInfo[]>([]);
   const [loadingBookInfo, setLoadingBookInfo] = useState(false);
   const [fetching, setFetching] = useState(false);
-  // const [bookSets, setBookSets] = useState<BookSet[]>([]);
+
+  const [_books, loading, error] = useCollectionData<Book>(
+    userRef.doc(userUid).collection(collectionPath.users.books),
+  );
+  const books = useMemo(() => {
+    return _books ?? [];
+  }, [_books]);
 
   const bookSets: BookSet[] = useMemo(() => {
-    const tmp = books.map(book => {
-      const bookInfo = bookInfos.find(
-        info => bookInfoRef.doc(info.uid).path === book.bookInfoRef.path,
-      );
-      return bookInfo
-        ? {
-            book,
-            bookInfo,
-          }
-        : undefined;
-    });
-    const sets = tmp.filter(isBookSet) as BookSet[];
-    return sets;
+    return books
+      .map(book => {
+        const bookInfo = bookInfos.find(
+          info => bookInfoRef.doc(info.uid).path === book.bookInfoRef.path,
+        );
+        return bookInfo
+          ? {
+              book,
+              bookInfo,
+            }
+          : undefined;
+      })
+      .filter(isBookSet) as BookSet[];
   }, [books, bookInfos]);
 
   const fetchBookInfos = useCallback(async (arr: Book[]) => {
@@ -51,47 +56,20 @@ const container = () => {
         arr.map(async v => {
           const ref = v.bookInfoRef;
           const data = await (await ref.get()).data();
+          console.log('data');
           if (isBookInfo(data)) return data;
         }),
       )
-    ).filter(info => !!info) as BookInfo[];
+    ).filter(isBookInfo) as BookInfo[];
   }, []);
 
-  const fetchBookOnLoad = useCallback(async () => {
-    setFetching(true);
-    const arr: Book[] = [];
-    await userRef
-      .doc(userUid)
-      .collection(collectionPath.users.books)
-      .get()
-      .then(async snapShot => {
-        snapShot.forEach(async snap => {
-          const _book = await snap.data();
-          if (isBook(_book)) arr.push(_book);
-        });
-      })
-      .catch(() => {
-        throw new Error();
-      })
-      .finally(() => {
-        arr.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-        books.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-        // JSON.stringifyだと何故か無限ループに陥る
-        if (!isBooksEqual(arr, books)) {
-          console.log('change');
-          unstable_batchedUpdates(() => {
-            setBooks(arr);
-            fetchBookInfos(arr).then(b => setBookInfos(b));
-          });
-        }
-        setFetching(false);
-      });
+  useEffect(() => {
+    fetchBookInfos(books).then(info => setBookInfos(info));
   }, [books]);
 
   return {
     bookInfos,
     loadingBookInfo,
-    fetchBookOnLoad,
     fetching,
     books,
     bookSets,

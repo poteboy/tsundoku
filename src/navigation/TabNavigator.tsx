@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabParamList, TabKeys } from './route';
 import { HomeStackNavigator } from './HomeNavigator/HomeNavigator';
@@ -22,6 +22,7 @@ export const TabStackNavigator: FC = () => {
   const { getUser, userUid, updateUser } = useAuth();
   const userDocRef = userRef.doc(user?.uid);
 
+  // ここらへんの処理はuseAuth
   useEffect(() => {
     (async () => {
       const _user = await getUser();
@@ -43,7 +44,7 @@ export const TabStackNavigator: FC = () => {
   }
 
   return (
-    <TabContext.Provider value={{ user, userDocRef }}>
+    <TabContext.Provider value={{ user, userDocRef, bookInfos: [] }}>
       <BookInfoContainer.Provider>
         <TabStack.Navigator
           screenOptions={{

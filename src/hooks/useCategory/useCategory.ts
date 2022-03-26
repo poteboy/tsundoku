@@ -10,6 +10,7 @@ import { useBookInfo } from '@src/hooks';
 import { useTabContext } from '@src/navigation/context';
 import { firestore as db, collectionPath } from '@src/constants';
 import { Model } from '@src/util/model';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 const userRef = db.collection(collectionPath.users.users);
 const getCategoryRef = (userUid: string) =>
@@ -21,15 +22,14 @@ export const useCategory = () => {
   const { bookSets } = useBookInfo();
   const { user } = useTabContext();
 
-  const fetchCategory = useCallback(async () => {
-    const docs = (await getCategoryRef(user.uid).get()).docs;
-    const data: Category[] = [];
-    await docs.map(async doc => {
-      const d = await doc.data();
-      if (isCategory(d)) data.push(d);
-    });
-    return data;
-  }, [user]);
+  const [_categories, loading, error] = useCollectionData<Category[]>(
+    getCategoryRef(user.uid),
+  );
+
+  const categories = useMemo(() => {
+    const c: any = _categories ?? [];
+    return c as Category[];
+  }, [_categories]);
 
   const bookSetRefs: BookSetRef[] = useMemo(() => {
     return bookSets.map(set => {
@@ -64,6 +64,6 @@ export const useCategory = () => {
   return {
     getBookSetFromRef,
     generateNewCategory,
-    fetchCategory,
+    categories,
   };
 };

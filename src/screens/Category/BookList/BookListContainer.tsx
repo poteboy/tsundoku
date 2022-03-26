@@ -1,21 +1,23 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { BookListPresenter } from './BookListPresenter';
-import { StackActions, useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import {
   CategoryParamList,
   useCategoryNavigation,
 } from '@src/navigation/CategoryNavigator/route';
-import {
-  useHomeNavigation,
-  HomeKeys,
-} from '@src/navigation/HomeNavigator/route';
+import { ThreDotIcon } from '@src/icons';
+import { Pressable } from 'native-base';
 
 export const BookListContainer: FC = () => {
   const { bookSets, category } =
     useRoute<RouteProp<CategoryParamList, 'Category/BookList'>>().params;
   const navigation = useCategoryNavigation();
-  const homeNavigation = useHomeNavigation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeSheet = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const back = useCallback(() => {
     navigation.goBack();
@@ -34,12 +36,26 @@ export const BookListContainer: FC = () => {
     ]);
   }, []);
 
+  const RightIcon = useCallback(() => {
+    return (
+      <Pressable
+        onPress={() => {
+          setIsOpen(true);
+        }}
+      >
+        <ThreDotIcon size={24} />
+      </Pressable>
+    );
+  }, []);
+
   return (
     <BookListPresenter
       bookSets={bookSets}
       category={category}
       onBack={back}
-      onNavigateBookInfo={navigateBookInfo}
+      RightIcon={RightIcon}
+      onCloseSheet={closeSheet}
+      isOpenSheet={isOpen}
     />
   );
 };

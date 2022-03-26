@@ -11,7 +11,6 @@ import { useAdMob } from '@src/hooks';
 export type Props = {
   onNavigateSearchBook: () => void;
   bookInfos: BookInfo[];
-  onFetchBookInfo: () => void;
   fetching: boolean;
   onNavigateBookDetail: (bookInfo: BookInfo) => void;
   AdBanner: React.FC<any>;
@@ -22,7 +21,6 @@ export const HomePresenter: FC<Props> = memo(
   ({
     onNavigateSearchBook,
     bookInfos,
-    onFetchBookInfo,
     fetching,
     onNavigateBookDetail,
     AdBanner,
