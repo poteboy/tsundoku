@@ -10,20 +10,13 @@ import { useCategoryScreen } from './useCategoryScreen';
 
 export const CategoryContainer: FC = () => {
   const { AdBanner: _Ad } = useAdMob();
-  const { getBookSetFromRef, fetchCategory } = useCategory();
+  const { getBookFromRef, categories } = useCategory();
   const [modalOpen, setModalOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const navigation = useCategoryNavigation();
   const { createCategory } = useCategoryScreen();
   const { showToast } = useToast();
 
   const AdBanner = useMemo(() => _Ad, []);
-
-  useEffect(() => {
-    fetchCategory().then(_categories => {
-      setCategories(_categories);
-    });
-  }, []);
 
   const openModal = useCallback(() => {
     setModalOpen(true);
@@ -34,35 +27,42 @@ export const CategoryContainer: FC = () => {
   }, []);
 
   const navigateBookList = useCallback(
-    (category: Category, bookSets: BookSet[]) => {
-      navigation.navigate(CategoryKeys.BookList, { category, bookSets });
+    (category: Category) => {
+      navigation.navigate(CategoryKeys.BookList, { category });
     },
     [navigation],
   );
 
-  const onCreateCategory = useCallback(async (name: string) => {
-    try {
-      const _category = await createCategory(name);
-      showToast({
-        message: `${_category.name}を追加しました`,
-        status: 'success',
-      });
-      navigation.navigate(CategoryKeys.CategorizeBook, { category: _category });
-    } catch {
-      showToast({ message: 'エラーが起きました', status: 'error' });
-    }
-  }, []);
+  const onCreateCategory = useCallback(
+    async (name: string) => {
+      try {
+        const _category = await createCategory(name);
+        showToast({
+          message: `${_category.name}を追加しました`,
+          status: 'success',
+        });
+        navigation.navigate(CategoryKeys.CategorizeBook, {
+          category: _category,
+        });
+      } catch {
+        showToast({ message: 'エラーが起きました', status: 'error' });
+      }
+    },
+    [showToast, navigation],
+  );
 
   return (
     <CategoryPresenter
       AdBanner={AdBanner}
-      categories={categories}
+      categories={categories.sort((y, z) =>
+        y.createdAt > z.createdAt ? 1 : -1,
+      )}
       onCloseModal={closeModal}
       onOpenModal={openModal}
       modalOpen={modalOpen}
-      getBookSetFromRef={getBookSetFromRef}
       onNavigateBookList={navigateBookList}
       onCreateCategory={onCreateCategory}
+      getBookFromRef={getBookFromRef}
     />
   );
 };

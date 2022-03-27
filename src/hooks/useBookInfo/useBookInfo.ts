@@ -12,7 +12,11 @@ import { useContainer, createContainer } from 'unstated-next';
 import { useAuth } from '..';
 import { useTabContext } from '@src/navigation/context';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { firestore as db, collectionPath } from '@src/constants';
+import {
+  firestore as db,
+  collectionPath,
+  DocumentReference,
+} from '@src/constants';
 import { unstable_batchedUpdates } from 'react-native';
 import { convertDate } from '@src/util';
 
@@ -20,32 +24,54 @@ const bookInfoRef = db.collection(collectionPath.bookInfos.bookInfos);
 
 const userRef = db.collection(collectionPath.users.users);
 const container = () => {
-  const {
-    user: { uid: userUid },
-  } = useTabContext();
-  const [books, setBooks] = useState<Book[]>([]);
+  const { userUid } = useAuth();
+
   const [bookInfos, setBookInfos] = useState<BookInfo[]>([]);
   const [loadingBookInfo, setLoadingBookInfo] = useState(false);
   const [fetching, setFetching] = useState(false);
-  // const [bookSets, setBookSets] = useState<BookSet[]>([]);
 
-  const bookSets: BookSet[] = useMemo(() => {
-    const tmp = books.map(book => {
+  const [_books, loading, error] = useCollectionData<Book>(
+    userRef.doc(userUid).collection(collectionPath.users.books),
+  );
+  const books = useMemo(() => {
+    const b = _books ?? [];
+    return b as any as Book[];
+  }, [_books]);
+
+  const bookDictionary = useMemo(() => {
+    const a: Dictionary<BookSet> = {};
+    books.map(book => {
       const bookInfo = bookInfos.find(
         info => bookInfoRef.doc(info.uid).path === book.bookInfoRef.path,
       );
-      return bookInfo
-        ? {
-            book,
-            bookInfo,
-          }
+      bookInfo
+        ? (a[book.uid] = {
+            book: book,
+            bookInfo: bookInfo,
+          })
         : undefined;
     });
-    const sets = tmp.filter(isBookSet) as BookSet[];
-    return sets;
+    return a;
+  }, [bookInfos, books]);
+
+  const bookSets: BookSet[] = useMemo(() => {
+    return books
+      .map(book => {
+        const bookInfo = bookInfos.find(
+          info => bookInfoRef.doc(info.uid).path === book.bookInfoRef.path,
+        );
+        return bookInfo
+          ? {
+              book,
+              bookInfo,
+            }
+          : undefined;
+      })
+      .filter(isBookSet) as BookSet[];
   }, [books, bookInfos]);
 
   const fetchBookInfos = useCallback(async (arr: Book[]) => {
+    console.log('change');
     return (
       await Promise.all(
         arr.map(async v => {
@@ -54,47 +80,58 @@ const container = () => {
           if (isBookInfo(data)) return data;
         }),
       )
-    ).filter(info => !!info) as BookInfo[];
+    ).filter(isBookInfo) as BookInfo[];
   }, []);
 
-  const fetchBookOnLoad = useCallback(async () => {
-    setFetching(true);
-    const arr: Book[] = [];
-    await userRef
-      .doc(userUid)
-      .collection(collectionPath.users.books)
-      .get()
-      .then(async snapShot => {
-        snapShot.forEach(async snap => {
-          const _book = await snap.data();
-          if (isBook(_book)) arr.push(_book);
-        });
-      })
-      .catch(() => {
-        throw new Error();
-      })
-      .finally(() => {
-        arr.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-        books.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-        // JSON.stringifyだと何故か無限ループに陥る
-        if (!isBooksEqual(arr, books)) {
-          console.log('change');
-          unstable_batchedUpdates(() => {
-            setBooks(arr);
-            fetchBookInfos(arr).then(b => setBookInfos(b));
-          });
-        }
-        setFetching(false);
-      });
+  useEffect(() => {
+    fetchBookInfos(books).then(info => setBookInfos(info));
   }, [books]);
+
+  const getBookRef = useCallback(
+    (book: Book) => {
+      return db
+        .collection(collectionPath.users.users)
+        .doc(userUid)
+        .collection(collectionPath.users.books)
+        .doc(book.uid);
+    },
+    [userUid],
+  );
+
+  const getInfoRef = (info: BookInfo) => {
+    return db.collection(collectionPath.bookInfos.bookInfos).doc(info.uid);
+  };
+
+  const getBookFromInfo = (info: BookInfo) => {
+    const id = getInfoRef(info).id;
+    console.log(id);
+    return books.find(b => {
+      console.log(b.bookInfoRef.id);
+      return b.bookInfoRef.id === id;
+    }) as Book;
+  };
+
+  const getInfoFromBook = (bookRef: DocumentReference) => {
+    const book = books.find(book => getBookRef(book).id === bookRef.id);
+    // const info = bookInfos.find(info => {
+    //   return book?.bookInfoRef.path === getInfoRef(info).path;
+    // });
+    // console.log(info);
+    // return info;
+    return book ? bookDictionary[book.uid].bookInfo : undefined;
+  };
 
   return {
     bookInfos,
     loadingBookInfo,
-    fetchBookOnLoad,
     fetching,
     books,
     bookSets,
+    getBookFromInfo,
+    getBookRef,
+    getInfoRef,
+    getInfoFromBook,
+    bookDictionary,
   };
 };
 

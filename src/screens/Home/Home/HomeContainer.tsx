@@ -11,24 +11,11 @@ import { collectionPath, firestore as db } from '@src/constants';
 
 export const HomeContainer: FC = () => {
   const navigation = useHomeNavigation();
-  const { bookInfos, fetchBookOnLoad, fetching, books } = useBookInfo();
+  const { bookInfos, fetching, books } = useBookInfo();
   const { showToast } = useToast();
   const { AdBanner: _AD, premium } = useAdMob();
 
   const AdBanner = useMemo(() => _AD, []);
-
-  // ページがFocusされた時に発火
-  useFocusEffect(
-    useCallback(() => {
-      (async () => {
-        try {
-          await fetchBookOnLoad();
-        } catch {
-          showToast({ message: 'エラーが起きました', status: 'error' });
-        }
-      })();
-    }, [books]), // fetchBookOnLoadにすると無限ループ
-  );
 
   const navigateSearchBook = useCallback(() => {
     navigation.navigate(HomeKeys.SearchBook);
@@ -49,7 +36,6 @@ export const HomeContainer: FC = () => {
     <HomePresenter
       onNavigateSearchBook={navigateSearchBook}
       bookInfos={bookInfos}
-      onFetchBookInfo={fetchBookOnLoad}
       fetching={fetching}
       onNavigateBookDetail={navigateBookDetail}
       AdBanner={AdBanner}

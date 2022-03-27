@@ -101,6 +101,20 @@ const container = () => {
                 );
               });
             });
+          await userRef
+            .doc(user.uid)
+            .collection(collectionPath.users.category)
+            .get()
+            .then(async snaps => {
+              snaps.forEach(snap => {
+                transaction.delete(
+                  userRef
+                    .doc(user.uid)
+                    .collection(collectionPath.users.category)
+                    .doc(snap.id),
+                );
+              });
+            });
           await transaction.delete(userRef.doc(user.uid));
         });
         await auth.currentUser?.delete();

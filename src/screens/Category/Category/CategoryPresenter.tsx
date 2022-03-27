@@ -19,7 +19,8 @@ import {
   isBookSet,
 } from '@src/entities';
 import { getImg } from '@src/util';
-import { useCategory } from '@src/hooks';
+import { useBookInfo, useCategory } from '@src/hooks';
+import { DocumentReference } from '@src/constants';
 
 type Props = {
   AdBanner: React.FC<any>;
@@ -27,9 +28,9 @@ type Props = {
   onOpenModal: () => void;
   onCloseModal: () => void;
   modalOpen: boolean;
-  getBookSetFromRef: (ref: BookSetRef) => BookSet;
-  onNavigateBookList: (category: Category, bookSets: BookSet[]) => void;
+  onNavigateBookList: (category: Category) => void;
   onCreateCategory: (name: string) => void;
+  getBookFromRef: (ref: DocumentReference) => BookSet;
 };
 
 export const CategoryPresenter: FC<Props> = memo(
@@ -39,9 +40,9 @@ export const CategoryPresenter: FC<Props> = memo(
     onCloseModal,
     onOpenModal,
     modalOpen,
-    getBookSetFromRef,
     onNavigateBookList,
     onCreateCategory,
+    getBookFromRef,
   }) => {
     return (
       <VStack flex={1} bg={colors.lightGray}>
@@ -49,10 +50,10 @@ export const CategoryPresenter: FC<Props> = memo(
         <ScrollView>
           <Spacer size={16} />
           {categories.map(category => {
-            const { bookSetRefs } = category;
-            const bookSets = bookSetRefs
+            const { bookRefs } = category;
+            const bookSets = bookRefs
               .map(ref => {
-                return getBookSetFromRef(ref);
+                return getBookFromRef(ref);
               })
               .filter(isBookSet);
             return (
@@ -62,6 +63,7 @@ export const CategoryPresenter: FC<Props> = memo(
               </View>
             );
           })}
+          <Spacer size={72} />
         </ScrollView>
         <Button
           alignSelf="center"
@@ -70,6 +72,7 @@ export const CategoryPresenter: FC<Props> = memo(
           bottom={20}
           shadow={3}
           _text={{ fontSize: 'lg' }}
+          // variant="outline"
           onPress={onOpenModal}
         >
           新規カテゴリーを作成
@@ -87,14 +90,15 @@ export const CategoryPresenter: FC<Props> = memo(
 
 type CategoryItemProps = {
   category: Category;
-  bookSets: BookSet[];
 } & Pick<Props, 'onNavigateBookList'>;
 
 const CategoryItem: FC<CategoryItemProps> = memo(
-  ({ category, bookSets, onNavigateBookList }) => {
+  ({ category, onNavigateBookList }) => {
     const navigate = useCallback(() => {
-      onNavigateBookList(category, bookSets);
-    }, [onNavigateBookList, category, bookSets]);
+      onNavigateBookList(category);
+    }, [onNavigateBookList, category]);
+
+    const { getInfoFromBook } = useBookInfo();
 
     const scale = new Animated.Value(1);
 
@@ -133,16 +137,18 @@ const CategoryItem: FC<CategoryItemProps> = memo(
             <Text py={4} pl={5} fontWeight={600} fontSize="xl">
               {category.name}
               <Text fontWeight={400} fontSize="md">
-                ({bookSets.length})
+                ({category.bookRefs.length})
               </Text>
             </Text>
           </HStack>
           <HStack justifyContent="center" mb={4}>
-            {bookSets.length > 0 &&
-              bookSets.slice(0, 3).map(bookSet => {
+            {category.bookRefs.length > 0 &&
+              category.bookRefs.slice(0, 3).map(ref => {
+                const info = getInfoFromBook(ref);
+                console.log(info);
                 return (
                   <Image
-                    source={getImg(bookSet.bookInfo.imgUrl)}
+                    source={getImg(info?.imgUrl)}
                     height="80px"
                     width="80px"
                     resizeMode="contain"

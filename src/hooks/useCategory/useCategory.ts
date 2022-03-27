@@ -8,8 +8,13 @@ import {
 } from '@src/entities';
 import { useBookInfo } from '@src/hooks';
 import { useTabContext } from '@src/navigation/context';
-import { firestore as db, collectionPath } from '@src/constants';
+import {
+  firestore as db,
+  collectionPath,
+  DocumentReference,
+} from '@src/constants';
 import { Model } from '@src/util/model';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 const userRef = db.collection(collectionPath.users.users);
 const getCategoryRef = (userUid: string) =>
@@ -21,33 +26,19 @@ export const useCategory = () => {
   const { bookSets } = useBookInfo();
   const { user } = useTabContext();
 
-  const fetchCategory = useCallback(async () => {
-    const docs = (await getCategoryRef(user.uid).get()).docs;
-    const data: Category[] = [];
-    await docs.map(async doc => {
-      const d = await doc.data();
-      if (isCategory(d)) data.push(d);
-    });
-    return data;
-  }, [user]);
+  const [_categories, loading, error] = useCollectionData<Category[]>(
+    getCategoryRef(user.uid),
+  );
 
-  const bookSetRefs: BookSetRef[] = useMemo(() => {
-    return bookSets.map(set => {
-      const ref = {
-        bookRef: getBookRef(user.uid).doc(set.book.uid),
-        bookInfoRef: bookInfoRef.doc(set.bookInfo.uid),
-      };
-      return ref;
-    });
-  }, [bookSets]);
+  const categories = useMemo(() => {
+    const c: any = _categories ?? [];
+    return c as Category[];
+  }, [_categories]);
 
-  const getBookSetFromRef = useCallback(
-    (ref: BookSetRef): BookSet => {
+  const getBookFromRef = useCallback(
+    (ref: DocumentReference): BookSet => {
       const set = bookSets.find(set => {
-        return (
-          // bookRef.doc(set.book.uid).path === ref.bookRef.path &&
-          bookInfoRef.doc(set.bookInfo.uid).path === ref.bookInfoRef.path
-        );
+        return getBookRef(user.uid).doc(set.book.uid).path === ref.path;
       });
       // 必ず存在する
       return set as BookSet;
@@ -55,15 +46,35 @@ export const useCategory = () => {
     [bookSets],
   );
 
-  const addSetToCategory = useCallback(async (bookSet: BookSet) => {
-    await db.runTransaction(async transaction => {
-      transaction;
-    });
-  }, []);
+  const addBookRefsToCategory = useCallback(
+    async (refs: DocumentReference[], category: Category) => {
+      const tmp = removeDup([...category.bookRefs, ...refs]);
+      category.bookRefs = tmp;
+      const doc = getCategoryRef(user.uid).doc(category.uid);
+      try {
+        await db.runTransaction(async transaction => {
+          await transaction.update(doc, category);
+        });
+      } catch {
+        throw new Error();
+      }
+    },
+    [],
+  );
 
   return {
-    getBookSetFromRef,
+    getBookFromRef,
     generateNewCategory,
-    fetchCategory,
+    categories,
+    addBookRefsToCategory,
   };
+};
+
+const removeDup = (refs: DocumentReference[]) => {
+  const vals: DocumentReference[] = [];
+  refs.map(ref => {
+    if (vals.some(val => val.id === ref.id)) return;
+    vals.push(ref);
+  });
+  return vals;
 };
