@@ -33,6 +33,23 @@ export const theme = extendTheme({
             },
           };
         },
+        outline: ({ disabled }: IButtonProps) => {
+          return {
+            px: 16,
+            py: 12,
+            bg: colors.White,
+            borderColor: colors.Main,
+            borderWidth: 1,
+            _text: {
+              color: colors.Main,
+              fontSize: 'lg',
+            },
+            _pressed: {
+              bg: colors.lightGray,
+              borderColor: colors.Main,
+            },
+          };
+        },
       },
     },
   },

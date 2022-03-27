@@ -22,7 +22,7 @@ export const CategoryNavigator: FC = () => {
         component={CategorizeBookContainer}
         name={CategoryKeys.CategorizeBook}
         options={{
-          presentation: 'modal',
+          presentation: 'fullScreenModal',
         }}
       />
     </CategoryStack.Navigator>

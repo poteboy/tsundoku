@@ -35,7 +35,6 @@ export const BookDetailPresenter: FC<Props> = memo(
     AdBanner,
     TrashIcon,
   }) => {
-    console.log(bookInfo);
     return (
       <>
         <Header title={bookInfo.title} onBack={onBack} RightIcon={TrashIcon} />

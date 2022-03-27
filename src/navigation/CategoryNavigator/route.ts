@@ -10,7 +10,7 @@ export const CategoryKeys = {
 
 export type CategoryParamList = {
   [CategoryKeys.Category]: undefined;
-  [CategoryKeys.BookList]: { category: Category; bookSets: BookSet[] };
+  [CategoryKeys.BookList]: { category: Category };
   [CategoryKeys.CategorizeBook]: { category: Category };
 };
 

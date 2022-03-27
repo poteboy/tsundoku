@@ -4,8 +4,8 @@ import { AppRoot } from '@src/root';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider } from 'native-base';
 import { theme } from '@src/styles/theme';
-import { AuthContainer, BookInfoContainer } from '@src/hooks';
 import { SENTRY_DSN } from '@env';
+import { Container } from '@src/util';
 import { firebase } from '@src/constants';
 import * as Sentry from 'sentry-expo';
 
@@ -20,11 +20,11 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NativeBaseProvider theme={theme}>
-        <AuthContainer.Provider>
+        <Container>
           <NavigationContainer>
             <AppRoot />
           </NavigationContainer>
-        </AuthContainer.Provider>
+        </Container>
       </NativeBaseProvider>
     </SafeAreaProvider>
   );

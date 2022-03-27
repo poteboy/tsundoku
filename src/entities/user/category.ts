@@ -4,7 +4,8 @@ import { Model as _Model } from '@src/util';
 
 export interface Category extends Model {
   name: string;
-  bookSetRefs: BookSetRef[];
+  // bookSetRefs: BookSetRef[];
+  bookRefs: DocumentReference[];
 }
 
 export type BookSet = {
@@ -46,7 +47,7 @@ export const generateNewCategory = (name: string) => {
   const merge = new _Model().mergeModel;
   const category = merge<Category>({
     name,
-    bookSetRefs: [],
+    bookRefs: [],
   });
   return category;
 };
