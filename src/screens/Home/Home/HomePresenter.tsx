@@ -4,13 +4,13 @@ import { colors } from '@src/styles';
 import { Header, Spacer } from '@src/components';
 import { ScrollView, Animated, Dimensions, RefreshControl } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { BookInfo } from '@src/entities';
+import { BookInfo, Book, BookSet } from '@src/entities';
 import { getImg } from '@src/util';
-import { useAdMob } from '@src/hooks';
+import { useAdMob, useBookInfo } from '@src/hooks';
 
 export type Props = {
   onNavigateSearchBook: () => void;
-  bookInfos: BookInfo[];
+  books: Book[];
   fetching: boolean;
   onNavigateBookDetail: (bookInfo: BookInfo) => void;
   AdBanner: React.FC<any>;
@@ -20,30 +20,31 @@ export type Props = {
 export const HomePresenter: FC<Props> = memo(
   ({
     onNavigateSearchBook,
-    bookInfos,
-    fetching,
+    books,
     onNavigateBookDetail,
     AdBanner,
     premium,
   }) => {
+    const { getInfoFromBook, getBookRef } = useBookInfo();
     return (
       <View flex={1} bg={colors.lightGray}>
         <Header title="ホーム" reverse />
-        <ScrollView
-        // refreshControl={
-        //   <RefreshControl onRefresh={onFetchBookInfo} refreshing={fetching} />
-        // }
-        >
+        <ScrollView>
           <VStack height="100%" justifyContent="center">
             <Spacer size={4} />
             <HStack flexWrap="wrap">
-              {bookInfos.map(bookInfo => (
-                <BookInfoItem
-                  onNavigateBookDetail={onNavigateBookDetail}
-                  bookInfo={bookInfo}
-                  key={bookInfo.uid}
-                />
-              ))}
+              {books.map(book => {
+                const bookInfo = getInfoFromBook(getBookRef(book));
+                return bookInfo ? (
+                  <BookInfoItem
+                    onNavigateBookDetail={onNavigateBookDetail}
+                    bookInfo={bookInfo}
+                    key={bookInfo.uid}
+                  />
+                ) : (
+                  <></>
+                );
+              })}
             </HStack>
           </VStack>
         </ScrollView>

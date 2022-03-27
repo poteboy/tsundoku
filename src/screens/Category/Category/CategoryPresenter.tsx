@@ -145,7 +145,6 @@ const CategoryItem: FC<CategoryItemProps> = memo(
             {category.bookRefs.length > 0 &&
               category.bookRefs.slice(0, 3).map(ref => {
                 const info = getInfoFromBook(ref);
-                console.log(info);
                 return (
                   <Image
                     source={getImg(info?.imgUrl)}

@@ -80,7 +80,6 @@ const BookItem: FC<ItemProps> = memo(
     const book = getBookFromInfo(bookInfo);
 
     const isSelected = useMemo(() => {
-      console.log(selectedRefs);
       return selectedRefs.some(refs => refs.id === getBookRef(book).id);
     }, [bookInfo, selectedRefs, unselectBook]);
 

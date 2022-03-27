@@ -106,7 +106,6 @@ const container = () => {
     const id = getInfoRef(info).id;
     console.log(id);
     return books.find(b => {
-      console.log(b.bookInfoRef.id);
       return b.bookInfoRef.id === id;
     }) as Book;
   };
@@ -118,7 +117,14 @@ const container = () => {
     // });
     // console.log(info);
     // return info;
-    return book ? bookDictionary[book.uid].bookInfo : undefined;
+    try {
+      return book ? bookDictionary[book.uid].bookInfo : undefined;
+    } catch {
+      const info = bookInfos.find(info => {
+        return book?.bookInfoRef.path === getInfoRef(info).path;
+      });
+      return info;
+    }
   };
 
   return {

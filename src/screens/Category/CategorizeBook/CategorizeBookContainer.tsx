@@ -21,18 +21,26 @@ export const CategorizeBookContainer: FC = () => {
   const { addBookRefsToCategory } = useCategory();
   const { showToast } = useToast();
 
-  const selectBook = useCallback((book: Book) => {
-    const ref = getBookRef(book);
-    setSelectedRefs(refs => {
-      return [...refs, ref];
-    });
-  }, []);
+  const selectBook = useCallback(
+    (book: Book) => {
+      const ref = getBookRef(book);
+      setSelectedRefs(refs => {
+        return [...refs, ref];
+      });
+    },
+    [setSelectedRefs],
+  );
 
-  const unselectBook = useCallback((book: Book) => {
-    const ref = getBookRef(book);
-    const filtered = selectedRefs.filter(refs => refs.id !== ref.id);
-    setSelectedRefs(filtered);
-  }, []);
+  const unselectBook = useCallback(
+    (book: Book) => {
+      const ref = getBookRef(book);
+      setSelectedRefs(refs => {
+        const tmp = refs.filter(r => r.path !== ref.path);
+        return tmp;
+      });
+    },
+    [setSelectedRefs],
+  );
 
   const back = useCallback(() => {
     navigation.goBack();

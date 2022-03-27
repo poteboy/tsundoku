@@ -35,11 +35,11 @@ export const HomeContainer: FC = () => {
   return (
     <HomePresenter
       onNavigateSearchBook={navigateSearchBook}
-      bookInfos={bookInfos}
       fetching={fetching}
       onNavigateBookDetail={navigateBookDetail}
       AdBanner={AdBanner}
       premium={premium}
+      books={books.sort((y, z) => (y.createdAt < z.createdAt ? 1 : -1))}
     />
   );
 };

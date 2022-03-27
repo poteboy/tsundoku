@@ -5,7 +5,7 @@ import React from 'react';
 describe(`HomePresenter`, () => {
   const defaultProps: Props = {
     onNavigateSearchBook: jest.fn(() => {}),
-    bookInfos: [],
+    books: [],
     onNavigateBookDetail: jest.fn(bf => {}),
     fetching: false,
     AdBanner: () => <></>,
